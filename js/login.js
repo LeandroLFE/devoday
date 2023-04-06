@@ -8,14 +8,8 @@ img.addEventListener('click', function () {
     img.className = img.className == "fi fi-rr-eye" ? "fi fi-rr-eye-crossed" : "fi fi-rr-eye";
 });
 
-/*
 
-PROBLEMAS
-- O required não tá funcionando e se verificar
-if (email.value != "" && senha.value != "")
-dentro ou fora, nenhum comando funciona pq recarrega automaticamente
 
-*/
 
 // ORGANIZAR AINDA
 let email = document.querySelector('#email');
@@ -24,50 +18,20 @@ let senha = document.querySelector('#senha');
 let login = document.querySelector('.login');
 let criar = document.querySelector('.criar');
 
-function continuar() {
-    window.location.href = "index.html";
-}
+function Logar(e) {
+    e.preventDefault()
 
-// LOGIN
-/* 
-login.addEventListener('click', function() {
-    //temporário
-    window.alert('Usuário logado!')
-    
     //verificar
-
-    //redirecionar    
-    window.location.href = "index.html";
-}) 
-
-OU
-
-function logar() {
-    if (email.value != "" && senha.value != "") {
-        //temporário
-        console.log('Logado')
-        
-        //verificar
-
-        //redirecionar    
-        window.location.href = "index.html";
-    }
-}
-*/
-
-// CADASTRO
-/*
-criar.addEventListener('click', function() {
-    //temporário
-    window.alert('Verificação de duas etapas completa!')
-    //verificar email
-
-    //adicionar no banco
 
     //redirecionar
     window.location.href = "index.html";
+}
 
-    
+function Criar(e) {
+    e.preventDefault()
+
+    //verificar
+    /*
     Swal.fire({
         title: 'Submit your Github username',
         input: 'text',
@@ -101,5 +65,11 @@ criar.addEventListener('click', function() {
         }
         })
         
-})
-*/
+    */
+
+    //adicionar ao banco
+
+    //redirecionar
+    window.location.href = "index.html";
+}
+
