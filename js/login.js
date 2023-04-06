@@ -8,61 +8,98 @@ img.addEventListener('click', function () {
     img.className = img.className == "fi fi-rr-eye" ? "fi fi-rr-eye-crossed" : "fi fi-rr-eye";
 });
 
-// CADASTRO
-
-var email = "a"
-
-var criar = document.querySelector('.criar');
-
 /*
 
-PROBLEMAS:
-- Ele não verifica mais os campos
-- Não recebe mais os campos?
-- Toma espaço para baixo
-- Aumentar ou diminuir valores por padrão
+PROBLEMAS
+- O required não tá funcionando e se verificar
+if (email.value != "" && senha.value != "")
+dentro ou fora, nenhum comando funciona pq recarrega automaticamente
 
 */
 
-criar.addEventListener('click', function () {
+// ORGANIZAR AINDA
+let email = document.querySelector('#email');
+let senha = document.querySelector('#senha');
 
+let login = document.querySelector('.login');
+let criar = document.querySelector('.criar');
+
+function continuar() {
+    window.location.href = "index.html";
+}
+
+// LOGIN
+/* 
+login.addEventListener('click', function() {
+    //temporário
+    window.alert('Usuário logado!')
+    
+    //verificar
+
+    //redirecionar    
+    window.location.href = "index.html";
+}) 
+
+OU
+
+function logar() {
+    if (email.value != "" && senha.value != "") {
+        //temporário
+        console.log('Logado')
+        
+        //verificar
+
+        //redirecionar    
+        window.location.href = "index.html";
+    }
+}
+*/
+
+// CADASTRO
+/*
+criar.addEventListener('click', function() {
+    //temporário
+    window.alert('Verificação de duas etapas completa!')
+    //verificar email
+
+    //adicionar no banco
+
+    //redirecionar
+    window.location.href = "index.html";
+
+    
     Swal.fire({
-        title: `Digite o código que recebeu em seu email ${email}`,
-        input: 'number',
+        title: 'Submit your Github username',
+        input: 'text',
         inputAttributes: {
-          autocapitalize: 'off'
+            autocapitalize: 'off'
         },
         showCancelButton: true,
-        confirmButtonText: 'Confirmar',
+        confirmButtonText: 'Look up',
         showLoaderOnConfirm: true,
-    
-        /* FUNÇÃO PRA VERIFICAR O CÓDIGO */
-    
-        /* parte padrão
         preConfirm: (login) => {
-          return fetch(`//api.github.com/users/${login}`)
+            return fetch(`//api.github.com/users/${login}`)
             .then(response => {
-              if (!response.ok) {
+                if (!response.ok) {
                 throw new Error(response.statusText)
-              }
-              return response.json()
+                }
+                return response.json()
             })
             .catch(error => {
-              Swal.showValidationMessage(
+                Swal.showValidationMessage(
                 `Request failed: ${error}`
-              )
+                )
             })
         },
-        */
         allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
+        }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title: `Seu email foi confirmado!`
-    
-            /* Redirecionar para página principal */
-          })
+            Swal.fire({
+            title: `${result.value.login}'s avatar`,
+            imageUrl: result.value.avatar_url
+            })
         }
-    })
-
-});
+        })
+        
+})
+*/

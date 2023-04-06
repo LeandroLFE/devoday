@@ -41,9 +41,8 @@ header .logo {
     transform: scale(2);
 }
 
-header img {
+header i {
     margin-left: auto;
-    padding: 10px;
 }
 
 p, a, label, button, input {
@@ -55,12 +54,12 @@ a:hover {
     color: var(--color03);
 }
 
-.boxShadow {
+.boxShadow, .card {
     background-color: white;
     box-shadow: 0px 0px 10px 10px #0000001a;
 }
 
-.box, .boxShadow {
+.box, .boxShadow, .card {
     border-radius: 30px;
     padding: 20px;
 }
