@@ -1,7 +1,7 @@
 .sobre {
     background-color: #f3ffff;
     width: 100%;
-    height: 200px;
+    padding-bottom: 6%;
 }
 
 /* HEADER */
@@ -13,17 +13,18 @@
 }
 
 .head .logo {
-    left: 0;
+    margin: 10px;
+    transform: scale(2);
 }
 
 .head nav {
     margin-left: auto;
-    padding: 20px 30px;
+    padding: 10px;
 }
 
 .head nav a {
     margin: 10px;
-    font-size: 1.4em;
+    font-size: 1.8em;
 }
 
 .head nav a:hover {
@@ -44,30 +45,49 @@
 
 /* CONTENT */
 section {
-    width: 60%;
-    height: 40vh;
-    text-shadow: 0px 2px 2px #00000040;
-    font-size: 3em;
-    margin: 20px;
-    background-color: blue;
+    width: 100%;
+    height: 80vh;
+    text-shadow: 2px 2px 2px #00000040;
+    font-size: 5em;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-top: 10%;
 }
 
 section h1 {
     color: var(--color02);
+    margin-top: 20%;
 
 }
 
 section h2 {
     color: var(--color03);
-    margin-top: -10px;
+    margin-top: -50px;
+}
+
+section .text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 section img {
-    max-width: 300px;
-    max-height: 350px;
+    z-index: 9;
 }
 
 /* ABOUT */
+.cem {
+    height: 100vh;
+}
+
+.cem svg {
+    position: absolute;
+    bottom: 0;
+}
+
 .sobre {
     margin-top: -10px;
     display: flex;
@@ -83,13 +103,18 @@ section img {
 
 .sobre p {
     margin: 10px 50px;
+    width: 80%;
 }
 
 /* FOOTER */
 footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     padding: 10px;
     background-color: var(--color04);
     bottom: 0;
+}
+
+footer p, footer a {
+    margin: 10px;
 }
