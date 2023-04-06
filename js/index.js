@@ -11,8 +11,8 @@ app.listen(3000, () => {
 })
 
 /*
- POST => inserir
- GET => Buscar um/mais
- PUT => alterar
- DELETE => remover
+POST => inserir
+GET => Buscar um/mais
+PUT => alterar
+DELETE => remover
 */
