@@ -14,7 +14,7 @@ const db = mysql.createConnection({
     database: process.env.DATABASE
 })
 
-const publicDirectory = path.join(__dirname, '../css')
+const publicDirectory = path.join(__dirname, './public')
 app.use(express.static(publicDirectory))
 
 app.set('view engine', 'hbs');
@@ -30,6 +30,10 @@ db.connect( (error) => {
 app.get("/", (req, res) => {
     /* res.send("<h1>Home Page</h1>") */
     res.render("index")
+})
+
+app.get("/cadastro", (req, res) => {
+    res.render("login")
 })
 
 app.listen(3000, () => {
