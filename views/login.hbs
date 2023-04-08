@@ -39,8 +39,11 @@
                 </div>
             </div>
 
-            <input type="submit" class="btn login" value="Login" onclick="Logar()">
-            <input type="submit" class="btn criar" value="Criar conta" onclick="Criar()">
+            <input type="submit" class="btn login" value="Login">
+            <input type="submit" class="btn criar" value="Criar conta">
+            { {#if message} }
+                <p class="alert alert-danger mt-4">{{message}}</p>
+            {{/if}}
         </form>
     </div>
     <script src="/js/login.js"></script>
