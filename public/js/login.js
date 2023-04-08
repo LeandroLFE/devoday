@@ -24,7 +24,7 @@ function Logar(e) {
     //verificar
 
     //redirecionar
-    window.location.href = "index.html";
+    /* window.location.href = "index.html"; */
 }
 
 function Criar(e) {

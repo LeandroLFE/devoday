@@ -61,7 +61,7 @@ a:hover {
 
 .box, .boxShadow, .card {
     border-radius: 30px;
-    padding: 20px;
+    padding: 10px 20px;
 }
 
 .btn {
