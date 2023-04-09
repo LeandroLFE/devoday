@@ -1,6 +1,7 @@
 const mysql = require('mysql')
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { sign, verify } = require('jsonwebtoken');
+const cookieParser = require('cookie-parser')
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -32,7 +33,18 @@ exports.register = (req, res) => {
                 }
 
                 console.log('Conta criada com sucesso!')
-                res.render('home');
+
+                const createTokens = (user) => {
+                    const acessToken = sign({ username: results[0].email}, "AFAE3765FGHSGA63");
+                    return acessToken;
+                }
+                const accessToken = createTokens(results[0].email)
+
+                res.cookie('access-token', accessToken, {
+                    maxAge: 60*60*24*70*1000
+                })
+
+                res.render('index');
             })
         }
     })
@@ -51,7 +63,18 @@ exports.login = (req, res) => {
 
             if (await bcrypt.compare(senha, results[0].senha)) {
                 console.log('Conta acessada com sucesso!')
-                res.render('home');
+
+                const createTokens = (user) => {
+                    const acessToken = sign({ username: results[0].email}, "AFAE3765FGHSGA63");
+                    return acessToken;
+                }
+                const accessToken = createTokens(results[0].email)
+
+                res.cookie('access-token', accessToken, {
+                    maxAge: 60*60*24*70*1000
+                })
+
+                res.render('index');
                 
             } else {
                 res.render('login', {

@@ -3,15 +3,33 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render('index');
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('landing')
+    } else {
+        return res.render('index')
+    } 
 });
 
 router.get('/login', (req, res) => {
-    res.render('login');
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        return res.render('index')
+    } 
 });
 
 router.get('/cadastro', (req, res) => {
-    res.render('cadastro');
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('index')
+    } 
 });
 
 module.exports = router;
