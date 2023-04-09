@@ -8,25 +8,6 @@ img.addEventListener('click', function () {
     img.className = img.className == "fi fi-rr-eye" ? "fi fi-rr-eye-crossed" : "fi fi-rr-eye";
 });
 
-
-
-
-// ORGANIZAR AINDA
-let email = document.querySelector('#email');
-let senha = document.querySelector('#senha');
-
-let login = document.querySelector('.login');
-let criar = document.querySelector('.criar');
-
-function Logar(e) {
-    e.preventDefault()
-
-    //verificar
-
-    //redirecionar
-    /* window.location.href = "index.html"; */
-}
-
 function Criar(e) {
     e.preventDefault()
 
@@ -66,10 +47,5 @@ function Criar(e) {
         })
         
     */
-
-    //adicionar ao banco
-
-    //redirecionar
-    window.location.href = "index.html";
 }
 
