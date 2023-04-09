@@ -50,6 +50,10 @@ p, a, label, button, input {
     text-decoration: none;
 }
 
+p.alert {
+    color: red;
+}
+
 a:hover {
     color: var(--color03);
 }

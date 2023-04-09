@@ -1,4 +1,7 @@
 const mysql = require('mysql')
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const async = require('hbs/lib/async');
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -10,9 +13,9 @@ const db = mysql.createConnection({
 exports.register = (req, res) => {
     console.log(req.body)
 
-    const { email, password } = req.body;
+    const { email, senha } = req.body;
 
-    db.query('SELECT email FROM users WHERE email = ?', [email], (error, results) => {
+    db.query('SELECT email FROM users WHERE email = ?', [email], async (error, results) => {
         if (error) {
             console.log(error)
         }
@@ -21,6 +24,18 @@ exports.register = (req, res) => {
             return res.render('login', {
                 message: 'Este email já está em uso.'
             })
-        } 
+        } else {
+            let hashedPassword = await bcrypt.hash(senha, 8, (err, hash) => {
+                if (error) {
+                    console.log(error)
+                }
+            });
+
+            db.query('INSERT INTO users SET ?', {email: email, senha: hashedPassword}, (error, results) => {
+                if (error) {
+                    console.log(error)
+                }
+            })
+        }
     })
 }

@@ -37,13 +37,15 @@
                     </div>
                     <a href="">Esqueceu a senha?</a>
                 </div>
+
+                {{#if message}}
+                <p class="alert">{{message}}</p>
+                {{/if}}
+                
             </div>
 
             <input type="submit" class="btn login" value="Login">
             <input type="submit" class="btn criar" value="Criar conta">
-            { {#if message} }
-                <p class="alert alert-danger mt-4">{{message}}</p>
-            {{/if}}
         </form>
     </div>
     <script src="/js/login.js"></script>
