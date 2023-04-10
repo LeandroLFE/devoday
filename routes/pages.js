@@ -12,6 +12,16 @@ router.get('/', (req, res) => {
     } 
 });
 
+router.get('/criar', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        return res.render('card')
+    } 
+});
+
 router.get('/login', (req, res) => {
     const accessToken = req.cookies["access-token"]
 

@@ -14,56 +14,87 @@
     <header>
         <img src="../imgs/logo.png" alt="logo" class="logo">
 
-        <i class="fi fi-rr-circle-user"></i>
-        <!-- <div class="conta">
+        <i class="fi fi-rr-circle-user" onclick="show()" id="user"></i>
+        <div class="conta boxShadow">
             <div class="alterar">
-                <i></i>
-                <p>Alterar dados</p>
+                <a><i class="fi fi-rr-pencil"></i> Alterar dados</a>
             </div>
+
+            <span class="line"></span>
 
             <div class="excluir">
-                <i></i>
-                <p>Excluir conta</p>
+                <a><i class="fi fi-rr-trash"></i>Excluir conta</a>
             </div>
+
+            <span class="line"></span>
 
             <div class="sair">
-                <i></i>
-                <p>Sair</p>
+                <a><i class="fi fi-rr-exit"></i>Sair</a>
             </div>
-        </div> -->
+        </div>
     </header>
 
-    <div class="cards">
-        <div class="card">
-            <h1></h1>
-            <p></p>
-            <div class="modificadores">
-                <i></i>
-                <i></i>
+    <section>
+        <div class="cards">
+            <div class="card">
+                <h1>Versículo</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, earum incidunt deleniti possimus temporibus doloribus vitae. Similique corrupti quae rerum. Aliquam rem explicabo excepturi mollitia architecto dignissimos quo temporibus deleniti? Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam commodi libero velit sapiente laudantium? Aliquid deleniti, quia, adipisci, voluptatem eius dolores laudantium doloribus cupiditate rem omnis ipsam fugit harum. Ipsum?</p>
+                <div class="modificadores">
+                    <a><i class="fi fi-rr-pencil"></i></a>
+                    <a><i class="fi fi-rr-trash"></i></a>
+                </div>
+                <span class="data">xx/xx/xx</span>
+            </div>
+            <div class="card">
+                <h1>Versículo</h1>
+                <p>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, earum incidunt deleniti possimus temporibus doloribus vitae. Similique corrupti quae rerum. Aliquam rem explicabo excepturi mollitia architecto dignissimos quo temporibus deleniti?"</p>
+                <div class="modificadores">
+                    <a><i class="fi fi-rr-pencil"></i></a>
+                    <a><i class="fi fi-rr-trash"></i></a>
+                </div>
+                <span class="data">xx/xx/xx</span>
             </div>
         </div>
-    </div>
 
-    <div class="coluna">
-        <div class="sugestao boxShadow">
-            <h2>Sugestão de hoje</h2>
-            <h1></h1>
-            <p></p>
-            <div class="mais">
-                <a href="">Iniciar devocional</a>
-                <i></i>
+        <div class="coluna">
+            <div class="sugestao boxShadow">
+                <h2>Sugestão de hoje</h2>
+                <h1>Versículo</h1>
+                <p>1No primeiro dia da semana, Maria Madalena foi ao túmulo de Jesus, bem de madrugada, quando ainda estava escuro, e viu que a pedra tinha sido retirada do túmulo.
+
+2Então ela saiu correndo e foi encontrar Simão Pedro e o outro discípulo, aquele que Jesus amava, e lhes disse: “Tiraram o Senhor do túmulo, e não sabemos onde o colocaram”.
+
+3Saíram, então, Pedro e o outro discípulo e foram ao túmulo. 4Os dois corriam juntos, mas o outro discípulo correu mais depressa que Pedro e chegou primeiro ao túmulo. 5Olhando para dentro, viu as faixas de linho no chão, mas não entrou.
+
+6Chegou também Simão Pedro, que vinha correndo atrás, e entrou no túmulo. Viu as faixas de linho deitadas no chão 7e o pano que tinha estado sobre a cabeça de Jesus, não posto com as faixas, mas enrolado num lugar à parte.
+
+8Então entrou também o outro discípulo, que tinha chegado primeiro ao túmulo. Ele viu, e acreditou.
+
+9De fato, eles ainda não tinham compreendido a Escritura, segundo a qual ele devia ressuscitar dos mortos.</p>
+                <div class="mais">
+                    <a href="">Iniciar devocional
+                    <i class="fi fi-rr-add"></i></a>
+                </div>
+            </div>
+
+            <div class="conquistas boxShadow">
+                <h2>Conquistas</h2>
+                <h1>Persistência x</h1>
+                <div class="content">
+                    <div class="barra">
+                        <span class="feito">2</span>
+                        <progress id="progress" value="2" max="10"></progress>
+                        <span class="total">10</span>
+                    </div>
+                    <p>Faça x devocionais</p>
+                </div>
             </div>
         </div>
-        <div class="conquistas boxShadow">
-            <h2>Conquistas</h2>
-            <h1></h1>
-            <div class="barra"></div>
-            <p></p>
-        </div>
-    </div>
 
-    <div class="boxShadow novo">
-        <a href="../html/card.html"><i></i></a>
-    </div>
+        <div class="boxShadow novo">
+            <a href="criar"><i class="fi fi-rr-add"></i></a>
+        </div>
+    </section>
+    <script src="../js/preloader.js"></script>
 </body>
 </html>
