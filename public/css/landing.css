@@ -106,6 +106,14 @@ section img {
     width: 80%;
 }
 
+.checks {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--fontesecundaria);
+    width: 85%;
+    margin-top: 20px;
+}
+
 /* FOOTER */
 footer {
     display: flex;
