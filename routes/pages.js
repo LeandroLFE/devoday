@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
+// Precisa fazer um post pra cada? (routes auth)
+
 router.get('/', (req, res) => {
     const accessToken = req.cookies["access-token"]
 
@@ -14,11 +16,18 @@ router.get('/', (req, res) => {
 
 router.get('/criar', (req, res) => {
     const accessToken = req.cookies["access-token"]
+    const fun = require('../bibliaAPI/class');
+    const antigo = require('../bibliaAPI/textosAntigo');
+    const novo = require('../bibliaAPI/textosNovo');
 
     if (!accessToken) {
         return res.render('login')
     } else {
-        return res.render('card')
+        return res.render('card', {
+            txts_old: antigo.livros,
+            selected: 1,
+            txts_new: novo.livros
+        })
     } 
 });
 
