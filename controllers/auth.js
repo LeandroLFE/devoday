@@ -1,7 +1,8 @@
 const mysql = require('mysql')
 const bcrypt = require('bcrypt');
 const { sign, verify } = require('jsonwebtoken');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const Mail = require('nodemailer/lib/mailer');
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -15,6 +16,25 @@ exports.register = (req, res) => {
     const { email, senha } = req.body;
 
     db.query('SELECT email, senha FROM users WHERE email = ?', [email], async (error, results) => {
+
+        const nodemailer = require('nodemailer');
+        let transporter = nodemailer.createTransport({
+            host: smtp.gmail.com,
+            port: 587,
+            secure: true,
+            auth: {
+                user: "devodaysuporte@gmail.com",
+                pass: emailS
+            }
+        })
+
+        transporter.sendMail({
+            from: "Suporte DevoDay <devodaysuporte@gmail.com>",
+            to: email,
+            subject: "TÍTULO",
+            text: "ASSUNTO"
+        })
+
         if (error) {
             console.log(error)
         }
