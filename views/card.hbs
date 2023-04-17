@@ -37,9 +37,9 @@
     </header>
 
     <section>
-        <form action="/card/resultado" method="POST">
+        <form action="/card/resultado" method="POST" class="boxShadow form">
         <label for="Livro">Livro</label>
-        <select class="form-select" aria-label="Default select example" id="Livro" name="livro" onblur="mudou1(value)"> {{!-- quando o usuário clicar fora da seleção a função será executada --}}
+        <select class="form-select" aria-label="Default select example" id="Livro" name="livro" onblur="mudou1(value)" required> {{!-- quando o usuário clicar fora da seleção a função será executada --}}
             <option selected disabled>Escolha o livro</option>
             <optgroup label="Antigo Testamento">
                 {{#each txts_old as | livro |}}
@@ -67,17 +67,17 @@
         {{!-- As listas seguintes serão preenchidas por meio de funções --}}
 
         <label for="Capítulo">Capítulo</label>
-        <select class="form-select" aria-label="Default select example" id="Capítulo" name="capitulo" onblur="mudou2(value)">
+        <select class="form-select" aria-label="Default select example" id="Capítulo" name="capitulo" onblur="mudou2(value)" required>
             <option selected disabled>Escolha o capítulo</option>
         </select>
 
         <label for="Versículo inicial">Versículo inicial</label>
-        <select class="form-select" aria-label="Default select example" id="VersículoI" name="verI"></select>
+        <select class="form-select" aria-label="Default select example" id="VersículoI" name="verI" required></select>
 
         <label for="Versículo final">Versículo final</label>
-        <select class="form-select" aria-label="Default select example" id="VersículoF" name="verF"></select>
+        <select class="form-select" aria-label="Default select example" id="VersículoF" name="verF" required></select>
 
-        <input type="submit" style="margin: 20px;" value="Ver leitura">
+        <input type="submit" style="margin: 20px;" value="Exibir">
     </form>
 
     <script>
@@ -165,7 +165,18 @@
                 window.location.href = (v)
             }
     </script>
-    <h1 style="margin: 20px;">Resultado:</h1>
-    <p>{{message}}</p>
+
+    <section class="boxShadow res">
+        <h1>{{tit}}</h1>
+        <p>{{message}}</p>
+    </section>
+
+    <section>
+        <form action="/card/" method="post">
+            <input type="text" class="boxShadow" id="q1" placeholder="O que o texto significa? Qual o contexto da passagem?">
+            <input type="text" class="boxShadow" id="q2" placeholder="O que o texto me diz? O que eu respondo a Deus?">
+            <input type="submit" value="Salvar">
+        </form>
+    </section>
 </body>
 </html>

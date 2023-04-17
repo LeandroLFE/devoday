@@ -11,6 +11,7 @@ hbs.registerHelper('json', function (content) {
 });
 
 let mensagem;
+let titulo;
 
 // Escolher o card
 exports.escolha = (req, res) => {
@@ -29,6 +30,7 @@ exports.escolha = (req, res) => {
                             for (d = 1; d <= antigo.livros[a].leitura[b]["versi"]; d++) {
                                 if (d == verF) { // Para saber o versículo final
                                     mensagem = fun.agrupar(antigo.livros[a], b, c, d);
+                                    titulo = `${antigo.livros[a].abr} ${b}:${c}-${d}`;
     }}}}}}}}
 
     // NOVO 
@@ -44,14 +46,20 @@ exports.escolha = (req, res) => {
                             for (d = 1; d <= novo.livros[a].leitura[b]["versi"]; d++) {
                                 if (d == verF) { // Para saber o versículo final
                                     mensagem = fun.agrupar(novo.livros[a], b, c, d);
+                                    titulo = `${novo.livros[a].abr} ${b}:${c}-${d}`;
     }}}}}}}}
 
     res.render('card', {
         txts_old: antigo.livros,
-        selected: 1,
         txts_new: novo.livros,
-        message: mensagem
+        message: mensagem,
+        tit: titulo
     })
 }
 
 // Registrar no bd
+exports.envio = (req, res) => {
+    res.render ('index');
+    console.log(titulo)
+    // É possível acessar a passagem escolhida daqui?
+}

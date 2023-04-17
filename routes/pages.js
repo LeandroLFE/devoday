@@ -26,7 +26,9 @@ router.get('/criar', (req, res) => {
         return res.render('card', {
             txts_old: antigo.livros,
             selected: 1,
-            txts_new: novo.livros
+            txts_new: novo.livros,
+            message: "Preencha os itens e salve para exibir o versículo",
+            tit: "Leitura"
         })
     } 
 });
