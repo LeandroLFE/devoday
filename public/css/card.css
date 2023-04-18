@@ -9,6 +9,10 @@ section {
     padding: 40px;
 }
 
+.btn {
+    color: white !important;
+}
+
 /* LEFT */
 .left {
     height: 100%;
@@ -82,26 +86,28 @@ section {
 .rigth .label textarea {
     border-radius: 10px;
     box-shadow: 0px 0px 5px 5px #0000001a;
-    outline: none;
+    resize: none;
+    overflow-y: auto; 
     border: 0px none;
     margin: 5px 10px;
     min-height: 30%;
 }
 
 .rigth textarea:focus {
-    outline: none;
     box-shadow: 0px 0px 5px 5px #0000001a;
 }
 
-/* INPUT (com scroll e sem bordas), H1, LABEL E BTN*/
+.space {
+    height: 40px;
+}
 
 /* SCROLLBAR */
-.left .res p::-webkit-scrollbar {
+.left .res p::-webkit-scrollbar, textarea::-webkit-scrollbar, select::-webkit-scrollbar {
     width: 6px;
     background-image: var(--color04);
 }
 
-.left .res p::-webkit-scrollbar-thumb {
+.left .res p::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb, select::-webkit-scrollbar-thumb {
     background-color: var(--color03);
     border-radius: 10px;
 }

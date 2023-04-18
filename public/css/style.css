@@ -16,6 +16,9 @@
     padding: 0;
     border: 0;
     box-sizing: border-box;
+}
+
+p, a, input, label, select, option, button, textarea {
     font-family: var(--fontesecundaria);
 }
 

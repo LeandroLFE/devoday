@@ -61,5 +61,13 @@ exports.escolha = (req, res) => {
 exports.envio = (req, res) => {
     res.render ('index');
     console.log(titulo)
+    // Caso for comparar o título com as abrs, lembrar que tem abr de 3 letras (tem mais?)
+
+    // Se os dados da leitura forem enviados, registrar no bd, se não, dar mensagem de erro
+     /* else {
+        res.render('card', {
+            err: "Para enviar é necessário definir uma leitura"
+        }) */
+
     // É possível acessar a passagem escolhida daqui?
 }

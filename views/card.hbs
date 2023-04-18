@@ -38,7 +38,7 @@
 
     <section>
         <div class="left">
-            <form action="/card/resultado" method="POST" class="boxShadow form">
+            <form action="/criar/resultado" method="POST" class="boxShadow form">
             <div class="label">
                 <label for="Livro">Livro</label>
                 <select class="form-select" aria-label="Default select example" id="Livro" name="livro" onblur="mudou1(value)" required> {{!-- quando o usuário clicar fora da seleção a função será executada --}}
@@ -182,18 +182,21 @@
         </div>
 
         <div class="rigth boxShadow">
-            <form action="/card/" method="post">
+            <form action="/criar/devocional" method="post">
                 <h1>Devo xx.xx.xxxx</h1>
                 <div class="label">
                     <label for="q1">O que a passagem quer dizer?</label>
-                    <textarea class="boxShadow" id="q1" placeholder="O que o texto significa? Qual o contexto da passagem?"></textarea>
+                    <textarea class="boxShadow" id="q1" placeholder="O que o texto significa? Qual o contexto da passagem?" rows="3"></textarea>
                 </div>
-                
+                <div class="space"></div>
                 <div class="label">
                     <label for="q2">O que Deus está me falando a partir dela?</label>
-                    <textarea class="boxShadow" id="q2" placeholder="O que o texto me diz? O que eu respondo a Deus?"></textarea>
+                    <textarea class="boxShadow" id="q2" placeholder="O que o texto me diz? O que eu respondo a Deus?" rows="3"></textarea>
                 </div>
             
+                {{#if err}}
+                    <p class="alert">{{err}}</p>
+                {{/if}}
                 <input type="submit" value="Salvar" class="btn">
             </form>
         </div>
