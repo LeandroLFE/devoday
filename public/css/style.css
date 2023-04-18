@@ -7,8 +7,8 @@
     --color03: #B297FF;
     --color04: #F9D1FF;
     --fonteprincipal: 'Euphoria Script', cursive;
-    --fontesecundaria: 'Caveat', cursive;
-    --fonteextra: 'Caveat Brush', cursive;
+    --fontesecundaria: 'Caveat Brush', cursive; /* 'Caveat', cursive; */
+    --fonteextra: 'Caveat', cursive; /* 'Caveat Brush', cursive; */
 }
 
 * {
@@ -16,6 +16,7 @@
     padding: 0;
     border: 0;
     box-sizing: border-box;
+    font-family: var(--fontesecundaria);
 }
 
 body {
@@ -29,7 +30,6 @@ body {
 }
 
 p, a, label, button, input {
-    font-family: var(--fontesecundaria);
     text-decoration: none;
 }
 

@@ -1,0 +1,107 @@
+/* BODY */
+section {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 90vh;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px;
+}
+
+/* LEFT */
+.left {
+    height: 100%;
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+}
+
+.left form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+    height: 16%;
+}
+
+.left .res {
+    height: 80%;
+}
+
+.left .res h1 {
+    color: var(--color01);
+}
+
+.left .res p {
+    max-height: 85%;
+    overflow-y: auto; 
+}
+
+.left form .btn {
+    background-color: var(--color01);
+}
+
+.left form select {
+    background-color: var(--color00);
+}
+
+/* RIGTH */
+.rigth {
+    height: 100%;
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+}
+
+.rigth form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.rigth label {
+    color: var(--color01);
+}
+
+.rigth .label {
+    display: flex;
+    flex-direction: column;
+}
+
+.rigth .btn {
+    background-color: var(--color01);
+    width: 30%;
+    margin: auto;
+}
+
+.rigth h1 {
+    margin: auto;
+}
+
+.rigth .label textarea {
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 5px #0000001a;
+    outline: none;
+    border: 0px none;
+    margin: 5px 10px;
+    min-height: 30%;
+}
+
+.rigth textarea:focus {
+    outline: none;
+    box-shadow: 0px 0px 5px 5px #0000001a;
+}
+
+/* INPUT (com scroll e sem bordas), H1, LABEL E BTN*/
+
+/* SCROLLBAR */
+.left .res p::-webkit-scrollbar {
+    width: 6px;
+    background-image: var(--color04);
+}
+
+.left .res p::-webkit-scrollbar-thumb {
+    background-color: var(--color03);
+    border-radius: 10px;
+}
