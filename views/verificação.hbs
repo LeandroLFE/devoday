@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/verificacao.css">
+    <link rel="shortcut icon" href="/imgs/logo.png" type="image/x-icon">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <title>Verificação</title>
 </head>
-<body> {{!-- /auth/verificar --}}
-    <form action="verificar" method="POST">
-        <p>Confira o código enviado para o email: {{emailenv}}</p> 
+<body> 
+    <form action="verificar" method="POST" class="boxShadow forms">
+        <div class="p">
+            <p>Confira o código enviado para o email:</p> 
+            <p class="mailenv">{{emailenv}}</p>
+        </div>
         <input name="emailENV" style="display:none;" value={{emailenv}}>
-        <input type="text" placeholder="XXXX" name="codeE">
-        <input type="submit">
+        <input type="text" placeholder="XXXX" name="codeE" placeholder="XXXX" class="number">
+        <p class="alert">{{message}}</p>
+        <input type="submit" value="Confirmar" class="env btn">
     </form>
 </body>
 </html>

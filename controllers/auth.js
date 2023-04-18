@@ -14,16 +14,22 @@ const db = mysql.createConnection({
 exports.register = (req, res) => {
     const { email, senha } = req.body;
 
-    db.query('SELECT email, senha FROM users WHERE email = ?', [email], async (error, results) => {
+    db.query('SELECT email, senha, verify FROM users WHERE email = ?', [email], async (error, results) => {
         if (error) {
             console.log(error)
         }
 
         if (results.length > 0) {
-            res.render('cadastro', {
-                message: 'Este email já está cadastrado'
-            })
-        
+            if (results[0].verify == 0) {
+                res.render('verificação', {
+                    emailenv: email
+                });
+            } else {
+                res.render('cadastro', {
+                    message: 'Este email já está cadastrado e verificado'
+                })
+            }
+
         } else {
             const nodemailer = require('nodemailer');
             const usuario = "devodaysuporte@gmail.com"
@@ -36,12 +42,12 @@ exports.register = (req, res) => {
             })
 
             let code = Math.floor((Math.random() * (9999-1111)) +1111);
-            let texto = "Seu código é " + code;
+            let texto = "Você solicitou verificação de email. Seu código de verificação gerado é " + code;
 
             transporter.sendMail({
                 from: usuario,
                 to: email,
-                subject: "TÍTULO",
+                subject: "Verificação de usuário",
                 text: texto
             })/* .then(info => {
                 console.log(info)
@@ -130,7 +136,8 @@ exports.verificar = (req, res) => {
             res.render('index');
             
         } else {
-            res.render('cadastro', {
+            res.render('verificação', {
+                emailenv: emailENV,
                 message: "Código de verificação inválido, tente novamente"
             })
         };

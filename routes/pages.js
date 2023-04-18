@@ -2,8 +2,6 @@ const express = require('express');
 
 const router = express.Router();
 
-// Precisa fazer um post pra cada? (routes auth)
-
 router.get('/', (req, res) => {
     const accessToken = req.cookies["access-token"]
 
@@ -44,6 +42,26 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/cadastro', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('index')
+    } 
+});
+
+router.get('/verificar', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('index')
+    } 
+});
+
+router.get('/auth/cadastro', (req, res) => {
     const accessToken = req.cookies["access-token"]
 
     if (!accessToken) {
