@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/login', authController.login);
 router.post('/cadastro', authController.register);
+router.post('/verificar', authController.verificar);
 
 router.post('/resultado', cardController.escolha);
 router.post('/', cardController.envio);

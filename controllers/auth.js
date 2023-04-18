@@ -1,8 +1,7 @@
 const mysql = require('mysql')
 const bcrypt = require('bcrypt');
 const { sign, verify } = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
-const Mail = require('nodemailer/lib/mailer');
+const cookieParser = require('cookie-parser')
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -16,25 +15,6 @@ exports.register = (req, res) => {
     const { email, senha } = req.body;
 
     db.query('SELECT email, senha FROM users WHERE email = ?', [email], async (error, results) => {
-
-        const nodemailer = require('nodemailer');
-        let transporter = nodemailer.createTransport({
-            host: smtp.gmail.com,
-            port: 587,
-            secure: true,
-            auth: {
-                user: "devodaysuporte@gmail.com",
-                pass: emailS
-            }
-        })
-
-        transporter.sendMail({
-            from: "Suporte DevoDay <devodaysuporte@gmail.com>",
-            to: email,
-            subject: "TÍTULO",
-            text: "ASSUNTO"
-        })
-
         if (error) {
             console.log(error)
         }
@@ -45,27 +25,41 @@ exports.register = (req, res) => {
             })
         
         } else {
+            const nodemailer = require('nodemailer');
+            const usuario = "devodaysuporte@gmail.com"
+            let transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: usuario,
+                    pass: process.env.EMAILS
+                }
+            })
+
+            let code = Math.floor((Math.random() * (9999-1111)) +1111);
+            let texto = "Seu código é " + code;
+
+            transporter.sendMail({
+                from: usuario,
+                to: email,
+                subject: "TÍTULO",
+                text: texto
+            })/* .then(info => {
+                console.log(info)
+            }).catch(error => {
+                console.log(error)
+            }) */
+
             let hashedPassword = await bcrypt.hash(senha, 8);
 
-            db.query('INSERT INTO users SET ?', {email: email, senha: hashedPassword}, (error, results) => {
+            db.query('INSERT INTO users SET ?', {email: email, senha: hashedPassword, token: code}, (error) => {
                 if (error) {
                     console.log(error)
                 }
+            });
 
-                console.log('Conta criada com sucesso!')
-
-                const createTokens = (user) => {
-                    const acessToken = sign({ username: results[0].email}, "AFAE3765FGHSGA63");
-                    return acessToken;
-                }
-                const accessToken = createTokens(results[0].email)
-
-                res.cookie('access-token', accessToken, {
-                    maxAge: 60*60*24*70*1000
-                })
-
-                res.render('index');
-            })
+            res.render('verificação', {
+                emailenv: email
+            });
         }
     })
 }
@@ -82,10 +76,8 @@ exports.login = (req, res) => {
         if (results.length > 0) {
 
             if (await bcrypt.compare(senha, results[0].senha)) {
-                console.log('Conta acessada com sucesso!')
-
                 const createTokens = (user) => {
-                    const acessToken = sign({ username: results[0].email}, "AFAE3765FGHSGA63");
+                    const acessToken = sign({ username: results[0].email}, process.env.TOKEN);
                     return acessToken;
                 }
                 const accessToken = createTokens(results[0].email)
@@ -109,3 +101,38 @@ exports.login = (req, res) => {
         }
     })
 }
+
+// VERIFICAR CONTA
+exports.verificar = (req, res) => {
+    const { codeE, emailENV } = req.body;
+
+    db.query('SELECT email, token FROM users WHERE email = ?', [emailENV], async (error, results) => {
+        if (error) {
+            console.log(error)
+        }
+
+        if (codeE == results[0].token) {
+            db.query('UPDATE users SET verify = 1 WHERE email = ?', [emailENV], async (error, results) => {
+                if (error) {
+                    console.log(error)
+                }
+            });
+            const createTokens = (user) => {
+                const acessToken = sign({ username: user}, process.env.TOKEN);
+                return acessToken;
+            }
+            const accessToken = createTokens(results[0].email)
+
+            res.cookie('access-token', accessToken, {
+                maxAge: 60*60*24*70*1000
+            })
+
+            res.render('index');
+            
+        } else {
+            res.render('cadastro', {
+                message: "Código de verificação inválido, tente novamente"
+            })
+        };
+    })
+};
