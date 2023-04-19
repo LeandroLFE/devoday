@@ -117,3 +117,50 @@ input.criar {
     background-color: white;
     box-shadow: 0px 0px 1px 1px #0000001a;
 }
+
+@media screen and (max-width: 1250px) {
+    .presentation {
+        transform: scale(1);
+    }
+    form h1 {
+        font-size: 1.8em;
+    }
+}
+
+@media screen and (max-width: 1150px) {
+    .presentation {
+        display: none;
+    }
+    form {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 635px) {
+    .boxShadow {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    form h1 {
+        font-size: 1.5em;
+    }
+    p.alert {
+        font-size: 0.8em;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    form, .boxShadow {
+        padding: 10px;
+    }
+
+    form i {
+        display: none;
+    }
+
+    form .input {
+        background-color: transparent;
+    }
+}

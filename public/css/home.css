@@ -5,6 +5,7 @@ section {
     width: 90%;
     align-items: center;
     justify-content: center;
+    margin: auto;
 }
 
 /* CARDS */
@@ -74,8 +75,7 @@ p {
 /* SUGESTÃO */
 .sugestao {
     position: relative;
-    min-height: 50vh;
-    overflow-y: auto;
+    height: 50vh;
 }
 
 .sugestao i {
@@ -87,7 +87,8 @@ p {
 }
 
 .sugestao p {
-    max-height: 90%;
+    overflow-y: auto;
+    max-height: 75%;
 }
 
 /* CONQUISTA */
@@ -124,7 +125,7 @@ progress[value]::-webkit-progress-value{
 
 /* FLUTUANTE */
 .novo {
-    position: absolute;
+    position: fixed;
     z-index: 999;
     margin: 20px;
     bottom: 0;
@@ -145,4 +146,23 @@ progress[value]::-webkit-progress-value{
 
 .novo a {
     transform: scale(1.5);
+}
+
+@media screen and (max-width: 700px) {
+    .coluna, .cards, .card, .boxShadow, .conquistas {
+        margin: 10px 8px;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    section {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .coluna, .cards, .card, .conquistas, .sugestao {
+        max-width: 100%;
+        width: 100%;
+        margin: 10px 0;
+    }
 }

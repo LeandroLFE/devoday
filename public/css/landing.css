@@ -60,7 +60,6 @@ section {
 section h1 {
     color: var(--color02);
     margin-top: 20%;
-
 }
 
 section h2 {
@@ -124,4 +123,30 @@ footer {
 
 footer p, footer a {
     margin: 10px;
+}
+
+@media screen and (max-width: 815px) {
+    .biblia {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .checks {
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (max-width: 390px){
+    .none {
+        display: none;
+    }
+
+    section {
+        font-size: 3em;
+    }
+
+    section h2 {
+        margin-top: -40px;
+    }
 }
