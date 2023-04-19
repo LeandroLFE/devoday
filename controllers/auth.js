@@ -74,32 +74,36 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
     const { email, senha } = req.body;
 
-    db.query('SELECT email, senha FROM users WHERE email = ?', [email], async (error, results) => {
+    db.query('SELECT email, senha, verify FROM users WHERE email = ?', [email], async (error, results) => {
         if (error) {
             console.log(error)
         }
 
         if (results.length > 0) {
-
             if (await bcrypt.compare(senha, results[0].senha)) {
-                const createTokens = (user) => {
-                    const acessToken = sign({ username: results[0].email}, process.env.TOKEN);
-                    return acessToken;
+
+                if (results[0].verify == 0) {
+                    res.render('verificação', {
+                        emailenv: email
+                    });
+                } else {
+                    const createTokens = (user) => {
+                        const acessToken = sign({ username: results[0].email}, process.env.TOKEN);
+                        return acessToken;
+                    }
+                    const accessToken = createTokens(results[0].email)
+    
+                    res.cookie('access-token', accessToken, {
+                        maxAge: 60*60*24*70*1000
+                    })
+    
+                    res.render('index');
                 }
-                const accessToken = createTokens(results[0].email)
-
-                res.cookie('access-token', accessToken, {
-                    maxAge: 60*60*24*70*1000
-                })
-
-                res.render('index');
-                
             } else {
                 res.render('login', {
                     message: 'Senha incorreta'
                 })
             }
-
         } else {
             res.render('login', {
                 message: 'Não existe conta com este email'

@@ -16,10 +16,11 @@
     padding: 0;
     border: 0;
     box-sizing: border-box;
+    font-family: var(--fontesecundaria);
 }
 
-p, a, input, label, select, option, button, textarea {
-    font-family: var(--fontesecundaria);
+h1, h2 {
+    font-family: var(--fonteprincipal);
 }
 
 body {
@@ -27,7 +28,6 @@ body {
     background-color: var(--color04);
     background-size: cover;
     background-attachment: fixed;
-    font-family: var(--fonteprincipal);
 
     width: 100%;
     height: 100vh;
@@ -125,20 +125,4 @@ header #user {
     width: 100%;
     height: .5px;
     background-color: black;
-}
-
-@media screen and (max-width: 1000px) {
-
-}
-
-@media screen and (max-width: 768px) {
-
-}
-
-@media screen and (max-width: 650px) {
-    
-}
-
-@media screen and (max-width: 380px){
-    
 }

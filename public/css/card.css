@@ -25,6 +25,7 @@ section {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    align-items: center;
     margin-bottom: 20px;
     height: 16%;
 }
@@ -35,6 +36,7 @@ section {
 
 .left .res h1 {
     color: var(--color01);
+    font-family: var(--fontesecundaria);
 }
 
 .left .res p {
@@ -95,6 +97,7 @@ section {
 
 .rigth textarea:focus {
     box-shadow: 0px 0px 5px 5px #0000001a;
+    border: 2px solid var(--color00);
 }
 
 .space {
@@ -110,4 +113,76 @@ section {
 .left .res p::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb, select::-webkit-scrollbar-thumb {
     background-color: var(--color03);
     border-radius: 10px;
+}
+
+@media screen and (max-width: 1350px) {
+    .rigth {
+        width: 39%;
+    }
+
+    .left {
+        width: 59%;
+    }
+}
+
+@media screen and (max-width: 1143px) {
+    .left form {
+        flex-wrap: wrap;
+        height: 20%;
+    }
+
+    .left .res {
+        height: 76%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    section {
+        flex-direction: column;
+        align-items: center;
+        height: 180vh;
+    }
+
+    .left, .rigth {
+        width: 100%;
+    }
+
+    .left form {
+        height: 16%;
+    }
+}
+
+@media screen and (max-width: 700px){
+    .left form {
+        height: 20%;
+    }
+}
+
+@media screen and (max-width: 435px){
+    section {
+        height: 160vh;
+    }
+
+    .left form {
+        height: 32%;
+    }
+
+    .rigth {
+        height: 50%;
+        margin-top: 30px;
+    }
+
+    .left {
+        height: 60%;
+    }
+}
+
+@media screen and (max-width: 360px){
+    .left form {
+        height: 36%;
+    }
+}
+
+@media screen and (max-width: 380px){
+    
 }
