@@ -12,6 +12,26 @@ router.get('/', (req, res) => {
     } 
 });
 
+router.get('/home', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('landing')
+    } else {
+        return res.render('index')
+    } 
+});
+
+router.get('/landing', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('landing')
+    } else {
+        return res.render('index')
+    } 
+});
+
 router.get('/criar', (req, res) => {
     const accessToken = req.cookies["access-token"]
     const fun = require('../bibliaAPI/class');
@@ -30,6 +50,16 @@ router.get('/criar', (req, res) => {
         })
     } 
 });
+
+router.get('/feedback', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        res.render('feedback')
+    } 
+})
 
 router.get('/login', (req, res) => {
     const accessToken = req.cookies["access-token"]
@@ -66,6 +96,16 @@ router.get('/auth/cadastro', (req, res) => {
 
     if (!accessToken) {
         return res.render('cadastro')
+    } else {
+        return res.render('index')
+    } 
+});
+
+router.get('/auth/login', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('login')
     } else {
         return res.render('index')
     } 

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/feed.css">
+    <link rel="shortcut icon" href="../imgs/logo.png" type="image/x-icon">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <title>Enviar feedback</title>
+</head>
+<body>
+    <header>
+        <img src="../imgs/logo.png" alt="logo" class="logo" onclick="voltar('/')" style="cursor: pointer;">
+
+        <i class="fi fi-rr-circle-user" onclick="show()" id="user"></i>
+        <div class="conta boxShadow">
+            <div class="alterar">
+                <a><i class="fi fi-rr-pencil"></i> Alterar dados</a>
+            </div>
+
+            <span class="line"></span>
+
+            <div class="excluir">
+                <a><i class="fi fi-rr-trash"></i>Excluir conta</a>
+            </div>
+
+            <span class="line"></span>
+
+            <div class="sair">
+                <a><i class="fi fi-rr-exit"></i>Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <form action="/auth/feedback" method="POST"></form>
+        <select name="problema" id="action" onblur="mudou1(value)">
+            <option disabled selected>Selecione sua ação</option>
+            <option value="conta">Problema na conta</option>
+            <option value="leituras">Problema nas leituras</option>
+            <option value="seleção">Problema na seleção</option>
+            <option value="cards">Problema nos cards</option>
+            <option value="sugestãoD">Problema na sugestão diária</option>
+            <option value="visual">Problema visual</option>
+            <option value="sugestão">Sugestão/Feedback</option>
+            <option value="outros">Outros</option>
+        </select>
+
+        <select name="ItensProblema" id="probls" required></select>
+
+        <input type="text" name="descrição" placeholder="Descreva seu problema/feedback" required>
+        <input type="submit" class="btn">
+    </section>
+
+    <script>
+        let menu = document.querySelector('.conta');
+        function show() {
+            menu.style.display = menu.style.display == "none" ? "block" : "none";
+        }
+        function voltar(v) {
+            window.location.href = (v)
+        }
+
+        const itens = {
+            "conta": ["Não consigo editar dados", "Não consigo sair", "Não consigo excluir"], 
+            "leituras": ["Texto com erros de escrita", "Texto com versículo trocado", "Numeração de capítulos com erros", "Numeração de versículos com erros"], 
+            "seleção": ["Não aparece o texto selecionado", "O texto exibido não condiz com o selecionado"], 
+            "cards": ["Data errada", "Data invisível", "Erro no versículo", "Erro no texto", "Não consigo editar", "Não consigo excluir", "Meu texto não aparece"], 
+            "sugestãoD": ["Data errada", "Data invisível", "Não consigo criar a partir do texto"], 
+            "visual": ["Elementos bugados", "Texto saindo do lugar", "Botão atrapalhando clique"]
+        };
+
+        const ação = document.querySelector('#action');
+        let listaProblemas = document.querySelector('#probls');
+        
+        function mudou1(valor) {
+            for (var [key, value] of Object.entries(itens)) {
+                if (key == valor) { 
+                    for (var item in value) {
+                        let option = document.createElement('option');
+                        option.value = value[item];
+                        let conteudo = document.createTextNode(value[item]);
+                        option.appendChild(conteudo);
+
+                        listaProblemas.appendChild(option);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

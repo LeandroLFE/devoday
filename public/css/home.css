@@ -104,6 +104,7 @@ p {
 
 .conquistas p {
     margin: 10px;
+    margin-left: 25%;
 }
 
 progress {
@@ -121,6 +122,10 @@ progress::-webkit-progress-bar {
 progress[value]::-webkit-progress-value{
     background-color: var(--color04);
     border-end-end-radius: 10px;
+}
+
+.content {
+    margin-left: 20%;
 }
 
 /* FLUTUANTE */

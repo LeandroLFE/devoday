@@ -47,3 +47,26 @@ GET => Buscar um/mais
 PUT => alterar
 DELETE => remover
 */
+
+/* const nodemailer = require('nodemailer');
+const usuario = "devodaysuporte@gmail.com"
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: usuario,
+        pass: process.env.EMAILS
+    }
+})
+
+let texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Seu texto foi: ${txt}`
+
+transporter.sendMail({
+    from: usuario,
+    to: [usuario, email],
+    subject: "Feedback",
+    text: texto
+}).then(info => {
+    console.log(info)
+}).catch(error => {
+    console.log(error)
+}) */

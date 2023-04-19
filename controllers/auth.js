@@ -147,3 +147,7 @@ exports.verificar = (req, res) => {
         };
     })
 };
+
+exports.avaliar = (req, res) => {
+    res.render('index');
+}
