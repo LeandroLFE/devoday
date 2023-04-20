@@ -15,10 +15,12 @@
         <div class="p">
             <p>Confira o código enviado para o email:</p> 
             <p class="mailenv">{{emailenv}}</p>
+            <input style="display:none;" value={{emailenv}} name="emaile">
         </div>
         <input type="text" placeholder="XXXX" name="codeE" placeholder="XXXX" class="number">
         <p class="alert">{{message}}</p>
         <input type="submit" value="Confirmar" class="env btn">
+        <a href="alterar">Alterar email</a>
     </form>
 </body>
 </html>

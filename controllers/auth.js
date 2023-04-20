@@ -10,6 +10,16 @@ const db = mysql.createConnection({
     database: process.env.DATABASE
 })
 
+const nodemailer = require('nodemailer');
+const usuario = "devodaysuporte@gmail.com"
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: usuario,
+        pass: process.env.EMAILS
+    }
+})
+
 // REGISTRAR
 exports.register = (req, res) => {
     const { email, senha } = req.body;
@@ -31,16 +41,6 @@ exports.register = (req, res) => {
             }
 
         } else {
-            const nodemailer = require('nodemailer');
-            const usuario = "devodaysuporte@gmail.com"
-            let transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: usuario,
-                    pass: process.env.EMAILS
-                }
-            })
-
             let code = Math.floor((Math.random() * (9999-1111)) +1111);
             let texto = "Você solicitou verificação de email. Seu código de verificação gerado é " + code;
 
@@ -114,18 +114,15 @@ exports.login = (req, res) => {
 
 // VERIFICAR CONTA
 exports.verificar = (req, res) => {
-    const { codeE } = req.body;
+    const { codeE, emaile } = req.body;
 
-    const acessToken = req.cookies["access-token"]
-    var usuarioCookie = verify(acessToken, process.env.TOKEN);
-
-    db.query('SELECT email, token FROM users WHERE email = ?', [usuarioCookie.username], async (error, results) => {
+    db.query('SELECT email, token FROM users WHERE email = ?', [emaile], async (error, results) => {
         if (error) {
             console.log(error)
         }
 
         if (codeE == results[0].token) {
-            db.query('UPDATE users SET verify = 1 WHERE email = ?', [usuarioCookie.username], async (error, results) => {
+            db.query('UPDATE users SET verify = 1 WHERE email = ?', [emaile], async (error, results) => {
                 if (error) {
                     console.log(error)
                 }
@@ -152,15 +149,6 @@ exports.verificar = (req, res) => {
 
 exports.avaliar = (req, res) => {
     const { problema, ItensProblema, descrição } = req.body;
-    const nodemailer = require('nodemailer');
-    const usuario = "devodaysuporte@gmail.com"
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: usuario,
-            pass: process.env.EMAILS
-        }
-    })
     let texto; 
 
     if (problema == "Outros" || problema == "Sugestão") {
@@ -185,4 +173,88 @@ exports.avaliar = (req, res) => {
     }) */
 
     res.render('index');
+}
+
+exports.alterar = (req, res) => {
+    const { emailant, email, senha } = req.body;
+    const acessToken = req.cookies["access-token"]
+
+    if (acessToken) {
+        res.clearCookie('access-token')
+    }
+
+    if (emailant == email) {
+        res.render('alterar', {
+            message: 'Não é possível alterar para o mesmo email'
+        })
+    } else {
+
+        db.query('SELECT email, senha, token, verify FROM users WHERE email = ?', [emailant], async (error, resultss) => {
+            if (error) {
+                console.log(error)
+            }
+
+            if (resultss.length > 0) {
+                if (await bcrypt.compare(senha, resultss[0].senha)) {
+
+                    db.query('SELECT email FROM users WHERE email = ?', [email], async (error, results) => {
+                        if (error) {
+                            console.log(error)
+                        }
+                        if (results.length > 0) {
+                            res.render('alterar', {
+                                message: 'Já existe uma conta cadastrada no novo email'
+                            })
+                        } else {
+                            let texto = "Você solicitou verificação para o seu novo email. Seu código de verificação gerado é " + resultss[0].token;
+
+                            transporter.sendMail({
+                                from: usuario,
+                                to: [email, emailant],
+                                subject: "Verificação de novo usuário",
+                                text: texto
+                            });
+
+                            db.query('UPDATE users SET email = ?, verify = 0 WHERE email = ?', [email, emailant], async (error) => {
+                                if (error) {
+                                    console.log(error)
+                                }
+                                res.render('verificação', {
+                                    emailenv: email
+                                });
+                            });
+                        }
+                    })
+
+                } else {
+                    res.render('alterar', {
+                        message: 'Senha incorreta'
+                    })
+                }
+            } else {
+                res.render('cadastro')
+            }
+        })
+    }
+}
+
+exports.deletar = (req, res) => {
+    const acessToken = req.cookies["access-token"]
+    var usuarioCookie = verify(acessToken, process.env.TOKEN);
+
+    db.query('DELETE from users WHERE email = ?', [usuarioCookie.username], async (error, results) => {
+        if (error) {
+            console.log(error)
+        }
+        res.clearCookie('access-token')
+        res.render('landing')
+    });
+}
+
+exports.sair = (req, res) => {
+    const acessToken = req.cookies["access-token"]
+    var usuarioCookie = verify(acessToken, process.env.TOKEN);
+
+    res.clearCookie("access-token")
+    res.render('landing')
 }

@@ -131,6 +131,24 @@ router.get('/verificar', (req, res) => {
     } 
 });
 
+router.get('/alterar', (req, res) => {
+    res.render('alterar')
+});
+
+router.get('/auth/alterar', (req, res) => {
+    res.render('alterar')
+});
+
+router.get('/auth/home', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        return res.render('index')
+    } 
+});
+
 router.get('/auth/cadastro', (req, res) => {
     const accessToken = req.cookies["access-token"]
 

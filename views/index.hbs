@@ -17,19 +17,29 @@
         <i class="fi fi-rr-circle-user" onclick="show()" id="user"></i>
         <div class="conta boxShadow">
             <div class="alterar">
-                <a><i class="fi fi-rr-pencil"></i> Alterar dados</a>
+                <a href="alterar"><i class="fi fi-rr-pencil"></i> Alterar dados</a>
             </div>
 
             <span class="line"></span>
 
             <div class="excluir">
-                <a><i class="fi fi-rr-trash"></i>Excluir conta</a>
+                <a onclick="confirm()"><i class="fi fi-rr-trash"></i>Excluir conta</a>
             </div>
+
+            <script>
+                function confirm() {
+                    let a = window.prompt('Tem certeza que deseja excluir a conta?')
+
+                    if (a == 'sim') {
+                        window.location.replace('/auth/deletar')
+                    }
+                }
+            </script>
 
             <span class="line"></span>
 
             <div class="sair">
-                <a><i class="fi fi-rr-exit"></i>Sair</a>
+                <a href="/auth/sair"><i class="fi fi-rr-exit"></i>Sair</a>
             </div>
         </div>
     </header>
