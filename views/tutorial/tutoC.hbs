@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/card.css">
+    <link rel="stylesheet" href="../../css/tutoleft.css">
+    <link rel="shortcut icon" href="../imgs/logo.png" type="image/x-icon">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <title>Criar card</title>
+</head>
+<body>
+    <div class="cont">
+        <img src="../../imgs/logo.png" alt="guia">
+        <div class="txts">
+            <div class="text">
+                <p>Após isso é hora de refletir sobre a leitura. É importante que você busque orientação para não interpretar as leituras de maneira equivocada e para ter uma experiência melhor, afinal, caminhamos juntos nessa jornada!</p>
+            </div>
+            <div class="text">
+                <p>As perguntas te ajudarão a desenvolver sua reflexão, mas não vamos respondê-las agora, você terá oportunidade para isso futuramente clicando no lápis. Clique em salvar para continuar nosso tour.</p>
+            </div>
+        </div>
+    </div>
+    <header>
+        <img src="../../imgs/logo.png" alt="logo" class="logo">
+
+        <i class="fi fi-rr-circle-user" id="user"></i>
+    </header>
+
+    <section>
+        <div class="left">
+            <form action="/criar/resultado" method="POST" class="boxShadow form">
+            <div class="label">
+                <label for="Livro">Livro</label>
+                <select class="form-select" aria-label="Default select example" id="Livro" name="livro" onblur="mudou1(value)"> {{!-- quando o usuário clicar fora da seleção a função será executada --}}
+                    <option selected disabled>Escolha o livro</option>
+                    <optgroup label="Antigo Testamento">
+                        {{#each txts_old as | livro |}}
+                            <option value={{livro/nome}}
+                                {{#if (checkSelected livro/nome selected)}}
+                                    selected
+                                {{/if}}>
+                                {{livro/nome}}
+                            </option>
+                        {{/each}}
+                    </optgroup>
+                    {{!-- Todas as opções de livro dentro da lista antigo.livros serão impressas em uma option --}}
+                    <optgroup label="Novo Testamento">
+                        {{#each txts_new as | livro |}}
+                            <option value={{livro/nome}}
+                                {{#if (checkSelected livro/nome selected)}}
+                                    selected
+                                {{/if}}>
+                                {{livro/nome}}
+                            </option>
+                        {{/each}}
+                    </optgroup>
+                </select>
+            </div>
+            
+            {{!-- As listas seguintes serão preenchidas por meio de funções --}}
+
+            <div class="label">
+                <label for="Capítulo">Capítulo</label>
+                <select class="form-select" aria-label="Default select example" id="Capítulo" name="capitulo" onblur="mudou2(value)">
+                    <option selected disabled>Escolha o capítulo</option>
+                </select>
+            </div>
+
+            <div class="label">
+                <label for="Versículo inicial">Versículo inicial</label>
+                <select class="form-select" aria-label="Default select example" id="VersículoI" name="verI"></select>
+            </div>
+            
+            <div class="label">
+                <label for="Versículo final">Versículo final</label>
+                <select class="form-select" aria-label="Default select example" id="VersículoF" name="verF"></select>
+            </div>
+
+            <input type="submit" style="margin: 20px;" value="Exibir" class="btn">
+            </form>
+
+            <div class="boxShadow res">
+                <h1>{{tit}}</h1>
+                <p>{{message}}</p>
+            </div>
+        </div>
+
+        <div class="rigth boxShadow marcado">
+            <form action="/criar/devocional" method="post">
+                <h1>Devo xx.xx.xxxx</h1>
+                <div class="label">
+                    <label for="q1">O que a passagem quer dizer?</label>
+                    <textarea class="boxShadow" id="q1" placeholder="O que o texto significa? Qual o contexto da passagem?" rows="3"></textarea>
+                </div>
+                <div class="space"></div>
+                <div class="label">
+                    <label for="q2">O que Deus está me falando a partir dela?</label>
+                    <textarea class="boxShadow" id="q2" placeholder="O que o texto me diz? O que eu respondo a Deus?" rows="3"></textarea>
+                </div>
+            
+                {{#if err}}
+                    <p class="alert">{{err}}</p>
+                {{/if}}
+                <input type="submit" value="Salvar" class="btn">
+            </form>
+        </div>
+    </section>
+</body>
+</html>

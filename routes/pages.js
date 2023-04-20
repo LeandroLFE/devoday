@@ -59,7 +59,47 @@ router.get('/feedback', (req, res) => {
     } else {
         res.render('feedback')
     } 
-})
+});
+
+router.get('/tutorial', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        res.render('tutorial/tutoA')
+    } 
+});
+
+router.get('/tutorialB', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        res.render('tutorial/tutoB')
+    } 
+});
+
+router.get('/tutorialC', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        res.render('tutorial/tutoC')
+    } 
+});
+
+router.get('/tutorialD', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        res.render('tutorial/tutoD')
+    } 
+});
 
 router.get('/login', (req, res) => {
     const accessToken = req.cookies["access-token"]

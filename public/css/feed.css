@@ -61,4 +61,26 @@ textarea::-webkit-scrollbar-thumb {
     border-radius: 10px;
 }
 
-@media screen and (max-width: 1350px) {}
+@media screen and (max-width: 760px) {
+    section {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 440px) {
+    section {
+        width: 90%;
+    }
+    .btn {
+        width: 30%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    select, textarea, .btn {
+        font-size: 1.2em;
+    }
+    .btn {
+        width: 50%;
+    }
+}
