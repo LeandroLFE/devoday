@@ -35,23 +35,27 @@
     </header>
 
     <section>
-        <form action="/auth/feedback" method="POST"></form>
-        <select name="problema" id="action" onblur="mudou1(value)">
-            <option disabled selected>Selecione sua ação</option>
-            <option value="conta">Problema na conta</option>
-            <option value="leituras">Problema nas leituras</option>
-            <option value="seleção">Problema na seleção</option>
-            <option value="cards">Problema nos cards</option>
-            <option value="sugestãoD">Problema na sugestão diária</option>
-            <option value="visual">Problema visual</option>
-            <option value="sugestão">Sugestão/Feedback</option>
-            <option value="outros">Outros</option>
-        </select>
+        <form action="/auth/feedback" method="POST" class="boxShadow">
+            <select name="problema" id="action" onblur="mudou1(value)">
+                <option value="outro" disabled selected>Selecione sua ação</option>
+                <optgroup label="Problemas">
+                    <option value="Conta">Problema na conta</option>
+                    <option value="Leituras">Problema nas leituras</option>
+                    <option value="Seleção">Problema na seleção</option>
+                    <option value="Cards">Problema nos cards</option>
+                    <option value="Sugestão diária">Problema na sugestão diária</option>
+                    <option value="Visual">Problema visual</option>
+                </optgroup>
+                <optgroup label="Outros">
+                    <option value="Sugestão">Sugestão/Feedback</option>
+                    <option value="Outros">Outros</option>
+                </optgroup>
+            </select>
+            <select name="ItensProblema" id="probls" style="display:none;"></select>
 
-        <select name="ItensProblema" id="probls" required></select>
-
-        <input type="text" name="descrição" placeholder="Descreva seu problema/feedback" required>
-        <input type="submit" class="btn">
+            <textarea rows="3" name="descrição" placeholder="Descreva seu problema/feedback" required></textarea>
+            <input type="submit" class="btn">
+        </form>
     </section>
 
     <script>
@@ -64,20 +68,30 @@
         }
 
         const itens = {
-            "conta": ["Não consigo editar dados", "Não consigo sair", "Não consigo excluir"], 
-            "leituras": ["Texto com erros de escrita", "Texto com versículo trocado", "Numeração de capítulos com erros", "Numeração de versículos com erros"], 
-            "seleção": ["Não aparece o texto selecionado", "O texto exibido não condiz com o selecionado"], 
-            "cards": ["Data errada", "Data invisível", "Erro no versículo", "Erro no texto", "Não consigo editar", "Não consigo excluir", "Meu texto não aparece"], 
-            "sugestãoD": ["Data errada", "Data invisível", "Não consigo criar a partir do texto"], 
-            "visual": ["Elementos bugados", "Texto saindo do lugar", "Botão atrapalhando clique"]
+            "Conta": ["Não consigo editar dados", "Não consigo sair", "Não consigo excluir"], 
+            "Leituras": ["Texto com erros de escrita", "Texto com versículo trocado", "Numeração de capítulos com erros", "Numeração de versículos com erros"], 
+            "Seleção": ["Não aparece o texto selecionado", "O texto exibido não condiz com o selecionado"], 
+            "Cards": ["Data errada", "Data invisível", "Erro no versículo", "Erro no texto", "Não consigo editar", "Não consigo excluir", "Meu texto não aparece"], 
+            "Sugestão diária": ["Data errada", "Data invisível", "Não consigo criar a partir do texto"], 
+            "Visual": ["Elementos bugados", "Texto saindo do lugar", "Botão atrapalhando clique"]
         };
 
         const ação = document.querySelector('#action');
         let listaProblemas = document.querySelector('#probls');
         
         function mudou1(valor) {
+            // Limpar as options
+            var L = listaProblemas.options.length - 1;
+
+            for (var i = L; i >= 0; i--) {
+                listaProblemas.remove(i)
+            }
+            
+            // trocar o select
             for (var [key, value] of Object.entries(itens)) {
                 if (key == valor) { 
+                    listaProblemas.style.display = 'block';
+
                     for (var item in value) {
                         let option = document.createElement('option');
                         option.value = value[item];
@@ -86,6 +100,8 @@
 
                         listaProblemas.appendChild(option);
                     }
+                } else if (valor == "Sugestão" || valor == "Outros") {
+                    listaProblemas.style.display = 'none';
                 }
             }
         }

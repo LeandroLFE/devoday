@@ -114,15 +114,18 @@ exports.login = (req, res) => {
 
 // VERIFICAR CONTA
 exports.verificar = (req, res) => {
-    const { codeE, emailENV } = req.body;
+    const { codeE } = req.body;
 
-    db.query('SELECT email, token FROM users WHERE email = ?', [emailENV], async (error, results) => {
+    const acessToken = req.cookies["access-token"]
+    var usuarioCookie = verify(acessToken, process.env.TOKEN);
+
+    db.query('SELECT email, token FROM users WHERE email = ?', [usuarioCookie.username], async (error, results) => {
         if (error) {
             console.log(error)
         }
 
         if (codeE == results[0].token) {
-            db.query('UPDATE users SET verify = 1 WHERE email = ?', [emailENV], async (error, results) => {
+            db.query('UPDATE users SET verify = 1 WHERE email = ?', [usuarioCookie.username], async (error, results) => {
                 if (error) {
                     console.log(error)
                 }
@@ -141,7 +144,6 @@ exports.verificar = (req, res) => {
             
         } else {
             res.render('verificação', {
-                emailenv: emailENV,
                 message: "Código de verificação inválido, tente novamente"
             })
         };
@@ -149,5 +151,38 @@ exports.verificar = (req, res) => {
 };
 
 exports.avaliar = (req, res) => {
+    const { problema, ItensProblema, descrição } = req.body;
+    const nodemailer = require('nodemailer');
+    const usuario = "devodaysuporte@gmail.com"
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: usuario,
+            pass: process.env.EMAILS
+        }
+    })
+    let texto; 
+
+    if (problema == "Outros" || problema == "Sugestão") {
+        texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Sua opção foi: "${problema}". E sua descrição foi: "${descrição}"`
+    } else if (problema == undefined) {
+        texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Sua opção foi: "Outros". E sua descrição foi: "${descrição}"`
+    } else {
+        texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Suas opções foram: "${problema}" > "${ItensProblema}". E sua descrição foi: "${descrição}"`
+    }
+    const acessToken = req.cookies["access-token"]
+    var usuarioCookie = verify(acessToken, process.env.TOKEN);
+
+    transporter.sendMail({
+        from: usuario,
+        to: [usuario, usuarioCookie.username],
+        subject: "Feedback",
+        text: texto
+    })/* .then(info => {
+        console.log(info)
+    }).catch(error => {
+        console.log(error)
+    }) */
+
     res.render('index');
 }

@@ -104,6 +104,10 @@ section {
     height: 40px;
 }
 
+.rigth .btn:hover {
+    background-color: var(--color01);
+}
+
 /* SCROLLBAR */
 .left .res p::-webkit-scrollbar, textarea::-webkit-scrollbar, select::-webkit-scrollbar {
     width: 6px;
