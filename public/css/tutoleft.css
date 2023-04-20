@@ -55,3 +55,27 @@ p::-webkit-scrollbar-thumb {
         flex-wrap: wrap-reverse;
     }
 }
+
+@media screen and (max-width: 800px) {
+    .cont {
+        align-items: center;
+    }
+    img {
+        display: none;
+    }
+    .txts {
+        margin-bottom: 200px;
+    }
+}
+
+@media screen and (max-width: 580px){
+    .txts {
+        max-width: 70%;
+    }   
+}
+
+@media screen and (max-width: 380px){
+    .txts {
+        max-width: 90%;
+    }
+}

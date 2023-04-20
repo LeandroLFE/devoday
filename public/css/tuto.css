@@ -18,6 +18,8 @@
 .txts {
     max-width: 50%;
     z-index: 1000;
+    max-height: 90%;
+    overflow-y: auto;
 }
 
 .text {
@@ -28,16 +30,20 @@
     margin: 20px;
 }
 
+p {
+    overflow-y: auto;
+}
+
 .txt h1 {
     text-align: center;
 }
 
-p::-webkit-scrollbar {
+p::-webkit-scrollbar, .txts::-webkit-scrollbar {
     width: 6px;
     background-image: var(--color04);
 }
 
-p::-webkit-scrollbar-thumb {
+p::-webkit-scrollbar-thumb, .txts::-webkit-scrollbar-thumb {
     background-color: var(--color03);
     border-radius: 10px;
 }
@@ -48,8 +54,63 @@ p::-webkit-scrollbar-thumb {
     transform: scale(1.05);
 }
 
+@media screen and (max-width: 1090px) {
+    .txts {
+        margin-top: 100px;
+    }
+}
+
 @media screen and (max-width: 700px) {
     .cont {
         flex-wrap: wrap-reverse;
+    }
+}
+
+@media screen and (max-width: 1143px) {
+    .txts {
+        margin-top: 150px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .txts {
+        margin-top: 150px;
+    }
+    /* .cont {
+        flex-direction: column-reverse;
+    } */
+
+    .text {
+        min-height: 40%;
+        max-height: 60%;
+    }
+}
+
+@media screen and (max-width: 700px){
+    .txts {
+        margin-top: 500px;
+        max-width: 90%;
+    }
+
+    img {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 390px){
+    .txts {
+        margin-top: 250px;
+        width: 100%;
+        max-height: 30%;
+    }
+
+    .text {
+        max-height: 10%;
+    }
+}
+
+@media screen and (max-width: 360px){
+    .txts {
+        margin-top: 250px;
     }
 }
