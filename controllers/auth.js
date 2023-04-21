@@ -1,7 +1,6 @@
 const mysql = require('mysql')
 const bcrypt = require('bcrypt');
 const { sign, verify } = require('jsonwebtoken');
-const cookieParser = require('cookie-parser')
 
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -238,17 +237,71 @@ exports.alterar = (req, res) => {
     }
 }
 
+exports.altera = (req, res) => {
+    const { email, passant, senha } = req.body;
+    const acessToken = req.cookies["access-token"]
+    var usuarioCookie = verify(acessToken, process.env.TOKEN);
+
+    if (acessToken) {
+        res.clearCookie('access-token')
+    }
+
+    if (passant == senha) {
+        res.render('altera', {
+            message: 'Não é possível alterar para a mesma senha'
+        })
+    } else {
+
+        db.query('SELECT senha FROM users WHERE email = ?', [usuarioCookie.username], async (error, resultss) => {
+            if (error) {
+                console.log(error)
+            }
+
+            if (resultss.length > 0) {
+                if (await bcrypt.compare(passant, resultss[0].senha)) {
+                    transporter.sendMail({
+                        from: usuario,
+                        to: usuarioCookie.username,
+                        subject: "Senha alterada",
+                        text: "Este email confirma a mudança de senha solicitada."
+                    });
+
+                    let hashedPassword = await bcrypt.hash(senha, 8);
+                    db.query('UPDATE users SET senha = ? WHERE email = ?', [hashedPassword, usuarioCookie.username], async (error) => {
+                        if (error) {
+                            console.log(error)
+                        }
+                        res.render('home');
+                    });
+                } else {
+                    res.render('altera', {
+                        message: 'Senha antiga incorreta'
+                    })
+                }
+            } else {
+                res.render('cadastro')
+            }
+        })
+    }
+}
+
 exports.deletar = (req, res) => {
     const acessToken = req.cookies["access-token"]
     var usuarioCookie = verify(acessToken, process.env.TOKEN);
 
-    db.query('DELETE from users WHERE email = ?', [usuarioCookie.username], async (error, results) => {
+    db.query('SELECT senha FROM users WHERE email = ?', [usuarioCookie.username], async (error, results) => {
         if (error) {
             console.log(error)
         }
-        res.clearCookie('access-token')
-        res.render('landing')
-    });
+        
+        db.query('DELETE from users WHERE email = ?', [usuarioCookie.username], async (error, results) => {
+            if (error) {
+                console.log(error)
+            }
+            res.clearCookie('access-token')
+            res.render('landing')
+        })
+    })
 }
 
 exports.sair = (req, res) => {

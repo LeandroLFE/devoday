@@ -139,6 +139,26 @@ router.get('/auth/alterar', (req, res) => {
     res.render('alterar')
 });
 
+router.get('/altera', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('altera')
+    }
+});
+
+router.get('/auth/altera', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('altera')
+    }
+});
+
 router.get('/auth/home', (req, res) => {
     const accessToken = req.cookies["access-token"]
 
