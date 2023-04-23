@@ -19,6 +19,20 @@ let transporter = nodemailer.createTransport({
     }
 })
 
+let imagens = ['cordeiro', 'coelho'];
+
+function userIcon(vari, page, res) {
+    for (let x = 0; x <= imagens.length; x++) {
+        if (vari.ima == 0) {
+            return res.render(page)
+        } else if (vari.ima == x) {
+            return res.render(page, {
+                imagem: imagens[x-1]
+            })
+        }
+    }
+}
+
 // REGISTRAR
 exports.register = (req, res) => {
     const { email, senha } = req.body;
@@ -73,7 +87,7 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
     const { email, senha } = req.body;
 
-    db.query('SELECT email, senha, verify FROM users WHERE email = ?', [email], async (error, results) => {
+    db.query('SELECT email, senha, icon, verify FROM users WHERE email = ?', [email], async (error, results) => {
         if (error) {
             console.log(error)
         }
@@ -87,16 +101,17 @@ exports.login = (req, res) => {
                     });
                 } else {
                     const createTokens = (user) => {
-                        const acessToken = sign({ username: results[0].email}, process.env.TOKEN);
+                        const acessToken = sign({ username: results[0].email, ima: results[0].icon }, process.env.TOKEN);
                         return acessToken;
                     }
                     const accessToken = createTokens(results[0].email)
     
                     res.cookie('access-token', accessToken, {
-                        maxAge: 60*60*24*70*1000
+                        maxAge: 60*60*24*70
                     })
-    
-                    res.render('index');
+
+                    var usuarioCookie = verify(accessToken, process.env.TOKEN);
+                    userIcon(usuarioCookie, 'index', res);
                 }
             } else {
                 res.render('login', {
@@ -115,7 +130,7 @@ exports.login = (req, res) => {
 exports.verificar = (req, res) => {
     const { codeE, emaile } = req.body;
 
-    db.query('SELECT email, token FROM users WHERE email = ?', [emaile], async (error, results) => {
+    db.query('SELECT email, icon, token FROM users WHERE email = ?', [emaile], async (error, results) => {
         if (error) {
             console.log(error)
         }
@@ -127,7 +142,7 @@ exports.verificar = (req, res) => {
                 }
             });
             const createTokens = (user) => {
-                const acessToken = sign({ username: user}, process.env.TOKEN);
+                const acessToken = sign({ username: results[0].email, img: results[0].icon }, process.env.TOKEN);
                 return acessToken;
             }
             const accessToken = createTokens(results[0].email)
@@ -136,7 +151,8 @@ exports.verificar = (req, res) => {
                 maxAge: 60*60*24*70*1000
             })
 
-            res.render('index');
+            var usuarioCookie = verify(accessToken, process.env.TOKEN);
+            userIcon(usuarioCookie, 'index', res);
             
         } else {
             res.render('verificação', {
@@ -171,7 +187,7 @@ exports.avaliar = (req, res) => {
         console.log(error)
     }) */
 
-    res.render('index');
+    userIcon(usuarioCookie, 'index', res);
 }
 
 exports.alterar = (req, res) => {
@@ -271,7 +287,7 @@ exports.altera = (req, res) => {
                         if (error) {
                             console.log(error)
                         }
-                        res.render('home');
+                        userIcon(usuarioCookie, 'index', res);
                     });
                 } else {
                     res.render('altera', {

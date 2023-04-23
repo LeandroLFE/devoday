@@ -16,7 +16,12 @@
     <header>
         <img src="../imgs/logo.png" alt="logo" class="logo" onclick="voltar('/')" style="cursor: pointer;">
 
-        <i class="fi fi-rr-circle-user" onclick="show()" id="user"></i>
+        {{#if imagem}}
+            <img src="../imgs/{{imagem}}.jpg" class="i" onclick="show()" id="user">
+        {{else}}
+            <i class="fi fi-rr-circle-user" onclick="show()" id="user"></i>
+        {{/if}}
+        
         <div class="conta boxShadow">
             <div class="alterar">
                 <a><i class="fi fi-rr-pencil"></i> Alterar dados</a>
