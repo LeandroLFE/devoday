@@ -12,6 +12,8 @@ hbs.registerHelper('json', function (content) {
 
 let mensagem;
 let titulo;
+const { verify } = require('jsonwebtoken');
+let imagens = ['cordeiro', 'coelho'];
 
 // Escolher o card
 exports.escolha = (req, res) => {
@@ -49,17 +51,41 @@ exports.escolha = (req, res) => {
                                     titulo = `${novo.livros[a].abr} ${b}:${c}-${d}`;
     }}}}}}}}
 
-    res.render('card', {
-        txts_old: antigo.livros,
-        txts_new: novo.livros,
-        message: mensagem,
-        tit: titulo
-    })
+    const accessToken = req.cookies["access-token"];
+    var usuarioCookie = verify(accessToken, process.env.TOKEN);
+    for (let x = 0; x <= imagens.length; x++) {
+        if (usuarioCookie.ima == 0) {
+            return res.render('card', {
+                txts_old: antigo.livros,
+                txts_new: novo.livros,
+                message: mensagem,
+                tit: titulo
+            })
+        } else if (usuarioCookie.ima == x) {
+            return res.render('card', {
+                imagem: imagens[x-1],
+                txts_old: antigo.livros,
+                txts_new: novo.livros,
+                message: mensagem,
+                tit: titulo
+            })
+        }
+    }
 }
 
 // Registrar no bd
 exports.envio = (req, res) => {
-    res.render ('index');
+    const accessToken = req.cookies["access-token"];
+    var usuarioCookie = verify(accessToken, process.env.TOKEN);
+    for (let x = 0; x <= imagens.length; x++) {
+        if (usuarioCookie.ima == 0) {
+            return res.render('index')
+        } else if (usuarioCookie.ima == x) {
+            return res.render('index', {
+                imagem: imagens[x-1]
+            })
+        }
+    }
     console.log(titulo)
     // Caso for comparar o título com as abrs, lembrar que tem abr de 3 letras (tem mais?)
 
