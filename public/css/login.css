@@ -6,14 +6,14 @@ body {
 
 .boxShadow {
     width: 60%;
-    height: 75vh;
+    min-height: 75vh;
 
     display: flex;
     flex-direction: row;
 }
 
 /* LEFT */
-.presentation, .box{
+.presentation, .box {
     display: flex;
     flex-direction: column;
 }
@@ -26,8 +26,42 @@ body {
     padding-right: 20px;
 }
 
+.depois {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 70%;
+}
+
+.depois h1 {
+    color: var(--color03);
+    text-shadow: 1px 1px 0px #8EF8FF40;
+}
+
+.i {
+    border-radius: 50%;
+    border: 2px solid var(--color03);
+    margin: 10px !important;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label img {
+    border: 3px solid var(--color03);
+    width: 51px;
+    height: 51px;
+    box-shadow: 0px 0px 1px 1px #5d5d5d1a;
+}
+
 /* RIGHT */
-label, a, .criar, form img, p {
+label, a, .criar, .box img, p {
     color: var(--color01);
 }
 
@@ -41,7 +75,7 @@ label {
     font-size: 1.4em;
 }
 
-form {
+.box-blue {
     background-color: var(--color02);
     width: 50%;
     border-radius: 30px;
@@ -52,7 +86,7 @@ form {
     flex-direction: column;
 }
 
-form .box {
+.box {
     background-color: white;
     min-height: 80%;
     width: 100%;
@@ -125,17 +159,37 @@ input.criar {
     .presentation {
         transform: scale(1);
     }
-    form h1 {
+    .box-blue h1 {
         font-size: 1.8em;
     }
 }
 
 @media screen and (max-width: 1150px) {
-    .presentation {
-        display: none;
+    body {
+        min-height: 150vh;
     }
-    form {
+    .boxShadow {
+        width: 70%;
+        flex-direction: column;
+    }
+    .depois {
+        margin-top: 100px;
+        max-width: 100%;
+    }
+    .presentation {
+        align-items: center;
+        justify-content: center;
+        transform: scale(1.5);
+        margin-bottom: 100px;
+    }
+    .box-blue {
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .depois {
+        max-width: 80%;
     }
 }
 
@@ -146,7 +200,7 @@ input.criar {
 }
 
 @media screen and (max-width: 480px) {
-    form h1 {
+    .box-blue h1 {
         font-size: 1.5em;
     }
     p.alert {
@@ -155,15 +209,19 @@ input.criar {
 }
 
 @media screen and (max-width: 425px) {
-    form, .boxShadow {
+    .box-blue, .boxShadow {
         padding: 10px;
     }
 
-    form i {
+    .box-blue i {
         display: none;
     }
 
-    form .input {
+    .box-blue .input {
         background-color: transparent;
+    }
+
+    .presentation {
+        transform: scale(1);
     }
 }

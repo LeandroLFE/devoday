@@ -11,14 +11,14 @@
     <title>Login</title>
 </head>
 <body>
-    <div class="boxShadow">
+    <form class="boxShadow" action="/auth/login" method="POST">
         <div class="presentation">
             <img src="/imgs/pessoas.svg" alt="pessoas">
             <h1>Conecte-se</h1>
             <p>Alcance seus objetivos com nosso time!</p>
         </div>
 
-        <form class="box-blue" action="/auth/login" method="POST">
+        <div class="box-blue">
             <div class="box">
                 <h1>Bem vindo(a) novamente!</h1>
                 <div class="topic">
@@ -46,8 +46,8 @@
 
             <input type="submit" class="btn criar" value="Login">
             <a href="cadastro" class="btn criar">Criar conta</a>
-        </form>
-    </div>
+        </div>
+    </form>
     <script src="/js/login.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>

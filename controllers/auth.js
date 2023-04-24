@@ -35,7 +35,7 @@ function userIcon(vari, page, res) {
 
 // REGISTRAR
 exports.register = (req, res) => {
-    const { email, senha } = req.body;
+    const { email, senha, icone } = req.body;
 
     db.query('SELECT email, senha, verify FROM users WHERE email = ?', [email], async (error, results) => {
         if (error) {
@@ -62,15 +62,11 @@ exports.register = (req, res) => {
                 to: email,
                 subject: "Verificação de usuário",
                 text: texto
-            })/* .then(info => {
-                console.log(info)
-            }).catch(error => {
-                console.log(error)
-            }) */
+            })
 
             let hashedPassword = await bcrypt.hash(senha, 8);
 
-            db.query('INSERT INTO users SET ?', {email: email, senha: hashedPassword, token: code}, (error) => {
+            db.query('INSERT INTO users SET ?', {email: email, senha: hashedPassword, icon: icone, token: code}, (error) => {
                 if (error) {
                     console.log(error)
                 }
