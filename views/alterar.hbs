@@ -1,54 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/alterar.css">
-    <link rel="shortcut icon" href="/imgs/logo.png" type="image/x-icon">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <title>Trocar email</title>
-</head>
-<body>
-    <div class="boxShadow">
-        <form class="box-blue" action="/auth/alterar" method="POST">
-            <div class="box">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/alterar.css">
+        <link rel="shortcut icon" href="/imgs/logo.png" type="image/x-icon">
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+        <title>Alterar dados</title>
+    </head>
+    <body>
+        <form class="boxShadow" action="/auth/alterar" method="POST">
+
+            <select name="altera" id="action" onclick="mudou1(value)">
+                <option value="outro" disabled selected>Selecione sua ação</option>
+                <option value="email">Alterar email</option>
+                <option value="senha">Alterar senha</option>
+                <option value="imagem">Alterar imagem de perfil</option>
+            </select>
+
+            <div class="emailI boxShadow" style="display:none;">
                 <div class="topic">
-                    <label for="email">Email antigo</label>
+                    <label for="emailIemailant">Email antigo</label>
                     <div class="input">
-                        <input type="email" name="emailant" id="emailant" placeholder="Insira o email antigo" required>
-                        <i class="fi fi-rr-envelope"></i>
-                    </div>
-                </div>
-                
-                <div class="topic">
-                    <label for="email">Email novo</label>
-                    <div class="input">
-                        <input type="email" name="email" id="email" placeholder="Insira o novo email" required>
+                        <input type="email" name="emailIemailant" id="emailIemailant" placeholder="Insira o email antigo" required>
                         <i class="fi fi-rr-envelope"></i>
                     </div>
                 </div>
 
                 <div class="topic">
-                    <label for="senha">Senha</label>
+                    <label for="emailIemail">Email novo</label>
+                    <div class="input">
+                        <input type="email" name="emailIemail" id="emailIemail" placeholder="Insira o novo email" required>
+                        <i class="fi fi-rr-envelope"></i>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <label for="emailIsenha">Senha</label>
                     <div class="input sinput">
-                        <input type="password" name="senha" id="senha" placeholder="Insira sua senha" required>
+                        <input type="password" name="emailIsenha" id="emailIsenha" placeholder="Insira sua senha" required>
+                        <i class="fi fi-rr-eye-crossed senha"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="senhaI boxShadow" style="display:none;">
+                <div class="topic">
+                    <label for="senhaIemail">Email</label>
+                    <div class="input">
+                        <input type="email" name="senhaIemail" id="senhaIemail" placeholder="Insira o email" required>
+                        <i class="fi fi-rr-envelope"></i>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <label for="senhaIsenhaant">Senha antiga</label>
+                    <div class="input">
+                        <input type="password" name="senhaIsenhaant" id="senhaIsenhaant" placeholder="Insira a senha antiga" required>
                         <i class="fi fi-rr-eye-crossed senha"></i>
                     </div>
                 </div>
 
-                {{#if message}}
-                <p class="alert">{{message}}</p>
-                {{/if}}
-                
+                <div class="topic">
+                    <label for="senhaIsenha">Senha nova</label>
+                    <div class="input">
+                        <input type="password" name="senhaIsenha" id="senhaIsenha" placeholder="Insira a senha nova" required>
+                        <i class="fi fi-rr-eye-crossed senha"></i>
+                    </div>
+                </div>
             </div>
 
-            <input type="submit" class="btn criar" value="Alterar dados">
+            <div class="imagemI boxShadow" style="display:none;">
+                <input type="radio" name="icone" id="radio0" checked value=0>
+            </div>
+
+
+            {{#if message}}
+                <p class="alert">{{message}}</p>
+            {{/if}}
+            <input type="submit" class="btn criar" value="Alterar dados" style="display: none;">
             <a href="home" class="btn criar">Cancelar alteração</a>
         </form>
-    </div>
-    <script src="/js/login.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
+        
+        <script>
+            let labels = document.querySelectorAll('.imagem label');
+            let email = document.querySelector('.emailI');
+            let senha = document.querySelector('.senhaI');
+            let imagem = document.querySelector('.imagemI');
+            let inputS = document.querySelector('input.criar');
+            let imagens = ['cordeiro', 'coelho'];
+            
+            function mudou1(valor) {
+                imagem.innerText = "";
+                if (valor == 'email') {
+                    inputS.style.display = 'block';
+                    email.style.display = 'block';
+                    senha.style.display = 'none';
+                    imagem.style.display = 'none';
+
+                } else if (valor == 'senha') {
+                    inputS.style.display = 'block';
+                    email.style.display = 'none';
+                    senha.style.display = 'block';
+                    imagem.style.display = 'none';
+
+                } else if (valor == 'imagem') {
+                    inputS.style.display = 'block';
+                    email.style.display = 'none';
+                    senha.style.display = 'none';
+                    imagem.style.display = 'block';
+
+                    for (let x = 1; x <= imagens.length; x++) {
+                        let input = document.createElement('input');
+                        input.setAttribute("type", "radio");
+                        input.name = "icone";
+                        input.id = "radio" + x;
+                        input.value = x
+
+                        let label = document.createElement('label');
+                        label.htmlFor = 'radio' + x
+                        let icone = document.createElement('img');
+
+                        icone.src = '/imgs/' + imagens[x-1] + '.jpg';
+                        icone.className = 'i'
+                        icone.id = 'i' + x;
+
+                        label.appendChild(icone);
+                        imagem.appendChild(input);
+                        imagem.appendChild(label);
+                    }
+                }
+            }
+        </script>
+        <script src="/js/login.js"></script>
+    </body>
 </html>

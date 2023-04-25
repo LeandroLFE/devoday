@@ -179,7 +179,7 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.avaliar = async (req, res) => {
+exports.avaliar = (req, res) => {
     const { problema, ItensProblema, descrição } = req.body;
     let texto; 
 

@@ -4,60 +4,56 @@ body {
     align-items: center;
 }
 
-.boxShadow {
-    width: 60%;
-    height: 75vh;
+form.boxShadow {
+    width: 80%;
+    height: 80vh;
     padding: 15px !important;
-
-    display: flex;
-    flex-direction: row;
 }
 
-/* RIGHT */
-label, a, .criar, form img, p {
+.boxShadow {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.boxShadow {
+    width: 90%;
+    min-height: 65%;
+    padding: 20px;
+    display: flex;
+    font-size: 1.2em;
+}
+
+form select {
+    background-color: var(--color00);
+    margin-bottom: 20px;
+    border-radius: 8px;
+    padding: 5px;
+    max-width: 50%;
+    font-size: 1.5em;
+}
+
+form input.btn {
+    background-color: var(--color01);
+    width: 20%;
+    padding: 10px;
+    margin: 20px;
+    color: white;
+}
+
+label, a, .criar, p {
     color: var(--color01);
 }
 
-h1 {
-    color: var(--color02);
-    text-shadow: 1px 1px 0px #00000040;
-    text-align: center;
-}
-
-label {
-    font-size: 1.4em;
-}
-
-form {
-    background-color: var(--color02);
-    width: 100%;
-    border-radius: 30px;
-    padding: 15px;
-
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-form .box {
-    background-color: white;
-    min-height: 80%;
-    width: 100%;
-    font-size: 1.2em;
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-
-.box input, .input {
+div.boxShadow input, .input {
     padding: 4px;
     background-color: var(--color00);
     align-items: center;
     justify-content: center;
 }
 
-.box input {
+div.boxShadow input {
     margin-right: auto;
     font-size: 1.2em;
 }
@@ -87,11 +83,6 @@ i {
     margin-left: auto;
 }
 
-a.criar {
-    margin: 10px;
-}
-
-/* RIGHT BOTTOM */
 input.btn {
     margin: 20px 0 0 0;
     padding: 5px 40px;
@@ -99,32 +90,57 @@ input.btn {
     font-size: 1.5em;
 }
 
-input.login {
-    background-color: var(--color01);
+/* IMGS */
+.imagem {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+
+    max-width: 70%;
 }
 
-input.criar {
-    background-color: white;
-    box-shadow: 0px 0px 1px 1px #0000001a;
+.i {
+    border-radius: 50%;
+    border: 3px solid var(--color03);
+    margin: 10px !important;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
 }
 
-@media screen and (max-width: 1150px) {
-    form {
-        width: 100%;
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label img {
+    border: 5px solid var(--color03);
+    width: 101px;
+    height: 101px;
+    box-shadow: 0px 0px 1px 1px #5d5d5d1a;
+}
+
+@media screen and (max-width: 840px) {
+    form input.btn {
+        width: 70%;
     }
 }
 
-@media screen and (max-width: 635px) {
-    .boxShadow {
-        width: 90%;
+@media screen and (max-width: 430px) {
+    form i {
+        display: none;
+    }
+
+    form .input {
+        background-color: transparent;
+    }
+
+    p.alert, div.boxShadow {
+        font-size: 1em;
     }
 }
 
-@media screen and (max-width: 480px) {
-    p.alert {
-        font-size: 0.8em;
-    }
-}
+/* 
 
 @media screen and (max-width: 425px) {
     form, .boxShadow {
@@ -138,4 +154,4 @@ input.criar {
     form .input {
         background-color: transparent;
     }
-}
+} */
