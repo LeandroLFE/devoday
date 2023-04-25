@@ -27,5 +27,11 @@ function userIcon(vari, page, res) {
 }
 
 exports.modelo = async (req, res) => {
-
+    
 }
+
+/* 
+
+
+
+*/

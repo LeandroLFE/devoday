@@ -40,6 +40,7 @@ exports.register = async (req, res) => {
     
     let usuarios = await prisma.Users.findMany({select: {
             email: true,
+            senha: true,
             verify: true
         }, where: {
             email: email
@@ -48,9 +49,15 @@ exports.register = async (req, res) => {
 
     if (usuarios.length > 0) {
         if (usuarios[0].verify == 0) {
-            res.render('verificação', {
-                emailenv: email
-            });
+            if (await bcrypt.compare(senha, usuarios[0].senha)) {
+                res.render('verificação', {
+                    emailenv: email
+                });
+            } else {
+                res.render('cadastro', {
+                    message: 'Conta não verificada com senha incorreta'
+                });
+            }
         } else {
             res.render('cadastro', {
                 message: 'Este email já está cadastrado e verificado'
@@ -79,6 +86,47 @@ exports.register = async (req, res) => {
         });
     }
 }
+
+// VERIFICAR CONTA
+exports.verificar = async (req, res) => {
+    const { codeE, emaile } = req.body;
+
+    let usuarios = await prisma.Users.findMany({select: {
+        email: true,
+        icon: true,
+        token: true
+        }, where: {
+            email: emaile
+        }
+    })
+
+    if (codeE == usuarios[0].token) {
+        await prisma.Users.update({where: { 
+            email: emaile 
+            }, data: { 
+                verify: 1 
+            }
+        })
+
+        const createTokens = (user) => {
+            const acessToken = sign({ username: user, ima: usuarios[0].icon }, process.env.TOKEN);
+            return acessToken;
+        }
+        const accessToken = createTokens(usuarios[0].email)
+
+        res.cookie('access-token', accessToken, {
+            maxAge: 60*60*24*70*1000
+        })
+
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        
+        userIcon(usuarioCookie, 'index', res);
+    } else {
+        res.render('verificação', {
+            message: "Código de verificação inválido, tente novamente"
+        })
+    }
+};
 
 // LOGAR
 exports.login = (req, res) => {
@@ -122,42 +170,6 @@ exports.login = (req, res) => {
         }
     })
 }
-
-// VERIFICAR CONTA
-exports.verificar = (req, res) => {
-    const { codeE, emaile } = req.body;
-
-    db.query('SELECT email, icon, token FROM users WHERE email = ?', [emaile], async (error, results) => {
-        if (error) {
-            console.log(error)
-        }
-
-        if (codeE == results[0].token) {
-            db.query('UPDATE users SET verify = 1 WHERE email = ?', [emaile], async (error, results) => {
-                if (error) {
-                    console.log(error)
-                }
-            });
-            const createTokens = (user) => {
-                const acessToken = sign({ username: results[0].email, img: results[0].icon }, process.env.TOKEN);
-                return acessToken;
-            }
-            const accessToken = createTokens(results[0].email)
-
-            res.cookie('access-token', accessToken, {
-                maxAge: 60*60*24*70*1000
-            })
-
-            var usuarioCookie = verify(accessToken, process.env.TOKEN);
-            userIcon(usuarioCookie, 'index', res);
-            
-        } else {
-            res.render('verificação', {
-                message: "Código de verificação inválido, tente novamente"
-            })
-        };
-    })
-};
 
 exports.avaliar = (req, res) => {
     const { problema, ItensProblema, descrição } = req.body;
