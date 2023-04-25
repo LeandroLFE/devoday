@@ -32,6 +32,27 @@ exports.modelo = async (req, res) => {
 
 /* 
 
+const { problema, ItensProblema, descrição } = req.body;
+    let texto; 
+
+    if (problema == "Outros" || problema == "Sugestão") {
+        texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Sua opção foi: "${problema}". E sua descrição foi: "${descrição}"`
+    } else if (problema == undefined) {
+        texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Sua opção foi: "Outros". E sua descrição foi: "${descrição}"`
+    } else {
+        texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Suas opções foram: "${problema}" > "${ItensProblema}". E sua descrição foi: "${descrição}"`
+    }
+    const acessToken = req.cookies["access-token"]
+    var usuarioCookie = verify(acessToken, process.env.TOKEN);
+
+    transporter.sendMail({
+        from: usuario,
+        to: [usuario, usuarioCookie.username],
+        subject: "Feedback",
+        text: texto
+    })
+
+    userIcon(usuarioCookie, 'index', res);
 
 
 */

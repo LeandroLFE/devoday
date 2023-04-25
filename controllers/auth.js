@@ -73,7 +73,11 @@ exports.register = async (req, res) => {
             to: email,
             subject: "Verificação de usuário",
             text: texto
-        })
+        })/* .then(info => {
+            console.log(info)
+        }).catch(error => {
+            console.log(error)
+        }) */
 
         await prisma.Users.create({data: {
             email,
@@ -129,49 +133,53 @@ exports.verificar = async (req, res) => {
 };
 
 // LOGAR
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
     const { email, senha } = req.body;
 
-    db.query('SELECT email, senha, icon, verify FROM users WHERE email = ?', [email], async (error, results) => {
-        if (error) {
-            console.log(error)
+    let usuarios = await prisma.Users.findMany({select: {
+        email: true,
+        senha: true,
+        icon: true,
+        verify: true
+        }, where: {
+            email: email
         }
+    })
 
-        if (results.length > 0) {
-            if (await bcrypt.compare(senha, results[0].senha)) {
-
-                if (results[0].verify == 0) {
-                    res.render('verificação', {
-                        emailenv: email
-                    });
-                } else {
-                    const createTokens = (user) => {
-                        const acessToken = sign({ username: results[0].email, ima: results[0].icon }, process.env.TOKEN);
-                        return acessToken;
-                    }
-                    const accessToken = createTokens(results[0].email)
-    
-                    res.cookie('access-token', accessToken, {
-                        maxAge: 60*60*24*70
-                    })
-
-                    var usuarioCookie = verify(accessToken, process.env.TOKEN);
-                    userIcon(usuarioCookie, 'index', res);
-                }
+    if (usuarios.length > 0) {
+        if (await bcrypt.compare(senha, usuarios[0].senha)) {
+            if (usuarios[0].verify == 0) {
+                res.render('verificação', {
+                    emailenv: email
+                });
             } else {
-                res.render('login', {
-                    message: 'Senha incorreta'
+                const createTokens = (user) => {
+                    const acessToken = sign({ username: user, ima: usuarios[0].icon }, process.env.TOKEN);
+                    return acessToken;
+                }
+                const accessToken = createTokens(usuarios[0].email)
+                
+                res.cookie('access-token', accessToken, {
+                    maxAge: 60*60*24*70
                 })
+                
+                var usuarioCookie = verify(accessToken, process.env.TOKEN);
+                userIcon(usuarioCookie, 'index', res);
             }
         } else {
             res.render('login', {
-                message: 'Não existe conta com este email'
+                message: 'Senha incorreta'
             })
         }
-    })
+
+    } else {
+        res.render('login', {
+            message: 'Não existe conta com este email'
+        })
+    }
 }
 
-exports.avaliar = (req, res) => {
+exports.avaliar = async (req, res) => {
     const { problema, ItensProblema, descrição } = req.body;
     let texto; 
 
@@ -190,11 +198,7 @@ exports.avaliar = (req, res) => {
         to: [usuario, usuarioCookie.username],
         subject: "Feedback",
         text: texto
-    })/* .then(info => {
-        console.log(info)
-    }).catch(error => {
-        console.log(error)
-    }) */
+    })
 
     userIcon(usuarioCookie, 'index', res);
 }
