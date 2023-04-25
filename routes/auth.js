@@ -6,9 +6,9 @@ const cardController = require('../controllers/criar')
 const router = express.Router();
 
 router.post('/login', authController.login);
-router.post('/cadastro', authhController.cadastro);
-/* router.post('/cadastro', authController.register); */
-router.post('/verificar', authController.verificar);
+router.post('/verificar', authhController.modelo);
+router.post('/cadastro', authController.register);
+/* router.post('/verificar', authController.verificar); */
 router.post('/feedback', authController.avaliar);
 router.post('/alterar', authController.alterar);
 router.post('/altera', authController.altera);

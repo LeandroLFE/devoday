@@ -12,47 +12,20 @@ let transporter = nodemailer.createTransport({
     }
 })
 
-exports.cadastro = async (req, res) => {
-    const { email, senha, icon } = req.body;
-    
-    let usuarios = await prisma.Users.findMany({select: {
-            email: true,
-            verify: true
-        }, where: {
-            email: email
+let imagens = ['cordeiro', 'coelho'];
+
+function userIcon(vari, page, res) {
+    for (let x = 0; x <= imagens.length; x++) {
+        if (vari.ima == 0) {
+            return res.render(page)
+        } else if (vari.ima == x) {
+            return res.render(page, {
+                imagem: imagens[x-1]
+            })
         }
-    })
-
-    if (usuarios.length > 0) {
-        if (usuarios[0].verify == 0) {
-            res.render('verificação', {
-                emailenv: email
-            });
-        } else {
-            res.render('cadastro', {
-                message: 'Este email já está cadastrado e verificado'
-            });
-        }
-    } else {
-        let code = Math.floor((Math.random() * (9999-1111)) +1111);
-        let hashedPassword = await bcrypt.hash(senha, 8);
-        let texto = "Você solicitou verificação de email. Seu código de verificação gerado é " + code;
-
-        transporter.sendMail({
-            from: process.env.USUARIO,
-            to: email,
-            subject: "Verificação de usuário",
-            text: texto
-        })
-
-        await prisma.Users.create({data: {
-            email,
-            senha: hashedPassword,
-            token: code,
-            icon
-        }})
-        res.render('verificação', {
-            emailenv: email
-        });
     }
+}
+
+exports.modelo = async (req, res) => {
+
 }
