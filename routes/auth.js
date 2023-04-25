@@ -1,11 +1,13 @@
 const express = require('express');
 const authController = require('../controllers/auth')
+const authhController = require('../controllers/authh')
 const cardController = require('../controllers/criar')
 
 const router = express.Router();
 
 router.post('/login', authController.login);
-router.post('/cadastro', authController.register);
+router.post('/cadastro', authhController.cadastro);
+/* router.post('/cadastro', authController.register); */
 router.post('/verificar', authController.verificar);
 router.post('/feedback', authController.avaliar);
 router.post('/alterar', authController.alterar);
