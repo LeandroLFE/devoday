@@ -48,6 +48,7 @@ a:hover {
 
 a:visited {
     color: var(--color01);
+    text-decoration: none;
 }
 
 .boxShadow, .card {

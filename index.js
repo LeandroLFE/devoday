@@ -23,14 +23,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.set('view engine', 'hbs');
-
-db.connect( (error) => {
-    if (error) {
-        console.log(error)
-    } else {
-        console.log('Mysql conectado!')
-    }
-});
+// Partials
+const hbs = require('hbs');
+hbs.registerPartials(__dirname + '/views/partials', function (err) {});
 
 // Definindo rotas
 app.use('/', require('./routes/pages'))

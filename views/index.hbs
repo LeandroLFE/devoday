@@ -11,49 +11,7 @@
     <title>Devo day</title>
 </head>
 <body>
-    <header>
-        <img src="../imgs/logo.png" alt="logo" class="logo">
-
-        {{#if imagem}}
-            <img src="../imgs/{{imagem}}.jpg" class="i" onclick="show()" id="user">
-        {{else}}
-            <i class="fi fi-rr-circle-user" onclick="show()" id="user"></i>
-        {{/if}}
-        
-        <div class="conta boxShadow">
-            <div class="alterar">
-                <a href="alterar"><i class="fi fi-rr-pencil"></i> Alterar email</a>
-            </div>
-
-            <span class="line"></span>
-
-            <div class="alterar">
-                <a href="altera"><i class="fi fi-rr-pencil"></i> Alterar senha</a>
-            </div>
-
-            <span class="line"></span>
-
-            <div class="excluir">
-                <a onclick="deletar()"><i class="fi fi-rr-trash"></i>Excluir conta</a>
-            </div>
-
-            <span class="line"></span>
-
-            <div class="sair">
-                <a href="/auth/sair"><i class="fi fi-rr-exit"></i>Sair</a>
-            </div>
-        </div>
-
-        <script>
-            function deletar() {
-                let res = window.prompt('Quer mesmo excluir sua conta? Isso apagará permanentemente todos os seus devocionais e conquistas. Caso queira, digite "sim"')
-                if (res == 'sim') {
-                    window.location.replace('/auth/deletar')
-                }
-            }
-        </script>
-
-    </header>
+    {{> header}}
 
     <section>
         <div class="cards">
@@ -81,17 +39,7 @@
             <div class="sugestao boxShadow">
                 <h2>Sugestão de hoje</h2>
                 <h1>Versículo</h1>
-                <p>1No primeiro dia da semana, Maria Madalena foi ao túmulo de Jesus, bem de madrugada, quando ainda estava escuro, e viu que a pedra tinha sido retirada do túmulo.
-
-2Então ela saiu correndo e foi encontrar Simão Pedro e o outro discípulo, aquele que Jesus amava, e lhes disse: “Tiraram o Senhor do túmulo, e não sabemos onde o colocaram”.
-
-3Saíram, então, Pedro e o outro discípulo e foram ao túmulo. 4Os dois corriam juntos, mas o outro discípulo correu mais depressa que Pedro e chegou primeiro ao túmulo. 5Olhando para dentro, viu as faixas de linho no chão, mas não entrou.
-
-6Chegou também Simão Pedro, que vinha correndo atrás, e entrou no túmulo. Viu as faixas de linho deitadas no chão 7e o pano que tinha estado sobre a cabeça de Jesus, não posto com as faixas, mas enrolado num lugar à parte.
-
-8Então entrou também o outro discípulo, que tinha chegado primeiro ao túmulo. Ele viu, e acreditou.
-
-9De fato, eles ainda não tinham compreendido a Escritura, segundo a qual ele devia ressuscitar dos mortos.</p>
+                <p>1.Genealogia de Jesus Cristo, filho de Davi, filho de Abraão. 2.Abraão gerou Isaac. Isaac gerou Jacó. Jacó gerou Judá e seus irmãos. 3.Judá gerou, de Tamar, Farés e Zara. Farés gerou Esron. Esron gerou Arão. 4.Arão gerou Aminadab. Aminadab gerou Naasson. Naasson gerou Salmon. 5.Salmon gerou Booz, de Raab. Booz gerou Obed, de Rute. Obed gerou Jessé. Jessé gerou o rei Davi. 6.O rei Davi gerou Salomão, daquela que fora mulher de Urias. 7.Salomão gerou Roboão. Roboão gerou Abias. Abias gerou Asa. 8.Asa gerou Josafá. Josafá gerou Jorão. Jorão gerou Ozias. 9.Ozias gerou Joatão. Joatão gerou Acaz. Acaz gerou Ezequias. 10.Ezequias gerou Manassés. Manassés gerou Amon. Amon gerou Josias.</p>
                 <div class="mais">
                     <a href="">Iniciar devocional
                     <i class="fi fi-rr-add"></i></a>
@@ -116,11 +64,5 @@
             <a href="../criar"><i class="fi fi-rr-add"></i></a>
         </div>
     </section>
-    <script>
-        let menu = document.querySelector('.conta');
-        function show() {
-            menu.style.display = menu.style.display == "none" ? "block" : "none";
-        }
-    </script>
 </body>
 </html>

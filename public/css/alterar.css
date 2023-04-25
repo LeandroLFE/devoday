@@ -126,6 +126,20 @@ input[type="radio"]:checked + label img {
     }
 }
 
+@media screen and (max-width: 600px) {
+    .i {
+        border: 2px solid var(--color03);
+        width: 50px;
+        height: 50px;
+    }
+    
+    input[type="radio"]:checked + label img {
+        border: 3px solid var(--color03);
+        width: 51px;
+        height: 51px;
+    }
+}
+
 @media screen and (max-width: 430px) {
     form i {
         display: none;
@@ -139,19 +153,3 @@ input[type="radio"]:checked + label img {
         font-size: 1em;
     }
 }
-
-/* 
-
-@media screen and (max-width: 425px) {
-    form, .boxShadow {
-        padding: 10px;
-    }
-
-    form i {
-        display: none;
-    }
-
-    form .input {
-        background-color: transparent;
-    }
-} */

@@ -13,7 +13,6 @@ router.post('/verificar', authController.verificar); //
 router.post('/feedback', authController.avaliar); //
 
 /* router.post('/alterar', authController.alterar); */
-router.post('/altera', authController.altera);
 router.get('/deletar', authController.deletar);
 
 router.get('/sair', authController.sair); //

@@ -281,7 +281,8 @@ exports.altera = (req, res) => {
         })
     } else {
 
-        db.query('SELECT senha FROM users WHERE email = ?', [usuarioCookie.username], async (error, resultss) => {
+        db.query('SELECT senha FROM users WHERE email = ?', [usuarioCookie.username] // como se limpou o cookie
+        , async (error, resultss) => {
             if (error) {
                 console.log(error)
             }

@@ -13,33 +13,7 @@
     <title>Criar card</title>
 </head>
 <body>
-    <header>
-        <img src="../imgs/logo.png" alt="logo" class="logo" onclick="voltar('/')" style="cursor: pointer;">
-
-        {{#if imagem}}
-            <img src="../imgs/{{imagem}}.jpg" class="i" onclick="show()" id="user">
-        {{else}}
-            <i class="fi fi-rr-circle-user" onclick="show()" id="user"></i>
-        {{/if}}
-        
-        <div class="conta boxShadow">
-            <div class="alterar">
-                <a><i class="fi fi-rr-pencil"></i> Alterar dados</a>
-            </div>
-
-            <span class="line"></span>
-
-            <div class="excluir">
-                <a><i class="fi fi-rr-trash"></i>Excluir conta</a>
-            </div>
-
-            <span class="line"></span>
-
-            <div class="sair">
-                <a><i class="fi fi-rr-exit"></i>Sair</a>
-            </div>
-        </div>
-    </header>
+    {{> header}}
 
     <section>
         <div class="left">
@@ -186,17 +160,6 @@
                             }
                         }
                     }
-                }
-        
-                let icon = document.querySelector('.fi-rr-circle-user');
-                let menu = document.querySelector('.conta');
-
-                function show() {
-                    menu.style.display = menu.style.display == "none" ? "block" : "none";
-                }
-
-                function voltar(v) {
-                    window.location.href = (v)
                 }
             </script>
 

@@ -25,15 +25,7 @@
             </div>
         </div>
     </div>
-    <header>
-        <img src="../../imgs/logo.png" alt="logo" class="logo">
-
-        {{#if imagem}}
-            <img src="../imgs/{{imagem}}.jpg" class="i" onclick="show()" id="user">
-        {{else}}
-            <i class="fi fi-rr-circle-user" onclick="show()" id="user"></i>
-        {{/if}}
-    </header>
+    {{> header}}
 
     <section>
         <div class="left">
