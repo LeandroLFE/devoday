@@ -23,6 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.set('view engine', 'hbs');
+
 // Partials
 const hbs = require('hbs');
 hbs.registerPartials(__dirname + '/views/partials', function (err) {});

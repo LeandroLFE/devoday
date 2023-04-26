@@ -18,6 +18,30 @@ function userIcon(vari, page, res) {
     }
 }
 
+
+
+
+
+
+
+
+
+router.get('/email', (req,res) =>{
+    res.render('emails/verificação.hbs')
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 router.get('/', (req, res) => {
     const accessToken = req.cookies["access-token"];
 

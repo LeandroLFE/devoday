@@ -11,6 +11,7 @@ const prisma = new PrismaClient();
 
 const bcrypt = require('bcrypt');
 const { sign, verify } = require('jsonwebtoken');
+const exphbs = require('nodemailer-express-handlebars');
 const nodemailer = require('nodemailer');
 let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -18,7 +19,27 @@ let transporter = nodemailer.createTransport({
         user: process.env.USUARIO,
         pass: process.env.EMAILS
     }
-})
+});
+transporter.use('compile', exphbs({
+    viewEngine: {
+        extName: '.hbs',
+        partialsDir: 'views/emails',
+        layoutsDir: 'views/emails',
+        defaultLayout: ''
+    },
+    viewPath: 'views/emails',
+    extName: '.hbs'
+}));
+
+function enviarEmail(us, assunto, template, variaveis) {
+    transporter.sendMail({
+        from: process.env.USUARIO,
+        to: us,
+        subject: assunto,
+        template: template,
+        context: variaveis
+    })
+}
 
 let imagens = ['cordeiro', 'coelho'];
 
@@ -66,18 +87,8 @@ exports.register = async (req, res) => {
     } else {
         let code = Math.floor((Math.random() * (9999-1111)) +1111);
         let hashedPassword = await bcrypt.hash(senha, 8);
-        let texto = "Você solicitou verificação de email. Seu código de verificação gerado é " + code;
 
-        transporter.sendMail({
-            from: process.env.USUARIO,
-            to: email,
-            subject: "Verificação de usuário",
-            text: texto
-        })/* .then(info => {
-            console.log(info)
-        }).catch(error => {
-            console.log(error)
-        }) */
+        enviarEmail(email, "Verificação de usuário", "verificação", {code: code});
 
         await prisma.Users.create({data: {
             email,
@@ -181,24 +192,18 @@ exports.login = async (req, res) => {
 
 exports.avaliar = (req, res) => {
     const { problema, ItensProblema, descrição } = req.body;
-    let texto; 
-
-    if (problema == "Outros" || problema == "Sugestão") {
-        texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Sua opção foi: "${problema}". E sua descrição foi: "${descrição}"`
-    } else if (problema == undefined) {
-        texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Sua opção foi: "Outros". E sua descrição foi: "${descrição}"`
-    } else {
-        texto = `Olá, agradecemos pelo seu feedback e iremos verificar. Suas opções foram: "${problema}" > "${ItensProblema}". E sua descrição foi: "${descrição}"`
-    }
     const acessToken = req.cookies["access-token"]
     var usuarioCookie = verify(acessToken, process.env.TOKEN);
 
-    transporter.sendMail({
-        from: usuario,
-        to: [usuario, usuarioCookie.username],
-        subject: "Feedback",
-        text: texto
-    })
+    if (problema == "Outros" || problema == "Sugestão") {
+        enviarEmail([process.env.USUARIO, usuarioCookie.username], "Feedback", "feedback", {problema: problema, descricao: descrição});
+
+    } else if (problema == undefined) {
+        enviarEmail([process.env.USUARIO, usuarioCookie.username], "Feedback", "feedback", {descricao: descrição});
+
+    } else {
+        enviarEmail([process.env.USUARIO, usuarioCookie.username], "Feedback", "feedback", {problema: problema, ItensProblema: ItensProblema, descricao: descrição});
+    }
 
     userIcon(usuarioCookie, 'index', res);
 }
