@@ -222,4 +222,15 @@ router.get('/auth/login', (req, res) => {
     } 
 });
 
+router.get('/auth/verificar', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'index', res);
+    } 
+});
+
 module.exports = router;

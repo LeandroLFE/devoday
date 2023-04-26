@@ -126,8 +126,13 @@ exports.verificar = async (req, res) => {
         })
 
         var usuarioCookie = verify(accessToken, process.env.TOKEN);
-        
         userIcon(usuarioCookie, 'index', res);
+
+    } else if (codeE == usuarios[0].token * 2) {
+        res.render('recuperar', {
+            emailenv: usuarios[0].email
+        })
+
     } else {
         res.render('verificação', {
             message: "Código de verificação inválido, tente novamente"
@@ -143,6 +148,7 @@ exports.login = async (req, res) => {
         email: true,
         senha: true,
         icon: true,
+        token: true,
         verify: true
         }, where: {
             email: email
@@ -150,8 +156,17 @@ exports.login = async (req, res) => {
     })
 
     if (usuarios.length > 0) {
-        if (await bcrypt.compare(senha, usuarios[0].senha)) {
+
+        if (!senha) { // Esqueci a senha
+            enviarEmail(email, "Recuperar senha", "esqueci", {code: usuarios[0].token * 2})
+            res.render('verificação', {
+                emailenv: email
+            })
+        }
+
+        else if (await bcrypt.compare(senha, usuarios[0].senha)) {
             if (usuarios[0].verify == 0) {
+                enviarEmail(email, "Verificação de usuário", "verificação", {code: code});
                 res.render('verificação', {
                     emailenv: email
                 });
@@ -182,6 +197,7 @@ exports.login = async (req, res) => {
     }
 }
 
+// FEEDBACK
 exports.avaliar = (req, res) => {
     const { problema, ItensProblema, descrição } = req.body;
     const acessToken = req.cookies["access-token"]
@@ -200,10 +216,12 @@ exports.avaliar = (req, res) => {
     userIcon(usuarioCookie, 'index', res);
 }
 
+// ALTERAR DADOS
 exports.alterar = async (req, res) => {
     const {emailIemailant, emailIemail, emailIsenha} = req.body;
     const {senhaIemail, senhaIsenhaant, senhaIsenha} = req.body;
     const {deletarIemail, deletarIsenha} = req.body;
+    const {senhaEemail, senhaEsenha} = req.body;
     const {icone} = req.body;
 
     if (emailIemailant && emailIemail && emailIsenha) {
@@ -305,6 +323,31 @@ exports.alterar = async (req, res) => {
             res.render('landing');
         }
 
+    } else if (senhaEsenha) {
+        let usuarios = await prisma.Users.findMany({select: {
+            senha: true
+            }, where: {
+                email: senhaEemail
+            }
+        })
+
+        if (await bcrypt.compare(senhaEsenha, usuarios[0].senha)) {
+            res.render('recuperar', {
+                message: 'Não é possível alterar para a mesma senha',
+                emailenv: senhaEemail
+            });
+        } else {
+            await prisma.Users.update({where: { 
+                email: senhaEemail
+                }, data: { 
+                    senha: await bcrypt.hash(senhaEsenha, 8)
+                }
+            })
+            res.render('login', {
+                message: 'Senha alterada com sucesso!'
+            });
+        }
+
     } else if (icone) {
         const acessToken = req.cookies["access-token"];
         var usuarioCookie = verify(acessToken, process.env.TOKEN);
@@ -331,6 +374,7 @@ exports.alterar = async (req, res) => {
     }
 }
 
+// SAIR DA SESSÃO
 exports.sair = (req, res) => {
     res.clearCookie("access-token")
     res.render('landing')

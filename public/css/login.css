@@ -61,7 +61,7 @@ input[type="radio"]:checked + label img {
 }
 
 /* RIGHT */
-label, a, .criar, .box img, p {
+label, a, .criar, .box img, p, a input {
     color: var(--color01);
 }
 
@@ -130,8 +130,14 @@ i {
     flex-direction: column;
 }
 
-.topic a {
+.topic a, a input {
     margin-left: auto;
+}
+
+a input {
+    background-color: transparent !important;
+    font-size: 1em;
+    cursor: pointer;
 }
 
 a.criar {
