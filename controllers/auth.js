@@ -1,11 +1,3 @@
-const mysql = require('mysql')
-const db = mysql.createConnection({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE
-})
-////////////////////
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -130,7 +122,7 @@ exports.verificar = async (req, res) => {
         const accessToken = createTokens(usuarios[0].email)
 
         res.cookie('access-token', accessToken, {
-            maxAge: 60*60*24*70*1000
+            maxAge: 60*60*24*7*1000
         })
 
         var usuarioCookie = verify(accessToken, process.env.TOKEN);
@@ -171,7 +163,7 @@ exports.login = async (req, res) => {
                 const accessToken = createTokens(usuarios[0].email)
                 
                 res.cookie('access-token', accessToken, {
-                    maxAge: 60*60*24*70
+                    maxAge: 60*60*24*7*1000
                 })
                 
                 var usuarioCookie = verify(accessToken, process.env.TOKEN);
@@ -208,141 +200,138 @@ exports.avaliar = (req, res) => {
     userIcon(usuarioCookie, 'index', res);
 }
 
-exports.alterar = (req, res) => {
-    const { emailant, email, senha } = req.body;
-    const acessToken = req.cookies["access-token"]
+exports.alterar = async (req, res) => {
+    const {emailIemailant, emailIemail, emailIsenha} = req.body;
+    const {senhaIemail, senhaIsenhaant, senhaIsenha} = req.body;
+    const {deletarIemail, deletarIsenha} = req.body;
+    const {icone} = req.body;
 
-    if (acessToken) {
-        res.clearCookie('access-token')
-    }
+    if (emailIemailant && emailIemail && emailIsenha) {
 
-    if (emailant == email) {
-        res.render('alterar', {
-            message: 'Não é possível alterar para o mesmo email'
-        })
-    } else {
-
-        db.query('SELECT email, senha, token, verify FROM users WHERE email = ?', [emailant], async (error, resultss) => {
-            if (error) {
-                console.log(error)
+        let usuarios = await prisma.Users.findMany({select: {
+            senha: true
+            }, where: {
+                email: emailIemailant
             }
+        })
 
-            if (resultss.length > 0) {
-                if (await bcrypt.compare(senha, resultss[0].senha)) {
+        let usuariosNovo = await prisma.Users.findMany({select: {
+            email: true
+            }, where: {
+                email: emailIemail
+            }
+        })
 
-                    db.query('SELECT email FROM users WHERE email = ?', [email], async (error, results) => {
-                        if (error) {
-                            console.log(error)
-                        }
-                        if (results.length > 0) {
-                            res.render('alterar', {
-                                message: 'Já existe uma conta cadastrada no novo email'
-                            })
-                        } else {
-                            let texto = "Você solicitou verificação para o seu novo email. Seu código de verificação gerado é " + resultss[0].token;
-
-                            transporter.sendMail({
-                                from: usuario,
-                                to: [email, emailant],
-                                subject: "Verificação de novo usuário",
-                                text: texto
-                            });
-
-                            db.query('UPDATE users SET email = ?, verify = 0 WHERE email = ?', [email, emailant], async (error) => {
-                                if (error) {
-                                    console.log(error)
-                                }
-                                res.render('verificação', {
-                                    emailenv: email
-                                });
-                            });
-                        }
-                    })
-
-                } else {
-                    res.render('alterar', {
-                        message: 'Senha incorreta'
-                    })
+        if (emailIemailant == emailIemail) {
+            res.render('alterar', {
+                message: 'Não é possível alterar para o mesmo email'
+            });
+        } else if (usuariosNovo.length > 0) {
+            res.render('alterar', {
+                message: 'Não é possível alterar para um email pertencente a outra conta'
+            });
+        } else if (!await bcrypt.compare(emailIsenha, usuarios[0].senha)) {
+            res.render('alterar', {
+                message: 'Senha incorreta'
+            });
+        } else {
+            let code = Math.floor((Math.random() * (9999-1111)) +1111);
+            await prisma.Users.update({where: { 
+                email: emailIemailant 
+                }, data: { 
+                    verify: 0,
+                    token: code,
+                    email: emailIemail,
                 }
-            } else {
-                res.render('cadastro')
-            }
-        })
-    }
-}
-
-exports.altera = (req, res) => {
-    const { email, passant, senha } = req.body;
-    const acessToken = req.cookies["access-token"]
-    var usuarioCookie = verify(acessToken, process.env.TOKEN);
-
-    if (acessToken) {
-        res.clearCookie('access-token')
-    }
-
-    if (passant == senha) {
-        res.render('altera', {
-            message: 'Não é possível alterar para a mesma senha'
-        })
-    } else {
-
-        db.query('SELECT senha FROM users WHERE email = ?', [usuarioCookie.username] // como se limpou o cookie
-        , async (error, resultss) => {
-            if (error) {
-                console.log(error)
-            }
-
-            if (resultss.length > 0) {
-                if (await bcrypt.compare(passant, resultss[0].senha)) {
-                    transporter.sendMail({
-                        from: usuario,
-                        to: usuarioCookie.username,
-                        subject: "Senha alterada",
-                        text: "Este email confirma a mudança de senha solicitada."
-                    });
-
-                    let hashedPassword = await bcrypt.hash(senha, 8);
-                    db.query('UPDATE users SET senha = ? WHERE email = ?', [hashedPassword, usuarioCookie.username], async (error) => {
-                        if (error) {
-                            console.log(error)
-                        }
-                        userIcon(usuarioCookie, 'index', res);
-                    });
-                } else {
-                    res.render('altera', {
-                        message: 'Senha antiga incorreta'
-                    })
-                }
-            } else {
-                res.render('cadastro')
-            }
-        })
-    }
-}
-
-exports.deletar = (req, res) => {
-    const acessToken = req.cookies["access-token"]
-    var usuarioCookie = verify(acessToken, process.env.TOKEN);
-
-    db.query('SELECT senha FROM users WHERE email = ?', [usuarioCookie.username], async (error, results) => {
-        if (error) {
-            console.log(error)
-        }
-        
-        db.query('DELETE from users WHERE email = ?', [usuarioCookie.username], async (error, results) => {
-            if (error) {
-                console.log(error)
-            }
+            })
+            enviarEmail([emailIemailant, emailIemail], 'Verificação de novo email', 'reverificação', {code: code})
             res.clearCookie('access-token')
-            res.render('landing')
+            res.render('verificação', {
+                message: 'Verifique seu novo email',
+                emailenv: emailIemail
+            });
+        }
+
+    } else if (senhaIemail && senhaIsenhaant && senhaIsenha) {
+        let usuarios = await prisma.Users.findMany({select: {
+            senha: true
+            }, where: {
+                email: senhaIemail
+            }
         })
-    })
+
+        if (!await bcrypt.compare(senhaIsenhaant, usuarios[0].senha)) {
+            res.render('alterar', {
+                message: 'A senha não corresponde ao usuário'
+            });
+        } else if (senhaIsenhaant == senhaIsenha) {
+            res.render('alterar', {
+                message: 'Não é possível alterar para a mesma senha'
+            });
+        } else {
+            await prisma.Users.update({where: { 
+                email: senhaIemail 
+                }, data: { 
+                    senha: await bcrypt.hash(senhaIsenha, 8)
+                }
+            })
+            res.clearCookie('access-token')
+            res.render('login', {
+                message: 'Senha alterada com sucesso!'
+            });
+        }
+
+    } else if (deletarIemail && deletarIsenha) {
+        let usuarios = await prisma.Users.findMany({select: {
+            email: true,
+            senha: true
+            }, where: {
+                email: deletarIemail
+            }
+        })
+
+        if (!await bcrypt.compare(deletarIsenha, usuarios[0].senha)) {
+            res.render('alterar', {
+                message: 'A senha não corresponde ao usuário'
+            });
+        } else {
+            await prisma.Users.delete({
+                where: {
+                  email: deletarIemail,
+                },
+            })
+            enviarEmail(deletarIemail, "Conta excluída com sucesso", "delete", {conta: deletarIemail});
+            res.clearCookie('access-token');
+            res.render('landing');
+        }
+
+    } else if (icone) {
+        const acessToken = req.cookies["access-token"];
+        var usuarioCookie = verify(acessToken, process.env.TOKEN);
+        await prisma.Users.update({where: { 
+                email: usuarioCookie.username
+            }, data: { 
+                icon: parseInt(icone)
+            }
+        })
+        for (let x = 0; x <= imagens.length; x++) {
+            if (parseInt(icone) == 0) {
+                return res.render('index')
+            } else if (parseInt(icone) == x) {
+                return res.render('index', {
+                    imagem: imagens[x-1]
+                })
+            }
+        }
+
+    } else {
+        res.render('alterar', {
+            message: 'Escolha e preencha corretamente'
+        });
+    }
 }
 
 exports.sair = (req, res) => {
-    const acessToken = req.cookies["access-token"]
-    var usuarioCookie = verify(acessToken, process.env.TOKEN);
-
     res.clearCookie("access-token")
     res.render('landing')
 }

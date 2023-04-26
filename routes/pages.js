@@ -18,30 +18,6 @@ function userIcon(vari, page, res) {
     }
 }
 
-
-
-
-
-
-
-
-
-router.get('/email', (req,res) =>{
-    res.render('emails/verificação.hbs')
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
 router.get('/', (req, res) => {
     const accessToken = req.cookies["access-token"];
 
@@ -177,6 +153,7 @@ router.get('/cadastro', (req, res) => {
     if (!accessToken) {
         return res.render('cadastro')
     } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'index', res);
     } 
 });
@@ -187,6 +164,7 @@ router.get('/verificar', (req, res) => {
     if (!accessToken) {
         return res.render('cadastro')
     } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'index', res);
     } 
 });
@@ -211,32 +189,13 @@ router.get('/auth/alterar', (req, res) => {
     }
 });
 
-router.get('/altera', (req, res) => {
-    const accessToken = req.cookies["access-token"]
-
-    if (!accessToken) {
-        return res.render('cadastro')
-    } else {
-        return res.render('altera')
-    }
-});
-
-router.get('/auth/altera', (req, res) => {
-    const accessToken = req.cookies["access-token"]
-
-    if (!accessToken) {
-        return res.render('cadastro')
-    } else {
-        return res.render('altera')
-    }
-});
-
 router.get('/auth/home', (req, res) => {
     const accessToken = req.cookies["access-token"]
 
     if (!accessToken) {
         return res.render('login')
     } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'index', res);
     } 
 });
@@ -247,6 +206,7 @@ router.get('/auth/cadastro', (req, res) => {
     if (!accessToken) {
         return res.render('cadastro')
     } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'index', res);
     } 
 });
@@ -257,6 +217,7 @@ router.get('/auth/login', (req, res) => {
     if (!accessToken) {
         return res.render('login')
     } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'index', res);
     } 
 });

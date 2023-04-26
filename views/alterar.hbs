@@ -18,13 +18,14 @@
                 <option value="email">Alterar email</option>
                 <option value="senha">Alterar senha</option>
                 <option value="imagem">Alterar imagem de perfil</option>
+                <option value="deletar">Deletar conta</option>
             </select>
 
             <div class="emailI boxShadow" style="display:none;">
                 <div class="topic">
                     <label for="emailIemailant">Email antigo</label>
                     <div class="input">
-                        <input type="email" name="emailIemailant" id="emailIemailant" placeholder="Insira o email antigo" required>
+                        <input type="email" name="emailIemailant" id="emailIemailant" placeholder="Insira o email antigo">
                         <i class="fi fi-rr-envelope"></i>
                     </div>
                 </div>
@@ -32,7 +33,7 @@
                 <div class="topic">
                     <label for="emailIemail">Email novo</label>
                     <div class="input">
-                        <input type="email" name="emailIemail" id="emailIemail" placeholder="Insira o novo email" required>
+                        <input type="email" name="emailIemail" id="emailIemail" placeholder="Insira o novo email">
                         <i class="fi fi-rr-envelope"></i>
                     </div>
                 </div>
@@ -40,7 +41,7 @@
                 <div class="topic">
                     <label for="emailIsenha">Senha</label>
                     <div class="input sinput">
-                        <input type="password" name="emailIsenha" id="emailIsenha" placeholder="Insira sua senha" required>
+                        <input type="password" name="emailIsenha" id="emailIsenha" placeholder="Insira sua senha">
                         <i class="fi fi-rr-eye-crossed senha"></i>
                     </div>
                 </div>
@@ -50,23 +51,41 @@
                 <div class="topic">
                     <label for="senhaIemail">Email</label>
                     <div class="input">
-                        <input type="email" name="senhaIemail" id="senhaIemail" placeholder="Insira o email" required>
+                        <input type="email" name="senhaIemail" id="senhaIemail" placeholder="Insira o email">
                         <i class="fi fi-rr-envelope"></i>
                     </div>
                 </div>
 
                 <div class="topic">
                     <label for="senhaIsenhaant">Senha antiga</label>
-                    <div class="input">
-                        <input type="password" name="senhaIsenhaant" id="senhaIsenhaant" placeholder="Insira a senha antiga" required>
+                    <div class="input sinput">
+                        <input type="password" name="senhaIsenhaant" id="senhaIsenhaant" placeholder="Insira a senha antiga">
                         <i class="fi fi-rr-eye-crossed senha"></i>
                     </div>
                 </div>
 
                 <div class="topic">
                     <label for="senhaIsenha">Senha nova</label>
+                    <div class="input sinput">
+                        <input type="password" name="senhaIsenha" id="senhaIsenha" placeholder="Insira a senha nova">
+                        <i class="fi fi-rr-eye-crossed senha"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="deletarI boxShadow" style="display:none;">
+                <div class="topic">
+                    <label for="deletarIemail">Email</label>
                     <div class="input">
-                        <input type="password" name="senhaIsenha" id="senhaIsenha" placeholder="Insira a senha nova" required>
+                        <input type="email" name="deletarIemail" id="deletarIemail" placeholder="Insira o email">
+                        <i class="fi fi-rr-envelope"></i>
+                    </div>
+                </div>
+
+                <div class="topic">
+                    <label for="deletarIsenha">Senha</label>
+                    <div class="input sinput">
+                        <input type="password" name="deletarIsenha" id="deletarIsenha" placeholder="Insira a senha">
                         <i class="fi fi-rr-eye-crossed senha"></i>
                     </div>
                 </div>
@@ -76,41 +95,58 @@
                 <input type="radio" name="icone" id="radio0" checked value=0>
             </div>
 
-
             {{#if message}}
                 <p class="alert">{{message}}</p>
             {{/if}}
             <input type="submit" class="btn criar" value="Alterar dados" style="display: none;">
+            <input type="submit" class="btn criar" value="Excluir conta" style="display: none;" id="delete">
             <a href="home" class="btn criar">Cancelar alteração</a>
         </form>
-        
+
+        <script src="/js/login.js"></script>
         <script>
             let labels = document.querySelectorAll('.imagem label');
             let email = document.querySelector('.emailI');
             let senha = document.querySelector('.senhaI');
             let imagem = document.querySelector('.imagemI');
+            let deletar = document.querySelector('.deletarI');
             let inputS = document.querySelector('input.criar');
+            let inputD = document.querySelector('input#delete');
             let imagens = ['cordeiro', 'coelho'];
             
             function mudou1(valor) {
                 imagem.innerText = "";
                 if (valor == 'email') {
                     inputS.style.display = 'block';
+                    inputD.style.display = 'none';
                     email.style.display = 'block';
                     senha.style.display = 'none';
                     imagem.style.display = 'none';
+                    deletar.style.display = 'none';
 
                 } else if (valor == 'senha') {
                     inputS.style.display = 'block';
+                    inputD.style.display = 'none';
                     email.style.display = 'none';
                     senha.style.display = 'block';
                     imagem.style.display = 'none';
+                    deletar.style.display = 'none';
+
+                } else if (valor == 'deletar') {
+                    inputS.style.display = 'none';
+                    inputD.style.display = 'block';
+                    email.style.display = 'none';
+                    senha.style.display = 'none';
+                    imagem.style.display = 'none';
+                    deletar.style.display = 'block';
 
                 } else if (valor == 'imagem') {
                     inputS.style.display = 'block';
+                    inputD.style.display = 'none';
                     email.style.display = 'none';
                     senha.style.display = 'none';
                     imagem.style.display = 'block';
+                    deletar.style.display = 'none';
 
                     for (let x = 1; x <= imagens.length; x++) {
                         let input = document.createElement('input');
@@ -134,6 +170,5 @@
                 }
             }
         </script>
-        <script src="/js/login.js"></script>
     </body>
 </html>
