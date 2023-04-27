@@ -161,9 +161,7 @@ router.get('/cadastro', (req, res) => {
 router.get('/verificar', (req, res) => {
     const accessToken = req.cookies["access-token"]
 
-    if (!accessToken) {
-        return res.render('cadastro')
-    } else {
+    if (accessToken) {
         var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'index', res);
     } 
@@ -176,6 +174,17 @@ router.get('/alterar', (req, res) => {
         return res.render('cadastro')
     } else {
         return res.render('alterar')
+    }
+});
+
+router.get('/auth/trocar', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (accessToken) {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'index', res);
+    } else {
+        res.render('trocar')
     }
 });
 

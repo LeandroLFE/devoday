@@ -222,10 +222,10 @@ exports.alterar = async (req, res) => {
     const {senhaIemail, senhaIsenhaant, senhaIsenha} = req.body;
     const {deletarIemail, deletarIsenha} = req.body;
     const {senhaEemail, senhaEsenha} = req.body;
+    const {emailEEmail, emailEemail, emailEsenha} = req.body;
     const {icone} = req.body;
 
     if (emailIemailant && emailIemail && emailIsenha) {
-
         let usuarios = await prisma.Users.findMany({select: {
             senha: true
             }, where: {
@@ -347,6 +347,53 @@ exports.alterar = async (req, res) => {
                 message: 'Senha alterada com sucesso!'
             });
         }
+
+    } else if (emailEEmail && emailEsenha) {
+        let usuarios = await prisma.Users.findMany({select: {
+            senha: true,
+            }, where: {
+                email: emailEemail
+            }
+        })
+
+        let usuariosNovo = await prisma.Users.findMany({select: {
+            email: true
+            }, where: {
+                email: emailEEmail
+            }
+        })
+
+        if (emailEemail == emailEEmail) {
+            res.render('trocar', {
+                message: 'Não é possível alterar para o mesmo email'
+            });
+        } else if (usuariosNovo.length > 0) {
+            res.render('trocar', {
+                message: 'Não é possível alterar para um email pertencente a outra conta'
+            });
+        } else if (!await bcrypt.compare(emailEsenha, usuarios[0].senha)) {
+            res.render('trocar', {
+                message: 'Senha incorreta'
+            });
+        } else {
+            let code = Math.floor((Math.random() * (9999-1111)) +1111);
+            await prisma.Users.update({where: { 
+                email: emailEemail 
+                }, data: { 
+                    verify: 0,
+                    token: code,
+                    email: emailEEmail,
+                }
+            })
+            enviarEmail([emailEEmail, emailEemail], 'Verificação de novo email', 'reverificação', {code: code})
+            res.clearCookie('access-token')
+            res.render('verificação', {
+                message: 'Verifique seu novo email',
+                emailenv: emailEEmail
+            });
+        }
+
+
 
     } else if (icone) {
         const acessToken = req.cookies["access-token"];
