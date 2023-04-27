@@ -35,16 +35,83 @@ function enviarEmail(us, assunto, template, variaveis) {
 
 let imagens = ['cordeiro', 'coelho'];
 
-function userIcon(vari, page, res) {
-    for (let x = 0; x <= imagens.length; x++) {
-        if (vari.ima == 0) {
-            return res.render(page)
-        } else if (vari.ima == x) {
-            return res.render(page, {
-                imagem: imagens[x-1]
-            })
+async function userIcon(vari, page, res) {    
+    if (page == 'index') {
+        let usuarios = await prisma.Users.findMany({select: {
+            cards: true
+            }, where: {
+                email: vari.username
+            }
+        })
+
+        let Lvl = Math.floor(parseInt(usuarios[0].cards) / 10) + 1 // Recupera o level
+        let cardsLvl = (Math.floor(parseInt(usuarios[0].cards) / 10) * 10) + 9 // Recupera o máximo de cards no level
+
+        for (let x = 0; x <= imagens.length; x++) {
+            if (vari.ima == 0) {
+                return res.render('index', {
+                    level: Lvl,
+                    cards: usuarios[0].cards,
+                    cardsLevel: cardsLvl
+                })
+            } else if (vari.ima == x) {
+                return res.render('index', {
+                    imagem: imagens[x-1],
+                    level: Lvl,
+                    cards: usuarios[0].cards,
+                    cardsLevel: cardsLvl
+                })
+            }
+        }
+
+    } else if (page == 'card') {
+        for (let x = 0; x <= imagens.length; x++) {
+            if (vari.ima == 0) {
+                return res.render('card', {
+                    txts_old: antigo.livros,
+                    selected: 1,
+                    txts_new: novo.livros,
+                    message: "Preencha os itens e salve para exibir o versículo",
+                    tit: "Leitura"
+                })
+            } else if (vari.ima == x) {
+                return res.render('card', {
+                    imagem: imagens[x-1],
+                    txts_old: antigo.livros,
+                    selected: 1,
+                    txts_new: novo.livros,
+                    message: "Preencha os itens e salve para exibir o versículo",
+                    tit: "Leitura"
+                })
+            }
+        }
+
+    } else {
+        for (let x = 0; x <= imagens.length; x++) {
+            if (vari.ima == 0) {
+                return res.render(page)
+            } else if (vari.ima == x) {
+                return res.render(page, {
+                    imagem: imagens[x-1]
+                })
+            }
         }
     }
+}
+
+function createCookie(USER, res) {
+    const createTokens = (user) => {
+        const acessToken = sign({ username: user, ima: USER[0].icon }, process.env.TOKEN);
+        return acessToken;
+    }
+    const accessToken = createTokens(USER[0].email)
+
+    res.cookie('access-token', accessToken, {
+        maxAge: 60*60*24*7*1000
+    })
+
+    var usuarioCookie = verify(accessToken, process.env.TOKEN);
+    userIcon(usuarioCookie, 'index', res);
 }
 
 // REGISTRAR
@@ -114,19 +181,7 @@ exports.verificar = async (req, res) => {
                 verify: 1 
             }
         })
-
-        const createTokens = (user) => {
-            const acessToken = sign({ username: user, ima: usuarios[0].icon }, process.env.TOKEN);
-            return acessToken;
-        }
-        const accessToken = createTokens(usuarios[0].email)
-
-        res.cookie('access-token', accessToken, {
-            maxAge: 60*60*24*7*1000
-        })
-
-        var usuarioCookie = verify(accessToken, process.env.TOKEN);
-        userIcon(usuarioCookie, 'index', res);
+        createCookie(usuarios, res);
 
     } else if (codeE == usuarios[0].token * 2) {
         res.render('recuperar', {
@@ -171,18 +226,7 @@ exports.login = async (req, res) => {
                     emailenv: email
                 });
             } else {
-                const createTokens = (user) => {
-                    const acessToken = sign({ username: user, ima: usuarios[0].icon }, process.env.TOKEN);
-                    return acessToken;
-                }
-                const accessToken = createTokens(usuarios[0].email)
-                
-                res.cookie('access-token', accessToken, {
-                    maxAge: 60*60*24*7*1000
-                })
-                
-                var usuarioCookie = verify(accessToken, process.env.TOKEN);
-                userIcon(usuarioCookie, 'index', res);
+                createCookie(usuarios, res);
             }
         } else {
             res.render('login', {
@@ -392,9 +436,7 @@ exports.alterar = async (req, res) => {
                 emailenv: emailEEmail
             });
         }
-
-
-
+        
     } else if (icone) {
         const acessToken = req.cookies["access-token"];
         var usuarioCookie = verify(acessToken, process.env.TOKEN);
@@ -404,15 +446,10 @@ exports.alterar = async (req, res) => {
                 icon: parseInt(icone)
             }
         })
-        for (let x = 0; x <= imagens.length; x++) {
-            if (parseInt(icone) == 0) {
-                return res.render('index')
-            } else if (parseInt(icone) == x) {
-                return res.render('index', {
-                    imagem: imagens[x-1]
-                })
-            }
-        }
+        res.clearCookie('access-token')
+        res.render('login', {
+            message: 'Icon alterado com sucesso!'
+        });
 
     } else {
         res.render('alterar', {

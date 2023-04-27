@@ -48,14 +48,14 @@
 
             <div class="conquistas boxShadow">
                 <h2>Conquistas</h2>
-                <h1>Persistência x</h1>
+                <h1>Persistência {{level}}</h1>
                 <div class="content">
                     <div class="barra">
-                        <span class="feito">2</span>
-                        <progress id="progress" value="2" max="10"></progress>
-                        <span class="total">10</span>
+                        <span class="feito">{{cards}}</span>
+                        <progress id="progress" value={{cards}} max={{cardsLevel}}></progress>
+                        <span class="total">{{cardsLevel}}</span>
                     </div>
-                    <p>Faça x devocionais</p>
+                    <p>Faça {{cardsLevel}} devocionais</p>
                 </div>
             </div>
         </div>

@@ -18,7 +18,6 @@ model Users {
   icon Int @default(0) 
   verify Int @default(0)
   cards Int @default(0)
-  level Int @default(0)
 
   @@map("users")
 }
