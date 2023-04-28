@@ -24,9 +24,12 @@ app.use('/', require('./routes/pages'))
 app.use('/auth', require('./routes/auth'))
 app.use('/criar', require('./routes/auth'))
 
+// Ativa os serviços que precisam executar quando o servidor liga
+require("./services");
+
 app.listen(3000, () => {
     console.log("Servidor ligado")
-})
+});
 
 /*
 POST => inserir
