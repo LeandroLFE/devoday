@@ -18,6 +18,23 @@ model Users {
   icon Int @default(0) 
   verify Int @default(0)
   cards Int @default(0)
+  cardsObj Cards[]
 
   @@map("users")
+}
+
+model Cards {
+  id Int @id @default(autoincrement())
+  donoId Int
+  livro String @db.VarChar(20)
+  capitulo Int
+  versInicial Int
+  versFinal Int
+  data String @db.VarChar(15)
+  q1 String
+  q2 String
+
+  dono Users @relation(fields: [donoId], references: [id])
+
+  @@map("cards")
 }
