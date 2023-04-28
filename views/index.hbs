@@ -15,15 +15,20 @@
 
     <section>
         <div class="cards">
-            <div class="card">
-                <h1>Versículo</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, earum incidunt deleniti possimus temporibus doloribus vitae. Similique corrupti quae rerum. Aliquam rem explicabo excepturi mollitia architecto dignissimos quo temporibus deleniti? Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam commodi libero velit sapiente laudantium? Aliquid deleniti, quia, adipisci, voluptatem eius dolores laudantium doloribus cupiditate rem omnis ipsam fugit harum. Ipsum?</p>
+            {{#each cards as | card |}}
+                <h1>{{card/titulo}}</h1>
+                {{#if cards/q1}}
+                    <p>"{{card/q1}}"</p>
+                {{else}}
+                    <p>"{{card/q2}}"</p>
+                {{/if}}
                 <div class="modificadores">
                     <a><i class="fi fi-rr-pencil"></i></a>
                     <a><i class="fi fi-rr-trash"></i></a>
                 </div>
-                <span class="data">xx/xx/xx</span>
-            </div>
+                <span class="data">{{card/data}}</span>
+            {{/each}}
+            
             <div class="card">
                 <h1>Versículo</h1>
                 <p>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, earum incidunt deleniti possimus temporibus doloribus vitae. Similique corrupti quae rerum. Aliquam rem explicabo excepturi mollitia architecto dignissimos quo temporibus deleniti?"</p>

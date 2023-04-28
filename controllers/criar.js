@@ -15,6 +15,23 @@ let titulo;
 const { verify } = require('jsonwebtoken');
 let imagens = ['cordeiro', 'coelho'];
 
+/* 
+
+const getAuthor = await prisma.user.findUnique({
+  where: {
+    id: "20",
+  },
+  include: {
+    posts: true, // All posts where authorId == 20
+  },
+});
+*/
+
+//const job = nodeSchedule.scheduleJob('*/1 * * * *', () => {
+//console.log(new Date());
+//});
+
+
 // Escolher o card
 exports.escolha = (req, res) => {
     const { livro, capitulo, verI, verF } = req.body; // Recebe os valores do formulário
