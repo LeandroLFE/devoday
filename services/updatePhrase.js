@@ -6,14 +6,32 @@ let dbContent = fs.readFileSync(localDbPath, "utf8");
 let db = JSON.parse(dbContent);
 
 const getPhrase = () => {
-  // Faça a rota da api para coletar a frase aqui e retorne ela.
-  const phrases = [
-    "Deus é amor.",
-    "Tudo posso naquele que me fortalece.",
-    "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito.",
-    "Não temas, porque eu sou contigo; não te assombres, porque eu sou teu Deus.",
-  ];
-  return phrases[Math.floor(Math.random() * phrases.length)];
+  const fun = require('../bibliaAPI/class');
+  const antigo = require('../bibliaAPI/textosAntigo');
+  const novo = require('../bibliaAPI/textosNovo');
+
+  let variTest = Math.floor(Math.random() * 2); // Escolhe qual das duas variáveis usar
+  let liv;
+  let cap;
+  let versI;
+  let versF;
+
+  if (variTest == 0) {
+    liv = Math.floor(Math.random() * antigo.livros.length) // Escolhe o livro
+    cap = Math.floor(Math.random() * (antigo.livros[liv].capitulos - 1) + 1) // Escolhe o capítulo
+    versI = Math.floor(Math.random() * (antigo.livros[liv].leitura[cap]["versi"] - 1) + 1) // Escolhe o versículo
+    versF = Math.floor(Math.random() * (antigo.livros[liv].leitura[cap]["versi"] - versI) + versI); // Escolhe o versículo
+
+    return fun.agrupar(antigo.livros[liv], cap, versI, versF)
+
+  } else {
+    liv = Math.floor(Math.random() * novo.livros.length) // Escolhe o livro
+    cap = Math.floor(Math.random() * (novo.livros[liv].capitulos - 1) + 1) // Escolhe o capítulo
+    versI = Math.floor(Math.random() * (novo.livros[liv].leitura[cap]["versi"] - 1) + 1) // Escolhe o versículo
+    versF = Math.floor(Math.random() * (novo.livros[liv].leitura[cap]["versi"] - versI) + versI); // Escolhe o versículo
+
+    return fun.agrupar(novo.livros[liv], cap, versI, versF)
+  }
 };
 
 const updatePhrase = () => {
@@ -32,8 +50,6 @@ const verifyTimeLeft = () => {
     updatePhrase();
   }
 };
-
-/* verifyTimeLeft() Para aparecer nas próximas 3 hrs a função preciso definir um texto primeiro */
 
 // Verifica a cada 3 horas (reduza caso o servidor desligue com menos tempo)
 setInterval(() => verifyTimeLeft(), 

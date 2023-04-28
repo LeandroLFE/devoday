@@ -31,10 +31,6 @@ app.listen(3000, () => {
     console.log("Servidor ligado")
 });
 
-/* setInterval(() => {
-    console.log('a')
-}, 1000 * 60 * 60 * 24) */
-
 /*
 POST => inserir
 GET => Buscar um/mais
