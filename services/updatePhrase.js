@@ -8,7 +8,6 @@ let db = JSON.parse(dbContent);
 const getPhrase = () => {
   // Faça a rota da api para coletar a frase aqui e retorne ela.
   const phrases = [
-    "O Senhor é meu pastor e nada me faltará.",
     "Deus é amor.",
     "Tudo posso naquele que me fortalece.",
     "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito.",
@@ -18,7 +17,7 @@ const getPhrase = () => {
 };
 
 const updatePhrase = () => {
-  const data = JSON.parse(fs.readFileSync("dblocal.json", "utf8"));
+  const data = JSON.parse(fs.readFileSync("localdb.json", "utf8"));
   data.phrase.text = getPhrase();
   data.phrase.lastUpdate = new Date().toISOString();
   fs.writeFileSync(`${__dirname}/../localdb.json`, JSON.stringify(data));
@@ -34,7 +33,9 @@ const verifyTimeLeft = () => {
   }
 };
 
+/* verifyTimeLeft() Para aparecer nas próximas 3 hrs a função preciso definir um texto primeiro */
+
 // Verifica a cada 3 horas (reduza caso o servidor desligue com menos tempo)
-setInterval(verifyTimeLeft(), 
+setInterval(() => verifyTimeLeft(), 
 // @param ms - s - m - h
 1000 * 60 * 60 * 3);
