@@ -1,7 +1,5 @@
 const fs = require("fs");
-
 const localDbPath = `${__dirname}/../localdb.json`;
-
 let dbContent = fs.readFileSync(localDbPath, "utf8");
 let db = JSON.parse(dbContent);
 
@@ -22,7 +20,25 @@ const getPhrase = () => {
     versI = Math.floor(Math.random() * (antigo.livros[liv].leitura[cap]["versi"] - 1) + 1) // Escolhe o versículo
     versF = Math.floor(Math.random() * (antigo.livros[liv].leitura[cap]["versi"] - versI) + versI); // Escolhe o versículo
 
-    return fun.agrupar(antigo.livros[liv], cap, versI, versF)
+    cap = cap == 0 ? 1 : cap;
+    versI = versI == 0 ? 1 : versI;
+    versF = versF < versI ? versI : versF;
+    if (versF == versI) {
+      if ((versF + 5) < antigo.livros[liv].leitura[cap]["versi"]) {
+        versF += 5
+      }
+    }
+    if (cap > antigo.livros[liv].capitulos) {
+      cap = antigo.livros[liv].capitulos
+    } else if (versF > antigo.livros[liv].leitura[cap]["versi"]) {
+        versF = antigo.livros[liv].leitura[cap]["versi"];
+    }
+    let titulo = versF == versI ? `${antigo.livros[liv].abr}_${cap}:${versI}` : `${antigo.livros[liv].abr}_${cap}:${versI}-${versF}`;
+
+    return {
+      text: fun.agrupar(antigo.livros[liv], cap, versI, versF),
+      tit: titulo
+    }
 
   } else {
     liv = Math.floor(Math.random() * novo.livros.length) // Escolhe o livro
@@ -30,13 +46,33 @@ const getPhrase = () => {
     versI = Math.floor(Math.random() * (novo.livros[liv].leitura[cap]["versi"] - 1) + 1) // Escolhe o versículo
     versF = Math.floor(Math.random() * (novo.livros[liv].leitura[cap]["versi"] - versI) + versI); // Escolhe o versículo
 
-    return fun.agrupar(novo.livros[liv], cap, versI, versF)
+    cap = cap == 0 ? 1 : cap;
+    versI = versI == 0 ? 1 : versI;
+    versF = versF < versI ? versI : versF;
+    if (versF == versI) {
+      if ((versF + 5) < novo.livros[liv].leitura[cap]["versi"]) {
+        versF += 5
+      }
+    }
+    let titulo = versF == versI ? `${novo.livros[liv].abr}_${cap}:${versI}` : `${novo.livros[liv].abr}_${cap}:${versI}-${versF}`;
+    if (cap > novo.livros[liv].capitulos) {
+      cap = novo.livros[liv].capitulos
+    } else if (versF > novo.livros[liv].leitura[cap]["versi"]) {
+        versF = novo.livros[liv].leitura[cap]["versi"];
+    }
+
+    return {
+      text: fun.agrupar(novo.livros[liv], cap, versI, versF),
+      tit: titulo
+    }
   }
 };
 
 const updatePhrase = () => {
   const data = JSON.parse(fs.readFileSync("localdb.json", "utf8"));
-  data.phrase.text = getPhrase();
+  let valores = getPhrase();
+  data.phrase.titulo = valores.tit
+  data.phrase.text = valores.text;
   data.phrase.lastUpdate = new Date().toISOString();
   fs.writeFileSync(`${__dirname}/../localdb.json`, JSON.stringify(data));
 };
@@ -50,8 +86,7 @@ const verifyTimeLeft = () => {
     updatePhrase();
   }
 };
-
-// Verifica a cada 3 horas (reduza caso o servidor desligue com menos tempo)
+// Verifica a cada 2 horas
 setInterval(() => verifyTimeLeft(), 
 // @param ms - s - m - h
-1000 * 60 * 60 * 3);
+1000 * 60 * 60 * 2);

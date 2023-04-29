@@ -4,74 +4,8 @@ const router = express.Router();
 const antigo = require('../bibliaAPI/textosAntigo');
 const novo = require('../bibliaAPI/textosNovo');
 const { verify } = require('jsonwebtoken');
-let imagens = ['cordeiro', 'coelho'];
 
-async function userIcon(vari, page, res) {
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
-    
-    if (page == 'index') {
-        let usuarios = await prisma.Users.findMany({select: {
-            cards: true
-            }, where: {
-                email: vari.username
-            }
-        })
-
-        let Lvl = Math.floor(parseInt(usuarios[0].cards) / 10) + 1 // Recupera o level
-        let cardsLvl = (Math.floor(parseInt(usuarios[0].cards) / 10) * 10) + 9 // Recupera o máximo de cards no level
-
-        for (let x = 0; x <= imagens.length; x++) {
-            if (vari.ima == 0) {
-                return res.render('index', {
-                    level: Lvl,
-                    cards: usuarios[0].cards,
-                    cardsLevel: cardsLvl
-                })
-            } else if (vari.ima == x) {
-                return res.render('index', {
-                    imagem: imagens[x-1],
-                    level: Lvl,
-                    cards: usuarios[0].cards,
-                    cardsLevel: cardsLvl
-                })
-            }
-        }
-
-    } else if (page == 'card') {
-        for (let x = 0; x <= imagens.length; x++) {
-            if (vari.ima == 0) {
-                return res.render('card', {
-                    txts_old: antigo.livros,
-                    selected: 1,
-                    txts_new: novo.livros,
-                    message: "Preencha os itens e salve para exibir o versículo",
-                    tit: "Leitura"
-                })
-            } else if (vari.ima == x) {
-                return res.render('card', {
-                    imagem: imagens[x-1],
-                    txts_old: antigo.livros,
-                    selected: 1,
-                    txts_new: novo.livros,
-                    message: "Preencha os itens e salve para exibir o versículo",
-                    tit: "Leitura"
-                })
-            }
-        }
-
-    } else {
-        for (let x = 0; x <= imagens.length; x++) {
-            if (vari.ima == 0) {
-                return res.render(page)
-            } else if (vari.ima == x) {
-                return res.render(page, {
-                    imagem: imagens[x-1]
-                })
-            }
-        }
-    }
-}
+const userIcon = require('../userIcon');
 
 router.get('/', async (req, res) => {
     const accessToken = req.cookies["access-token"];
@@ -115,6 +49,49 @@ router.get('/criar', (req, res) => {
         var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'card', res);
     } 
+});
+
+router.get('/sugerido', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login');
+
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        const fs = require("fs");
+        const localDbPath = `${__dirname}/../localdb.json`;
+        let dbContent = fs.readFileSync(localDbPath, "utf8");
+        let db = JSON.parse(dbContent);
+        let sug1 = db.phrase.titulo;
+        let sug2 = sug1.split('_')
+
+        let sugestaoTit = sug2.length > 1 ? `${sug2[0]} ${sug2[1]}`: sug1;
+        let sugestaoTex = db.phrase.text;
+
+        for (let x = 0; x <= imagens.length; x++) {
+            if (usuarioCookie.ima == 0) {
+                return res.render('card', {
+                    txts_old: antigo.livros,
+                    selected: 1,
+                    txts_new: novo.livros,
+                    message: sugestaoTex,
+                    tit: sugestaoTit,
+                    titInp: sug1
+                })
+            } else if (usuarioCookie.ima == x) {
+                return res.render('card', {
+                    imagem: imagens[x-1],
+                    txts_old: antigo.livros,
+                    selected: 1,
+                    txts_new: novo.livros,
+                    message: sugestaoTex,
+                    tit: sugestaoTit,
+                    titInp: sug1
+                })
+            }
+        }
+    }
 });
 
 router.get('/feedback', (req, res) => {
@@ -224,6 +201,26 @@ router.get('/trocar', (req, res) => {
     }
 });
 
+router.get('/auth/feedback', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('feedback')
+    }
+});
+
+router.get('/auth/tutorial', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('tutorial/tutoA')
+    }
+});
+
 router.get('/auth/trocar', (req, res) => {
     const accessToken = req.cookies["access-token"];
 
@@ -279,6 +276,80 @@ router.get('/auth/login', (req, res) => {
 });
 
 router.get('/auth/verificar', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'index', res);
+    } 
+});
+
+router.get('/criar/feedback', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('feedback')
+    }
+});
+
+router.get('/criar/tutorial', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('tutorial/tutoA')
+    }
+});
+
+router.get('/criar/alterar', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        return res.render('alterar')
+    }
+});
+
+router.get('/criar/home', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'index', res);
+    } 
+});
+
+router.get('/criar/cadastro', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('cadastro')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'index', res);
+    } 
+});
+
+router.get('/criar/login', (req, res) => {
+    const accessToken = req.cookies["access-token"]
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'index', res);
+    } 
+});
+
+router.get('/criar/verificar', (req, res) => {
     const accessToken = req.cookies["access-token"];
 
     if (!accessToken) {

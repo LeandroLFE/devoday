@@ -33,71 +33,7 @@ function enviarEmail(us, assunto, template, variaveis) {
     })
 }
 
-let imagens = ['cordeiro', 'coelho'];
-
-async function userIcon(vari, page, res) {    
-    if (page == 'index') {
-        let usuarios = await prisma.Users.findMany({select: {
-            cards: true
-            }, where: {
-                email: vari.username
-            }
-        })
-
-        let Lvl = Math.floor(parseInt(usuarios[0].cards) / 10) + 1 // Recupera o level
-        let cardsLvl = (Math.floor(parseInt(usuarios[0].cards) / 10) * 10) + 9 // Recupera o máximo de cards no level
-
-        for (let x = 0; x <= imagens.length; x++) {
-            if (vari.ima == 0) {
-                return res.render('index', {
-                    level: Lvl,
-                    cards: usuarios[0].cards,
-                    cardsLevel: cardsLvl
-                })
-            } else if (vari.ima == x) {
-                return res.render('index', {
-                    imagem: imagens[x-1],
-                    level: Lvl,
-                    cards: usuarios[0].cards,
-                    cardsLevel: cardsLvl
-                })
-            }
-        }
-
-    } else if (page == 'card') {
-        for (let x = 0; x <= imagens.length; x++) {
-            if (vari.ima == 0) {
-                return res.render('card', {
-                    txts_old: antigo.livros,
-                    selected: 1,
-                    txts_new: novo.livros,
-                    message: "Preencha os itens e salve para exibir o versículo",
-                    tit: "Leitura"
-                })
-            } else if (vari.ima == x) {
-                return res.render('card', {
-                    imagem: imagens[x-1],
-                    txts_old: antigo.livros,
-                    selected: 1,
-                    txts_new: novo.livros,
-                    message: "Preencha os itens e salve para exibir o versículo",
-                    tit: "Leitura"
-                })
-            }
-        }
-
-    } else {
-        for (let x = 0; x <= imagens.length; x++) {
-            if (vari.ima == 0) {
-                return res.render(page)
-            } else if (vari.ima == x) {
-                return res.render(page, {
-                    imagem: imagens[x-1]
-                })
-            }
-        }
-    }
-}
+const userIcon = require('../userIcon');
 
 function createCookie(USER, res) {
     const createTokens = (user) => {
@@ -440,16 +376,22 @@ exports.alterar = async (req, res) => {
     } else if (icone) {
         const acessToken = req.cookies["access-token"];
         var usuarioCookie = verify(acessToken, process.env.TOKEN);
-        await prisma.Users.update({where: { 
-                email: usuarioCookie.username
-            }, data: { 
-                icon: parseInt(icone)
-            }
-        })
-        res.clearCookie('access-token')
-        res.render('login', {
-            message: 'Icon alterado com sucesso!'
-        });
+        if (usuarioCookie.ima == icone) {
+            res.render('alterar', {
+                message: 'Não é possível alterar para o mesmo ícone'
+            });
+        } else {
+            await prisma.Users.update({where: { 
+                    email: usuarioCookie.username
+                }, data: { 
+                    icon: parseInt(icone)
+                }
+            })
+            res.clearCookie('access-token')
+            res.render('login', {
+                message: 'Icon alterado com sucesso!'
+            });
+        }
 
     } else {
         res.render('alterar', {

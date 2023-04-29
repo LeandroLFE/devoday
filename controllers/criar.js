@@ -13,7 +13,8 @@ hbs.registerHelper('json', function (content) {
 let mensagem;
 let titulo;
 const { verify } = require('jsonwebtoken');
-let imagens = ['cordeiro', 'coelho'];
+
+const userIcon = require('../userIcon');
 
 /* 
 
@@ -49,13 +50,12 @@ exports.escolha = (req, res) => {
                             for (d = 1; d <= antigo.livros[a].leitura[b]["versi"]; d++) {
                                 if (d == verF) { // Para saber o versículo final
                                     mensagem = fun.agrupar(antigo.livros[a], b, c, d);
-                                    titulo = `${antigo.livros[a].abr} ${b}:${c}-${d}`;
+                                    titulo = c == d ? `${antigo.livros[a].abr} ${b}:${c}` : `${antigo.livros[a].abr} ${b}:${c}-${d}`;
     }}}}}}}}
 
     // NOVO 
     for (a = 0; a < novo.livros.length; a++) {
         if (novo.livros[a].nome == livro) { // Para saber o livro
-
             for (b = 1; b <= novo.livros[a].capitulos; b++) {
                 if (b == capitulo) { // Para saber o capítulo
 
@@ -65,11 +65,12 @@ exports.escolha = (req, res) => {
                             for (d = 1; d <= novo.livros[a].leitura[b]["versi"]; d++) {
                                 if (d == verF) { // Para saber o versículo final
                                     mensagem = fun.agrupar(novo.livros[a], b, c, d);
-                                    titulo = `${novo.livros[a].abr} ${b}:${c}-${d}`;
+                                    titulo = c == d ? `${novo.livros[a].abr} ${b}:${c}` : `${novo.livros[a].abr} ${b}:${c}-${d}`;
     }}}}}}}}
 
     const accessToken = req.cookies["access-token"];
     var usuarioCookie = verify(accessToken, process.env.TOKEN);
+    let imagens = ['cordeiro', 'coelho'];
     for (let x = 0; x <= imagens.length; x++) {
         if (usuarioCookie.ima == 0) {
             return res.render('card', {
@@ -92,18 +93,14 @@ exports.escolha = (req, res) => {
 
 // Registrar no bd
 exports.envio = (req, res) => {
+    const {titulo2} = req.body;
     const accessToken = req.cookies["access-token"];
     var usuarioCookie = verify(accessToken, process.env.TOKEN);
-    for (let x = 0; x <= imagens.length; x++) {
-        if (usuarioCookie.ima == 0) {
-            return res.render('index')
-        } else if (usuarioCookie.ima == x) {
-            return res.render('index', {
-                imagem: imagens[x-1]
-            })
-        }
-    }
-    console.log(titulo)
+    console.log(titulo) // Quando for direto
+    console.log(titulo2) // --> Quando for por sugestão
+    userIcon(usuarioCookie, 'index', res)
+    // Split ('', ':', '-'); para descobrir as variáveis de abr, cap, verI e verF -> se não tiver verF é igual a verI
+
     // Caso for comparar o título com as abrs, lembrar que tem abr de 3 letras (tem mais?)
 
     // Se os dados da leitura forem enviados, registrar no bd, se não, dar mensagem de erro
