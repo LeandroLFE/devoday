@@ -27,7 +27,7 @@
 }
 
 .txts {
-    max-width: 50%;
+    max-width: 45%;
     z-index: 1000;
     max-height: 90%;
     overflow-y: auto;
@@ -37,16 +37,16 @@
     background-color: white;
     padding: 20px;
     border-radius: 5px;
-    max-height: 20%;
     margin: 20px;
-}
-
-p {
-    overflow-y: auto;
+    min-height: 30%;
 }
 
 .txt h1 {
     text-align: center;
+}
+
+p {
+    overflow-y: auto;
 }
 
 p::-webkit-scrollbar, .txts::-webkit-scrollbar {

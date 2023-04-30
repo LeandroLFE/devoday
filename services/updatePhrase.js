@@ -86,7 +86,7 @@ const verifyTimeLeft = () => {
     updatePhrase();
   }
 };
-// Verifica a cada 2 horas
+// Verifica a cada hora
 setInterval(() => verifyTimeLeft(), 
 // @param ms - s - m - h
-1000 * 60 * 60 * 2);
+1000 * 60 * 60);

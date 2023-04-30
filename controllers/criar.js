@@ -122,6 +122,7 @@ exports.envio = (req, res) => {
     var usuarioCookie = verify(accessToken, process.env.TOKEN);
     console.log(titulo) // Quando for direto
     console.log(titulo2) // --> Quando for por sugestão
+    // Quando for por sugestão, o valor direto fica undefined, mas quando é direto o valor por sugestão fica vazio
 
     if (tutoToken) {
         userIcon(usuarioCookie, 'tutorial/tutoD', res);

@@ -30,7 +30,7 @@
 .txts {
     max-width: 45%;
     z-index: 1000;
-    margin-bottom: 200px;
+    margin-bottom: 150px;
 }
 
 .text {
@@ -39,19 +39,21 @@
     border-radius: 5px;
     margin: 20px;
     min-height: 30%;
-    max-height: 40%;
+    max-height: 30%;
+    
+    overflow-y: auto;
 }
 
 .txt h1 {
     text-align: center;
 }
 
-p::-webkit-scrollbar {
+p::-webkit-scrollbar, .text::-webkit-scrollbar {
     width: 6px;
     background-image: var(--color04);
 }
 
-p::-webkit-scrollbar-thumb {
+p::-webkit-scrollbar-thumb, .text::-webkit-scrollbar-thumb {
     background-color: var(--color03);
     border-radius: 10px;
 }
@@ -79,7 +81,7 @@ p::-webkit-scrollbar-thumb {
         align-items: center;
     }
     .txts {
-        margin-bottom: 200px;
+        margin-bottom: 100px;
     }
 }
 
@@ -89,6 +91,10 @@ p::-webkit-scrollbar-thumb {
     }
     .cont img {
         height: 200px;
+    }
+
+    .txts {
+        margin-bottom: 50px;
     }
 }
 

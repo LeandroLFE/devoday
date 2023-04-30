@@ -74,6 +74,7 @@ router.get('/sugerido', (req, res) => {
 
         let sugestaoTit = sug2.length > 1 ? `${sug2[0]} ${sug2[1]}`: sug1;
         let sugestaoTex = db.phrase.text;
+        let imagens = ['cordeiro', 'coelho']
 
         for (let x = 0; x <= imagens.length; x++) {
             if (usuarioCookie.ima == 0) {
@@ -218,6 +219,50 @@ router.get('/auth/feedback', (req, res) => {
     }
 });
 
+router.get('/auth/sugerido', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login');
+
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        const fs = require("fs");
+        const localDbPath = `${__dirname}/../localdb.json`;
+        let dbContent = fs.readFileSync(localDbPath, "utf8");
+        let db = JSON.parse(dbContent);
+        let sug1 = db.phrase.titulo;
+        let sug2 = sug1.split('_')
+
+        let sugestaoTit = sug2.length > 1 ? `${sug2[0]} ${sug2[1]}`: sug1;
+        let sugestaoTex = db.phrase.text;
+        let imagens = ['cordeiro', 'coelho']
+
+        for (let x = 0; x <= imagens.length; x++) {
+            if (usuarioCookie.ima == 0) {
+                return res.render('card', {
+                    txts_old: antigo.livros,
+                    selected: 1,
+                    txts_new: novo.livros,
+                    message: sugestaoTex,
+                    tit: sugestaoTit,
+                    titInp: sug1
+                })
+            } else if (usuarioCookie.ima == x) {
+                return res.render('card', {
+                    imagem: imagens[x-1],
+                    txts_old: antigo.livros,
+                    selected: 1,
+                    txts_new: novo.livros,
+                    message: sugestaoTex,
+                    tit: sugestaoTit,
+                    titInp: sug1
+                })
+            }
+        }
+    }
+});
+
 router.get('/auth/tutorial', (req, res) => {
     const accessToken = req.cookies["access-token"]
 
@@ -310,6 +355,50 @@ router.get('/criar/tutorial', (req, res) => {
         return res.render('cadastro')
     } else {
         return res.render('tutorial/tutoA')
+    }
+});
+
+router.get('/criar/sugerido', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login');
+
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        const fs = require("fs");
+        const localDbPath = `${__dirname}/../localdb.json`;
+        let dbContent = fs.readFileSync(localDbPath, "utf8");
+        let db = JSON.parse(dbContent);
+        let sug1 = db.phrase.titulo;
+        let sug2 = sug1.split('_')
+
+        let sugestaoTit = sug2.length > 1 ? `${sug2[0]} ${sug2[1]}`: sug1;
+        let sugestaoTex = db.phrase.text;
+        let imagens = ['cordeiro', 'coelho']
+
+        for (let x = 0; x <= imagens.length; x++) {
+            if (usuarioCookie.ima == 0) {
+                return res.render('card', {
+                    txts_old: antigo.livros,
+                    selected: 1,
+                    txts_new: novo.livros,
+                    message: sugestaoTex,
+                    tit: sugestaoTit,
+                    titInp: sug1
+                })
+            } else if (usuarioCookie.ima == x) {
+                return res.render('card', {
+                    imagem: imagens[x-1],
+                    txts_old: antigo.livros,
+                    selected: 1,
+                    txts_new: novo.livros,
+                    message: sugestaoTex,
+                    tit: sugestaoTit,
+                    titInp: sug1
+                })
+            }
+        }
     }
 });
 

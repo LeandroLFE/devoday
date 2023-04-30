@@ -17,9 +17,23 @@ let sugestaoTex = db.phrase.text;
 async function userIcon(vari, page, res) {
     if (page == 'index' || page == 'tutorial/tutoA' || page == 'tutorial/tutoD') {
         let usuarios = await prisma.Users.findMany({select: {
+            id: true,
             cards: true
             }, where: {
                 email: vari.username
+            }
+        })
+
+        let cardsUser = await prisma.Cards.findMany({select: {
+            livro: true,
+            capitulo: true,
+            versInicial: true,
+            versFinal: true,
+            data: true,
+            q1: true,
+            q2: true
+            }, where: {
+                donoId: usuarios[0].id
             }
         })
 
@@ -30,7 +44,8 @@ async function userIcon(vari, page, res) {
             if (vari.ima == 0) {
                 return res.render(page, {
                     level: Lvl,
-                    cards: usuarios[0].cards,
+                    cards: cardsUser,
+                    cardsF: usuarios[0].cards,
                     cardsLevel: cardsLvl,
                     sugTit: sugestaoTit,
                     sugTex: sugestaoTex
@@ -39,7 +54,8 @@ async function userIcon(vari, page, res) {
                 return res.render(page, {
                     imagem: imagens[x-1],
                     level: Lvl,
-                    cards: usuarios[0].cards,
+                    cards: cardsUser,
+                    cardsF: usuarios[0].cards,
                     cardsLevel: cardsLvl,
                     sugTit: sugestaoTit,
                     sugTex: sugestaoTex

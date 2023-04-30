@@ -15,20 +15,6 @@
 
     <section>
         <div class="cards">
-            {{#each cards as | card |}}
-                <h1>{{card/titulo}}</h1>
-                {{#if cards/q1}}
-                    <p>"{{card/q1}}"</p>
-                {{else}}
-                    <p>"{{card/q2}}"</p>
-                {{/if}}
-                <div class="modificadores">
-                    <a><i class="fi fi-rr-pencil"></i></a>
-                    <a><i class="fi fi-rr-trash"></i></a>
-                </div>
-                <span class="data">{{card/data}}</span>
-            {{/each}}
-            
             <div class="card">
                 <h1>Versículo</h1>
                 <p>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, earum incidunt deleniti possimus temporibus doloribus vitae. Similique corrupti quae rerum. Aliquam rem explicabo excepturi mollitia architecto dignissimos quo temporibus deleniti?"</p>
@@ -56,8 +42,8 @@
                 <h1>Persistência {{level}}</h1>
                 <div class="content">
                     <div class="barra">
-                        <span class="feito">{{cards}}</span>
-                        <progress id="progress" value={{cards}} max={{cardsLevel}}></progress>
+                        <span class="feito">{{cardsF}}</span>
+                        <progress id="progress" value={{cardsF}} max={{cardsLevel}}></progress>
                         <span class="total">{{cardsLevel}}</span>
                     </div>
                     <p>Faça {{cardsLevel}} devocionais</p>

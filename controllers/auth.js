@@ -118,6 +118,9 @@ exports.verificar = async (req, res) => {
             }
         })
         createCookie(usuarios, res);
+        const accessToken = req.cookies["access-token"];
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'tutorial/tutoA', res);
 
     } else if (codeE == usuarios[0].token * 2) {
         res.render('recuperar', {
