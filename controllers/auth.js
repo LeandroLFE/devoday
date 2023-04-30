@@ -90,7 +90,7 @@ exports.register = async (req, res) => {
             senha: hashedPassword,
             token: code,
             icon: parseInt(icone)
-        }})
+        }});
         res.render('verificação', {
             emailenv: email
         });

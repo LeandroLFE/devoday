@@ -27,17 +27,28 @@
     <section>
         <div class="cards">
             {{#each cards as | card |}}
-                <h1>{{card/titulo}}</h1>
-                {{#if cards/q1}}
-                    <p>"{{card/q1}}"</p>
-                {{else}}
-                    <p>"{{card/q2}}"</p>
-                {{/if}}
-                <div class="modificadores">
-                    <a><i class="fi fi-rr-pencil"></i></a>
-                    <a><i class="fi fi-rr-trash"></i></a>
+                <div class="card">
+                    {{#ifEquals card/versInicial card/versFinal}}
+                        <h1>{{card/livro}} {{card/capitulo}}:{{card/versInicial}}</h1>
+                    {{else}}
+                        <h1>{{card/livro}} {{card/capitulo}}:{{card/versInicial}}-{{card/versFinal}}</h1>
+                    {{/ifEquals}}
+
+                    {{#ifEquals card/q1 ""}}
+                        {{#ifEquals card/q2 ""}}
+                            <p class="alert">Nenhum texto foi escrito</p>
+                        {{else}}
+                            <p>"{{card/q2}}"</p>
+                        {{/ifEquals}}
+                    {{else}}
+                        <p>"{{card/q1}}"</p>
+                    {{/ifEquals}}
+                    <div class="modificadores">
+                        <a href="/criar/editar"><i class="fi fi-rr-pencil"></i></a>
+                        <a href="/criar/excluir"><i class="fi fi-rr-trash"></i></a>
+                    </div>
+                    <span class="data">{{card/data}}</span>
                 </div>
-                <span class="data">{{card/data}}</span>
             {{/each}}
         </div>
 

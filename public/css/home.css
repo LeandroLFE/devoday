@@ -41,7 +41,8 @@ h1 {
 }
 
 p {
-    max-width: 95%;
+    overflow-wrap: break-word;
+    max-width: 100%;
     max-height: 100px;
     overflow-y: auto;
 }
@@ -54,6 +55,13 @@ p {
 
 .modificadores, .mais {
     bottom: 0;
+}
+
+.modificadores {
+    background-color: white;
+    width: fit-content;
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .modificadores i {

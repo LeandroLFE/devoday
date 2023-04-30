@@ -25,6 +25,7 @@ async function userIcon(vari, page, res) {
         })
 
         let cardsUser = await prisma.Cards.findMany({select: {
+            id: true,
             livro: true,
             capitulo: true,
             versInicial: true,
@@ -39,6 +40,7 @@ async function userIcon(vari, page, res) {
 
         let Lvl = Math.floor(parseInt(usuarios[0].cards) / 10) + 1 // Recupera o level
         let cardsLvl = (Math.floor(parseInt(usuarios[0].cards) / 10) * 10) + 9 // Recupera o máximo de cards no level
+        let minCardsLvl = (Math.floor(parseInt(usuarios[0].cards) / 10) * 10) // Recupera o mínimo de cards no level
 
         for (let x = 0; x <= imagens.length; x++) {
             if (vari.ima == 0) {
@@ -46,7 +48,9 @@ async function userIcon(vari, page, res) {
                     level: Lvl,
                     cards: cardsUser,
                     cardsF: usuarios[0].cards,
-                    cardsLevel: cardsLvl,
+                    cardsFM: 9 - (cardsLvl - usuarios[0].cards),
+                    cardsLevelFM: cardsLvl+1 - minCardsLvl,
+                    cardsLevel: cardsLvl+1,
                     sugTit: sugestaoTit,
                     sugTex: sugestaoTex
                 })
@@ -56,7 +60,9 @@ async function userIcon(vari, page, res) {
                     level: Lvl,
                     cards: cardsUser,
                     cardsF: usuarios[0].cards,
-                    cardsLevel: cardsLvl,
+                    cardsFM: 9 - (cardsLvl - usuarios[0].cards),
+                    cardsLevelFM: cardsLvl+1 - minCardsLvl,
+                    cardsLevel: cardsLvl+1,
                     sugTit: sugestaoTit,
                     sugTex: sugestaoTex
                 })

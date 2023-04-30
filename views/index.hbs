@@ -15,15 +15,38 @@
 
     <section>
         <div class="cards">
-            <div class="card">
-                <h1>Versículo</h1>
-                <p>"Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, earum incidunt deleniti possimus temporibus doloribus vitae. Similique corrupti quae rerum. Aliquam rem explicabo excepturi mollitia architecto dignissimos quo temporibus deleniti?"</p>
-                <div class="modificadores">
-                    <a><i class="fi fi-rr-pencil"></i></a>
-                    <a><i class="fi fi-rr-trash"></i></a>
+            {{#each cards as | card |}}
+                <div class="card">
+                    {{#ifEquals card/versInicial card/versFinal}}
+                        <h1>{{card/livro}} {{card/capitulo}}:{{card/versInicial}}</h1>
+                    {{else}}
+                        <h1>{{card/livro}} {{card/capitulo}}:{{card/versInicial}}-{{card/versFinal}}</h1>
+                    {{/ifEquals}}
+
+                    {{#ifEquals card/q1 ""}}
+                        {{#ifEquals card/q2 ""}}
+                            <p class="alert">Nenhum texto foi escrito</p>
+                        {{else}}
+                            <p>"{{card/q2}}"</p>
+                        {{/ifEquals}}
+                    {{else}}
+                        <p>"{{card/q1}}"</p>
+                    {{/ifEquals}}
+                    <div class="modificadores">
+                        <form action="/criar/editar" method="post">
+                            <label for="editar"><i class="fi fi-rr-pencil"></i></label>
+                            <input type="number" name="tite" value="{{card/id}}" style="display: none;">
+                            <input type="submit" id="editar" style="display: none;">
+                        </form>
+                        <form action="/criar/excluir" method="post">
+                            <label for="excluir"><i class="fi fi-rr-trash"></i></label>
+                            <input type="number" name="ide" value="{{card/id}}" style="display: none;">
+                            <input type="submit" id="excluir" style="display: none;">
+                        </form>
+                    </div>
+                    <span class="data">{{card/data}}</span>
                 </div>
-                <span class="data">xx/xx/xx</span>
-            </div>
+            {{/each}}
         </div>
 
         <div class="coluna">
@@ -43,7 +66,7 @@
                 <div class="content">
                     <div class="barra">
                         <span class="feito">{{cardsF}}</span>
-                        <progress id="progress" value={{cardsF}} max={{cardsLevel}}></progress>
+                        <progress id="progress" value={{cardsFM}} max={{cardsLevelFM}}></progress>
                         <span class="total">{{cardsLevel}}</span>
                     </div>
                     <p>Faça {{cardsLevel}} devocionais</p>
