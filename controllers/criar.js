@@ -16,6 +16,7 @@ const { verify } = require('jsonwebtoken');
 
 const userIcon = require('../userIcon');
 
+
 /* 
 
 const getAuthor = await prisma.user.findUnique({
@@ -70,23 +71,45 @@ exports.escolha = (req, res) => {
 
     const accessToken = req.cookies["access-token"];
     var usuarioCookie = verify(accessToken, process.env.TOKEN);
+    const tutoToken = req.cookies["tuto-token"];
+
     let imagens = ['cordeiro', 'coelho'];
     for (let x = 0; x <= imagens.length; x++) {
         if (usuarioCookie.ima == 0) {
-            return res.render('card', {
-                txts_old: antigo.livros,
-                txts_new: novo.livros,
-                message: mensagem,
-                tit: titulo
-            })
+            if (tutoToken) {
+                return res.render('tutorial/tutoC', {
+                    txts_old: antigo.livros,
+                    txts_new: novo.livros,
+                    message: mensagem,
+                    tit: titulo
+                })
+            } else {
+                return res.render('card', {
+                    txts_old: antigo.livros,
+                    txts_new: novo.livros,
+                    message: mensagem,
+                    tit: titulo
+                })
+            }
+            
         } else if (usuarioCookie.ima == x) {
-            return res.render('card', {
-                imagem: imagens[x-1],
-                txts_old: antigo.livros,
-                txts_new: novo.livros,
-                message: mensagem,
-                tit: titulo
-            })
+            if (tutoToken) {
+                return res.render('tutorial/tutoC', {
+                    imagem: imagens[x-1],
+                    txts_old: antigo.livros,
+                    txts_new: novo.livros,
+                    message: mensagem,
+                    tit: titulo
+                })
+            } else {
+                return res.render('card', {
+                    imagem: imagens[x-1],
+                    txts_old: antigo.livros,
+                    txts_new: novo.livros,
+                    message: mensagem,
+                    tit: titulo
+                })
+            }
         }
     }
 }
@@ -95,10 +118,16 @@ exports.escolha = (req, res) => {
 exports.envio = (req, res) => {
     const {titulo2} = req.body;
     const accessToken = req.cookies["access-token"];
+    const tutoToken = req.cookies["tuto-token"];
     var usuarioCookie = verify(accessToken, process.env.TOKEN);
     console.log(titulo) // Quando for direto
     console.log(titulo2) // --> Quando for por sugestão
-    userIcon(usuarioCookie, 'index', res)
+
+    if (tutoToken) {
+        userIcon(usuarioCookie, 'tutorial/tutoD', res);
+    } else {
+        userIcon(usuarioCookie, 'index', res);
+    }
     // Split ('', ':', '-'); para descobrir as variáveis de abr, cap, verI e verF -> se não tiver verF é igual a verI
 
     // Caso for comparar o título com as abrs, lembrar que tem abr de 3 letras (tem mais?)

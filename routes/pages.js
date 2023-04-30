@@ -6,8 +6,14 @@ const novo = require('../bibliaAPI/textosNovo');
 const { verify } = require('jsonwebtoken');
 
 const userIcon = require('../userIcon');
+function createTutoCookie(res) {
+    res.cookie('tuto-token', {tuto: "true"}, {
+        maxAge: 60*60*1*1000
+    })
+}
 
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
+    res.clearCookie("tuto-token")
     const accessToken = req.cookies["access-token"];
     
     if (!accessToken) {
@@ -111,6 +117,7 @@ router.get('/tutorial', (req, res) => {
     if (!accessToken) {
         return res.render('login')
     } else {
+        createTutoCookie(res)
         var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'tutorial/tutoA', res);
     } 

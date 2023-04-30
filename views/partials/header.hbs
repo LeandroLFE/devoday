@@ -1,8 +1,15 @@
 <header>
-    <img src="../../imgs/logo.png" alt="logo" class="logo" onclick="voltar()" style="cursor: pointer;">
+    <img src="/imgs/logo.png" alt="logo" class="logo" onclick="voltar()" style="cursor: pointer;">
+    
+    <abbr title="Reportar erro" class="prim">
+        <a href="feedback"><img src="/imgs/exclamacao.svg"></a>
+    </abbr>
+    <abbr title="Acessar tutorial">
+        <a href="tutorial"><img src="/imgs/interrogacao.svg"></a>
+    </abbr>
 
     {{#if imagem}}
-        <img src="../imgs/{{imagem}}.jpg" class="i" onclick="show()" id="user">
+        <img src="/imgs/{{imagem}}.jpg" class="i" onclick="show()" id="user">
     {{else}}
         <i class="fi fi-rr-circle-user" onclick="show()" id="user"></i>
     {{/if}}

@@ -15,7 +15,7 @@ let sugestaoTit = sug2.length > 1 ? `${sug2[0]} ${sug2[1]}`: sug1;
 let sugestaoTex = db.phrase.text;
 
 async function userIcon(vari, page, res) {
-    if (page == 'index') {
+    if (page == 'index' || page == 'tutorial/tutoA' || page == 'tutorial/tutoD') {
         let usuarios = await prisma.Users.findMany({select: {
             cards: true
             }, where: {
@@ -28,7 +28,7 @@ async function userIcon(vari, page, res) {
 
         for (let x = 0; x <= imagens.length; x++) {
             if (vari.ima == 0) {
-                return res.render('index', {
+                return res.render(page, {
                     level: Lvl,
                     cards: usuarios[0].cards,
                     cardsLevel: cardsLvl,
@@ -36,7 +36,7 @@ async function userIcon(vari, page, res) {
                     sugTex: sugestaoTex
                 })
             } else if (vari.ima == x) {
-                return res.render('index', {
+                return res.render(page, {
                     imagem: imagens[x-1],
                     level: Lvl,
                     cards: usuarios[0].cards,
@@ -47,10 +47,10 @@ async function userIcon(vari, page, res) {
             }
         }
 
-    } else if (page == 'card') {
+    } else if (page == 'card' || page == 'tutorial/tutoB' || page == 'tutorial/tutoC') {
         for (let x = 0; x <= imagens.length; x++) {
             if (vari.ima == 0) {
-                return res.render('card', {
+                return res.render(page, {
                     txts_old: antigo.livros,
                     selected: 1,
                     txts_new: novo.livros,
@@ -58,7 +58,7 @@ async function userIcon(vari, page, res) {
                     tit: "Leitura"
                 })
             } else if (vari.ima == x) {
-                return res.render('card', {
+                return res.render(page, {
                     imagem: imagens[x-1],
                     txts_old: antigo.livros,
                     selected: 1,

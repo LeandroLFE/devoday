@@ -4,66 +4,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../css/style.css">
-    <link rel="stylesheet" href="../../css/home.css">
-    <link rel="stylesheet" href="../../css/tutoleft.css">
-    <link rel="shortcut icon" href="../imgs/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/tutoleft.css">
+    <link rel="shortcut icon" href="/imgs/logo.png" type="image/x-icon">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <title>Devo day</title>
 </head>
 <body>
     <div class="cont">
-        <img src="../../imgs/logo.png" alt="guia">
+        <a href="/" class="sair">Sair do tutorial</a>
+        <img src="/imgs/felizAN.png" alt="guia">
         <div class="txts">
             <div class="text">
                 <p>Caso você não tenha uma organização de leituras para seguir (recomendado) e/ou esteja sem ideias, pode ter ajuda com as sugestões diárias. Quando desejar fazer um devocional da leitura sugerida, basta clicar em "Iniciar devocional (+)".</p>
             </div>
             <div class="text" style="margin-top: 30px;">
                 <p>Já as conquistas servem para te incentivar e ajudar a ter noção de como está indo seu esforço em manter constância nos estudos. É importante saber que devocional te ajuda a escutar a voz de Deus, então espero te ver novamente com muitas conquistas! Até a próxima!</p>
+                <a href="/" style="font-size: 1.2em;">Voltar a página inicial</a>
             </div>
         </div>
     </div>
     {{> header}}
-
     <section>
         <div class="cards">
-            <div class="card">
-                <h1>Jo 10:22-30</h1>
-                <p>Texto aqui</p>
+            {{#each cards as | card |}}
+                <h1>{{card/titulo}}</h1>
+                {{#if cards/q1}}
+                    <p>"{{card/q1}}"</p>
+                {{else}}
+                    <p>"{{card/q2}}"</p>
+                {{/if}}
                 <div class="modificadores">
                     <a><i class="fi fi-rr-pencil"></i></a>
                     <a><i class="fi fi-rr-trash"></i></a>
                 </div>
-                <span class="data">xx/xx/xx</span>
-            </div>
+                <span class="data">{{card/data}}</span>
+            {{/each}}
         </div>
 
         <div class="coluna">
             <div class="sugestao boxShadow">
                 <h2>Sugestão de hoje</h2>
-                <h1>Mt 1:1-10</h1>
-                <p>1.Genealogia de Jesus Cristo, filho de Davi, filho de Abraão. 2.Abraão gerou Isaac. Isaac gerou Jacó. Jacó gerou Judá e seus irmãos. 3.Judá gerou, de Tamar, Farés e Zara. Farés gerou Esron. Esron gerou Arão. 4.Arão gerou Aminadab. Aminadab gerou Naasson. Naasson gerou Salmon. 5.Salmon gerou Booz, de Raab. Booz gerou Obed, de Rute. Obed gerou Jessé. Jessé gerou o rei Davi. 6.O rei Davi gerou Salomão, daquela que fora mulher de Urias. 7.Salomão gerou Roboão. Roboão gerou Abias. Abias gerou Asa. 8.Asa gerou Josafá. Josafá gerou Jorão. Jorão gerou Ozias. 9.Ozias gerou Joatão. Joatão gerou Acaz. Acaz gerou Ezequias. 10.Ezequias gerou Manassés. Manassés gerou Amon. Amon gerou Josias.</p>
+                <h1>{{sugTit}}</h1>
+                <p>{{sugTex}}</p>
                 <div class="mais">
-                    <a href="">Iniciar devocional
+                    <a href="sugerido">Iniciar devocional
                     <i class="fi fi-rr-add"></i></a>
                 </div>
             </div>
 
             <div class="conquistas boxShadow marcado">
                 <h2>Conquistas</h2>
-                <h1>Persistência 1</h1>
+                <h1>Persistência {{level}}</h1>
                 <div class="content">
                     <div class="barra">
-                        <span class="feito">1</span>
-                        <progress id="progress" value="1" max="10"></progress>
-                        <span class="total">10</span>
+                        <span class="feito">{{cards}}</span>
+                        <progress id="progress" value={{cards}} max={{cardsLevel}}></progress>
+                        <span class="total">{{cardsLevel}}</span>
                     </div>
-                    <p>Faça 10 devocionais</p>
+                    <p>Faça {{cardsLevel}} devocionais</p>
                 </div>
             </div>
         </div>
-
-        <div class="seta"></div>
 
         <div class="boxShadow novo">
             <a href="tutorialB"><i class="fi fi-rr-add"></i></a>
