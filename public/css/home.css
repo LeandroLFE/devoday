@@ -12,7 +12,7 @@ section {
 .cards {
     width: 40%;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     margin: 20px;
 
     max-height: 80vh;
@@ -164,6 +164,10 @@ progress[value]::-webkit-progress-value{
 @media screen and (max-width: 700px) {
     .coluna, .cards, .card, .boxShadow, .conquistas {
         margin: 10px 8px;
+    }
+    .conta {
+        right: 30px;
+        top: 50px;
     }
 }
 

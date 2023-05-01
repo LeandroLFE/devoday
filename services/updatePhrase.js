@@ -8,6 +8,13 @@ const getPhrase = () => {
   const antigo = require('../bibliaAPI/textosAntigo');
   const novo = require('../bibliaAPI/textosNovo');
 
+  const fs = require("fs");
+  const localDbPath = `${__dirname}/../localdb.json`;
+  let dbContent = fs.readFileSync(localDbPath, "utf8");
+  let db = JSON.parse(dbContent);
+  let sug1 = db.phrase.titulo;
+  let sug2 = sug1.split('_');
+
   let variTest = Math.floor(Math.random() * 2); // Escolhe qual das duas variáveis usar
   let liv;
   let cap;
@@ -16,6 +23,15 @@ const getPhrase = () => {
 
   if (variTest == 0) {
     liv = Math.floor(Math.random() * antigo.livros.length) // Escolhe o livro
+
+    if (antigo.livros[liv].abr == sug2[0]) { // Não permite que o livro seja o mesmo do dia anterior
+      if (liv+1 < antigo.livros.length) {
+        liv += 1
+      } else {
+        liv = 0
+      }
+    }
+
     cap = Math.floor(Math.random() * (antigo.livros[liv].capitulos - 1) + 1) // Escolhe o capítulo
     versI = Math.floor(Math.random() * (antigo.livros[liv].leitura[cap]["versi"] - 1) + 1) // Escolhe o versículo
     versF = Math.floor(Math.random() * (antigo.livros[liv].leitura[cap]["versi"] - versI) + versI); // Escolhe o versículo
@@ -42,6 +58,15 @@ const getPhrase = () => {
 
   } else {
     liv = Math.floor(Math.random() * novo.livros.length) // Escolhe o livro
+
+    if (novo.livros[liv].abr == sug2[0]) { // Não permite que o livro seja o mesmo do dia anterior
+      if (liv+1 < novo.livros.length) {
+        liv += 1
+      } else {
+        liv = 0
+      }
+    }
+
     cap = Math.floor(Math.random() * (novo.livros[liv].capitulos - 1) + 1) // Escolhe o capítulo
     versI = Math.floor(Math.random() * (novo.livros[liv].leitura[cap]["versi"] - 1) + 1) // Escolhe o versículo
     versF = Math.floor(Math.random() * (novo.livros[liv].leitura[cap]["versi"] - versI) + versI); // Escolhe o versículo
@@ -68,24 +93,28 @@ const getPhrase = () => {
   }
 };
 
-const updatePhrase = () => {
+const updatePhrase = (datas) => {
   const data = JSON.parse(fs.readFileSync("localdb.json", "utf8"));
   let valores = getPhrase();
   data.phrase.titulo = valores.tit
   data.phrase.text = valores.text;
-  data.phrase.lastUpdate = new Date().toISOString();
+  data.phrase.lastUpdate = new Date(datas).toISOString();
   fs.writeFileSync(`${__dirname}/../localdb.json`, JSON.stringify(data));
 };
 
 const verifyTimeLeft = () => {
   const lastUpdate = new Date(db.phrase.lastUpdate);
-  const now = new Date();
+  const nowFullHour = new Date();
+
+  const now = new Date(nowFullHour.getFullYear(), nowFullHour.getMonth(), nowFullHour.getDate(), 0, 0, 0, 0);
+
   const timeDiff = Math.abs(now.getTime() - lastUpdate.getTime());
   const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
   if (hoursDiff >= 24) {
-    updatePhrase();
+    updatePhrase(now);
   }
 };
+
 // Verifica a cada hora
 setInterval(() => verifyTimeLeft(), 
 // @param ms - s - m - h

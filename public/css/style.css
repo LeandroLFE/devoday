@@ -176,10 +176,3 @@ header #user {
     height: .5px;
     background-color: black;
 }
-
-@media screen and (max-width: 700px) {
-    .conta {
-        right: 30px;
-        top: 50px;
-    }
-}
