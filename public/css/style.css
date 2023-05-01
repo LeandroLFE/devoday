@@ -76,6 +76,39 @@ textarea:focus, input:focus, select:focus {
     outline: 0;
 } 
 
+/* PRELOADER */
+div.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-width: 100%;
+    flex-direction: column;
+    background-color: var(--color00);
+    z-index: 9999;
+    position: absolute;
+    
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+div.loader svg {
+    transform: scale(2);
+}
+
+div.l {
+    margin-top: 50px;
+    color: var(--color03);
+    font-family: var(--fontesecundaria);
+}
+
+.foot {
+    font-size: 0.1em;
+    color: #757575;
+    position: absolute;
+    bottom: 5px;
+}
+
 /* HEADER */
 header {
     background-color: #F9D1FF;

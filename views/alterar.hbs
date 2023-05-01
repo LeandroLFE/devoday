@@ -11,6 +11,19 @@
         <title>Alterar dados</title>
     </head>
     <body>
+        {{> preloader }}
+        
+        <div class="cont" style="display: none;">
+            <a href="alterar" class="sair">Cancelar exclusão</a>
+            <img src="/imgs/tristeFB.png" alt="guia">
+            <div class="txts">
+                <div class="text">
+                    <h1>Cuidado!</h1>
+                    <p>Tem certeza que deseja mesmo deletar sua conta? Isso destruirá todos os seus devocionais e não poderá recuperá-los. Se quiser mesmo fazer isso clique em "continuar exclusão". Caso o devoday tenha te decepcionado, nós aceitamos sugestões na aba <a href="feedback" class="btn criar" style="text-decoration: underline;">feedback</a>. Espero te ver novamente para que possamos recomeçar nossa jornada!</p>
+                    <a onclick="fechar()" class="btn criar">Continuar exclusão</a>
+                </div>
+            </div>
+        </div>
         <form class="boxShadow" action="/auth/alterar" method="POST">
 
             <select name="altera" id="action" onclick="mudou1(value)">
@@ -109,6 +122,7 @@
             let email = document.querySelector('.emailI');
             let senha = document.querySelector('.senhaI');
             let imagem = document.querySelector('.imagemI');
+            let aviso = document.querySelector('.cont');
             let deletar = document.querySelector('.deletarI');
             let inputS = document.querySelector('input.criar');
             let inputD = document.querySelector('input#delete');
@@ -122,6 +136,7 @@
                     email.style.display = 'block';
                     senha.style.display = 'none';
                     imagem.style.display = 'none';
+                    aviso.style.display = 'none';
                     deletar.style.display = 'none';
 
                 } else if (valor == 'senha') {
@@ -129,6 +144,7 @@
                     inputD.style.display = 'none';
                     email.style.display = 'none';
                     senha.style.display = 'block';
+                    aviso.style.display = 'none';
                     imagem.style.display = 'none';
                     deletar.style.display = 'none';
 
@@ -138,6 +154,7 @@
                     email.style.display = 'none';
                     senha.style.display = 'none';
                     imagem.style.display = 'none';
+                    aviso.style.display = 'block';
                     deletar.style.display = 'block';
 
                 } else if (valor == 'imagem') {
@@ -146,6 +163,7 @@
                     email.style.display = 'none';
                     senha.style.display = 'none';
                     imagem.style.display = 'block';
+                    aviso.style.display = 'none';
                     deletar.style.display = 'none';
 
                     for (let x = 1; x <= imagens.length; x++) {
@@ -168,6 +186,10 @@
                         imagem.appendChild(label);
                     }
                 }
+            }
+
+            function fechar() {
+                aviso.style.display = 'none';
             }
         </script>
     </body>

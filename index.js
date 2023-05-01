@@ -29,7 +29,7 @@ app.use('/criar', require('./routes/auth'))
 
 app.use(function(req, res) {
     res.status(404).render('erros');
-})
+});
 
 // Ativa os serviços que precisam executar quando o servidor liga
 require("./services");
