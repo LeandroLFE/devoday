@@ -284,6 +284,8 @@ exports.envio = async (req, res) => {
 
 exports.excluir = async (req, res) => {
     const { ide } = req.body;
+    console.log(ide, parseInt(ide))
+    
     const accessToken = req.cookies["access-token"];
     var usuarioCookie = verify(accessToken, process.env.TOKEN);
 
@@ -308,6 +310,7 @@ exports.excluir = async (req, res) => {
     })
 
     userIcon(usuarioCookie, 'index', res);
+    
 }
 
 exports.editar = async (req, res) => {

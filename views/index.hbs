@@ -35,12 +35,12 @@
                     <div class="modificadores">
                         <form action="/criar/editar" method="post">
                             <label for="editar"><i class="fi fi-rr-pencil"></i></label>
-                            <input type="number" name="tite" value="{{card/id}}" style="display: none;">
+                            <input type="text" name="tite" value="{{card/id}}">
                             <input type="submit" id="editar" style="display: none;">
                         </form>
                         <form action="/criar/excluir" method="post">
                             <label for="excluir"><i class="fi fi-rr-trash"></i></label>
-                            <input type="number" name="ide" value="{{card/id}}" style="display: none;">
+                            <input type="text" name="ide" value="{{card/id}}" {{!-- style="display: none;" --}}>
                             <input type="submit" id="excluir" style="display: none;">
                         </form>
                     </div>
