@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/home.css">
     <link rel="shortcut icon" href="/imgs/logo.png" type="image/x-icon">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <title>Devo day</title>
 </head>
 <body>
@@ -17,7 +18,53 @@
     <section>
         <div class="cards">
             {{#each cards as | card |}}
-                <div class="card">
+                {{#ifEquals card/fav 0}}
+
+                <div class="bottom">
+                    <div class="card">
+                        {{#ifEquals card/versInicial card/versFinal}}
+                            <h1>{{card/livro}} {{card/capitulo}}:{{card/versInicial}}</h1>
+                        {{else}}
+                            <h1>{{card/livro}} {{card/capitulo}}:{{card/versInicial}}-{{card/versFinal}}</h1>
+                        {{/ifEquals}}
+
+                        {{#ifEquals card/q1 ""}}
+                            {{#ifEquals card/q2 ""}}
+                                <p class="alert">Nenhum texto foi escrito</p>
+                            {{else}}
+                                <p>"{{card/q2}}"</p>
+                            {{/ifEquals}}
+                        {{else}}
+                            <p>"{{card/q1}}"</p>
+                        {{/ifEquals}}
+                        <div class="modificadores">
+                            <form action="/criar/favoritar" method="post">
+                                <label for="favoritar"><i class="fi fi-rr-star"></i></label>
+                                <input type="text" name="tite" value="{{card/id}}">
+                                <input type="submit" id="favoritar" style="display: none;">
+                            </form>
+                            <form action="/criar/editar" method="post">
+                                <label for="editar"><i class="fi fi-rr-pencil"></i></label>
+                                <input type="text" name="tite" value="{{card/id}}">
+                                <input type="submit" id="editar" style="display: none;">
+                            </form>
+                            <form action="/criar/excluir" method="post">
+                                <label for="excluir"><i class="fi fi-rr-trash"></i></label>
+                                <input type="text" name="ide" value="{{card/id}}" {{!-- style="display: none;" --}}>
+                                <input type="submit" id="excluir" style="display: none;">
+                            </form>
+                        </div>
+                        <span class="data">{{card/data}}</span>
+                    </div>
+                </div>
+
+                {{/ifEquals}}
+            {{/each}}
+            
+            {{#each cards as | card |}}
+                {{#ifEquals card/fav 1}}
+                <div class="top">
+                    <div class="card">
                     {{#ifEquals card/versInicial card/versFinal}}
                         <h1>{{card/livro}} {{card/capitulo}}:{{card/versInicial}}</h1>
                     {{else}}
@@ -34,6 +81,11 @@
                         <p>"{{card/q1}}"</p>
                     {{/ifEquals}}
                     <div class="modificadores">
+                        <form action="/criar/desfavoritar" method="post">
+                            <label for="desfavoritar"><i class="fi fi-sr-star"></i></label>
+                            <input type="text" name="tite" value="{{card/id}}">
+                            <input type="submit" id="desfavoritar" style="display: none;">
+                        </form>
                         <form action="/criar/editar" method="post">
                             <label for="editar"><i class="fi fi-rr-pencil"></i></label>
                             <input type="text" name="tite" value="{{card/id}}">
@@ -46,7 +98,9 @@
                         </form>
                     </div>
                     <span class="data">{{card/data}}</span>
+                    </div>
                 </div>
+                {{/ifEquals}}
             {{/each}}
         </div>
 

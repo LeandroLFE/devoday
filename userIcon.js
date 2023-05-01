@@ -26,6 +26,7 @@ async function userIcon(vari, page, res) {
 
         let cardsUser = await prisma.Cards.findMany({select: {
             id: true,
+            fav: true,
             livro: true,
             capitulo: true,
             versInicial: true,

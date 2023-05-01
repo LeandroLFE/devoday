@@ -26,6 +26,7 @@ model Users {
 model Cards {
   id Int @id @default(autoincrement())
   donoId Int
+  fav Int @default(0)
   livro String @db.VarChar(20)
   capitulo Int
   versInicial Int
