@@ -23,7 +23,7 @@ const userIcon = require('../userIcon');
 let imagens = ['cordeiro', 'coelho'];
 
 
-// Escolher o card
+// Escolher leitura
 exports.escolha = async (req, res) => {
     const { livro, capitulo, verI, verF } = req.body; // Recebe os valores do formulário
     let cardsUser;
@@ -186,7 +186,7 @@ exports.escolha = async (req, res) => {
     }
 }
 
-// Registrar no bd
+// Registrar
 exports.envio = async (req, res) => {
     const { titulo2, q1, q2 } = req.body;
     const accessToken = req.cookies["access-token"];
@@ -282,6 +282,7 @@ exports.envio = async (req, res) => {
     }
 }
 
+// Excluir
 exports.excluir = async (req, res) => {
     const { ide } = req.body;
     console.log(ide, parseInt(ide))
@@ -313,6 +314,7 @@ exports.excluir = async (req, res) => {
     
 }
 
+// Editar 
 exports.editar = async (req, res) => {
     const { tite } = req.body;
     console.log(tite)
@@ -374,4 +376,36 @@ exports.editar = async (req, res) => {
             })
         }
     }
+}
+
+// Favoritar 
+exports.favoritar = async (req, res) => {
+    const { ide } = req.body;
+    console.log(ide, parseInt(ide))
+
+    let card = await prisma.Cards.update({select: {
+            fav: true
+        }, where: {
+            id: parseInt(ide),
+        }
+    });
+
+    if (card.fav == 0) {
+        await prisma.Cards.update({where: {
+                id: parseInt(ide),
+            }, data: {
+                fav: 1
+            }
+        });
+
+    } else {
+        await prisma.Cards.update({where: {
+                id: parseInt(ide),
+            }, data: {
+                fav: 0
+            }
+        });
+    }
+    
+    userIcon(usuarioCookie, 'index', res);
 }

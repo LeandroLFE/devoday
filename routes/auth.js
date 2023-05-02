@@ -14,5 +14,6 @@ router.post('/resultado', cardController.escolha);
 router.post('/devocional', cardController.envio);
 router.post('/excluir', cardController.excluir);
 router.post('/editar', cardController.editar);
+router.post('/favoritar', cardController.favoritar);
 
 module.exports = router;

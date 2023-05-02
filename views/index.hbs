@@ -60,7 +60,7 @@
 
                 {{/ifEquals}}
             {{/each}}
-            
+
             {{#each cards as | card |}}
                 {{#ifEquals card/fav 1}}
                 <div class="top">
@@ -81,7 +81,7 @@
                         <p>"{{card/q1}}"</p>
                     {{/ifEquals}}
                     <div class="modificadores">
-                        <form action="/criar/desfavoritar" method="post">
+                        <form action="/criar/favoritar" method="post">
                             <label for="desfavoritar"><i class="fi fi-sr-star"></i></label>
                             <input type="text" name="tite" value="{{card/id}}">
                             <input type="submit" id="desfavoritar" style="display: none;">
