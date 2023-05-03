@@ -316,7 +316,6 @@ exports.modificar = async (req, res) => {
     });
 
     if (crud == 'fav') {
-        console.log(cardsUser.fav);
         if (cardsUser[0].fav == 0) {
             await prisma.Cards.update({where: {
                     id: parseInt(ide),

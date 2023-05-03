@@ -228,8 +228,6 @@ p::-webkit-scrollbar-thumb, .txts::-webkit-scrollbar-thumb {
     }
 }
 
-
-
 @media screen and (max-width: 700px) {
     .cont {
         flex-wrap: wrap-reverse;
