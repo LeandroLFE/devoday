@@ -12,8 +12,6 @@ router.get('/sair', authController.sair);
 
 router.post('/resultado', cardController.escolha);
 router.post('/devocional', cardController.envio);
-router.post('/excluir', cardController.excluir);
-router.post('/editar', cardController.editar);
-router.post('/favoritar', cardController.favoritar);
+router.post('/modificar', cardController.modificar);
 
 module.exports = router;

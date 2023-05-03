@@ -114,6 +114,7 @@ const verifyTimeLeft = () => {
     updatePhrase(now);
   }
 };
+verifyTimeLeft();
 
 // Verifica a cada hora
 setInterval(() => verifyTimeLeft(), 

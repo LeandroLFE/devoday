@@ -9,7 +9,7 @@ const localDbPath = `${__dirname}/localdb.json`;
 let dbContent = fs.readFileSync(localDbPath, "utf8");
 let db = JSON.parse(dbContent);
 let sug1 = db.phrase.titulo;
-let sug2 = sug1.split('_')
+let sug2 = sug1.split('_');
 
 let sugestaoTit = sug2.length > 1 ? `${sug2[0]} ${sug2[1]}`: sug1;
 let sugestaoTex = db.phrase.text;
@@ -77,7 +77,7 @@ async function userIcon(vari, page, res) {
                     txts_old: antigo.livros,
                     selected: 1,
                     txts_new: novo.livros,
-                    message: "Preencha os itens e salve para exibir o versículo",
+                    message: "Por favor, preencha os itens e salve para exibir o versículo antes de iniciar seu texto, se não perderá seu progresso",
                     tit: "Leitura"
                 })
             } else if (vari.ima == x) {
@@ -86,7 +86,7 @@ async function userIcon(vari, page, res) {
                     txts_old: antigo.livros,
                     selected: 1,
                     txts_new: novo.livros,
-                    message: "Preencha os itens e salve para exibir o versículo",
+                    message: "Por favor, preencha os itens e salve para exibir o versículo antes de iniciar seu texto, se não perderá seu progresso",
                     tit: "Leitura"
                 })
             }

@@ -225,8 +225,7 @@ exports.envio = async (req, res) => {
                 livro: livro[0],
                 capitulo: parseInt(cap),
                 versInicial: parseInt(verINICIA),
-                versFinal: parseInt(veF),
-                data: data
+                versFinal: parseInt(veF)
             }
         });
 
@@ -282,47 +281,28 @@ exports.envio = async (req, res) => {
     }
 }
 
-// Excluir
-exports.excluir = async (req, res) => {
-    const { ide } = req.body;
-    console.log(ide, parseInt(ide))
-    
+// Editar, excluir e favoritar 
+exports.modificar = async (req, res) => {
+    const { card } = req.body;
+
+    let crud = card.substr(0, 3); // Recupera a ação
+    let ide = card.substr(3, 2); // Recupera o id
+
     const accessToken = req.cookies["access-token"];
     var usuarioCookie = verify(accessToken, process.env.TOKEN);
 
     let usuarios = await prisma.Users.findMany({select: {
-        id: true,
-        email: true,
-        cards: true
+            id: true,
+            email: true,
+            cards: true
         }, where: {
             email: usuarioCookie.username
         }
     });
 
-    await prisma.Cards.delete({ where: {
-          id: parseInt(ide),
-        },
-    });
-    await prisma.Users.update({ where: { 
-            email: usuarios[0].email 
-        }, data: { 
-            cards: usuarios[0].cards - 1
-        }
-    })
-
-    userIcon(usuarioCookie, 'index', res);
-    
-}
-
-// Editar 
-exports.editar = async (req, res) => {
-    const { tite } = req.body;
-    console.log(tite)
-    const accessToken = req.cookies["access-token"];
-    var usuarioCookie = verify(accessToken, process.env.TOKEN);
-
     let cardsUser = await prisma.Cards.findMany({select: {
             id: true,
+            fav: true,
             livro: true,
             capitulo: true,
             versInicial: true,
@@ -331,81 +311,84 @@ exports.editar = async (req, res) => {
             q1: true,
             q2: true
         }, where: {
-            id: parseInt(tite)
-        }
-    })
-
-    let livr = cardsUser[0].versInicial == cardsUser[0].versFinal ? `${cardsUser[0].livro} ${cardsUser[0].capitulo}:${cardsUser[0].versInicial}` : `${cardsUser[0].livro} ${cardsUser[0].capitulo}:${cardsUser[0].versInicial}-${cardsUser[0].versFinal}`;
-    let li = cardsUser[0].versInicial == cardsUser[0].versFinal ? `${cardsUser[0].livro}_${cardsUser[0].capitulo}:${cardsUser[0].versInicial}`:`${cardsUser[0].livro}_${cardsUser[0].capitulo}:${cardsUser[0].versInicial}-${cardsUser[0].versFinal}`;
-
-    let mens;
-
-    for (let a = 0; a < antigo.livros.length; a++) {
-        if (antigo.livros[a].abr == cardsUser[0].livro) {
-            mens = fun.agrupar(antigo.livros[a], cardsUser[0].capitulo, cardsUser[0].versInicial, cardsUser[0].versFinal);
-        }
-    }
-    for (let a = 0; a < novo.livros.length; a++) {
-        if (novo.livros[a].abr == cardsUser[0].livro) {
-            mens = fun.agrupar(novo.livros[a], cardsUser[0].capitulo, cardsUser[0].versInicial, cardsUser[0].versFinal);
-        }
-    }
-
-    for (let x = 0; x <= imagens.length; x++) {
-        if (usuarioCookie.ima == 0) {
-            return res.render('card', {
-                txts_old: antigo.livros,
-                txts_new: novo.livros,
-                message: mens,
-                tit: livr,
-                titInp: li,
-                q1: cardsUser[0].q1,
-                q2: cardsUser[0].q2
-            })
-            
-        } else if (usuarioCookie.ima == x) {
-            return res.render('card', {
-                imagem: imagens[x-1],
-                txts_old: antigo.livros,
-                txts_new: novo.livros,
-                message: mens,
-                tit: livr,
-                titInp: li,
-                q1: cardsUser[0].q1,
-                q2: cardsUser[0].q2
-            })
-        }
-    }
-}
-
-// Favoritar 
-exports.favoritar = async (req, res) => {
-    const { ide } = req.body;
-    console.log(ide, parseInt(ide))
-
-    let card = await prisma.Cards.update({select: {
-            fav: true
-        }, where: {
-            id: parseInt(ide),
+            id: parseInt(ide)
         }
     });
 
-    if (card.fav == 0) {
-        await prisma.Cards.update({where: {
+    if (crud == 'fav') {
+        console.log(cardsUser.fav);
+        if (cardsUser[0].fav == 0) {
+            await prisma.Cards.update({where: {
+                    id: parseInt(ide),
+                }, data: {
+                    fav: 1
+                }
+            });
+
+        } else {
+            await prisma.Cards.update({where: {
+                    id: parseInt(ide),
+                }, data: {
+                    fav: 0
+                }
+            });
+        }
+
+    } else if (crud == 'edi') {
+        let livr = cardsUser[0].versInicial == cardsUser[0].versFinal ? `${cardsUser[0].livro} ${cardsUser[0].capitulo}:${cardsUser[0].versInicial}` : `${cardsUser[0].livro} ${cardsUser[0].capitulo}:${cardsUser[0].versInicial}-${cardsUser[0].versFinal}`;
+        let li = cardsUser[0].versInicial == cardsUser[0].versFinal ? `${cardsUser[0].livro}_${cardsUser[0].capitulo}:${cardsUser[0].versInicial}`:`${cardsUser[0].livro}_${cardsUser[0].capitulo}:${cardsUser[0].versInicial}-${cardsUser[0].versFinal}`;
+
+        let mens;
+
+        for (let a = 0; a < antigo.livros.length; a++) {
+            if (antigo.livros[a].abr == cardsUser[0].livro) {
+                mens = fun.agrupar(antigo.livros[a], cardsUser[0].capitulo, cardsUser[0].versInicial, cardsUser[0].versFinal);
+            }
+        }
+        for (let a = 0; a < novo.livros.length; a++) {
+            if (novo.livros[a].abr == cardsUser[0].livro) {
+                mens = fun.agrupar(novo.livros[a], cardsUser[0].capitulo, cardsUser[0].versInicial, cardsUser[0].versFinal);
+            }
+        }
+
+        for (let x = 0; x <= imagens.length; x++) {
+            if (usuarioCookie.ima == 0) {
+                return res.render('card', {
+                    txts_old: antigo.livros,
+                    txts_new: novo.livros,
+                    message: mens,
+                    tit: livr,
+                    titInp: li,
+                    q1: cardsUser[0].q1,
+                    q2: cardsUser[0].q2
+                });
+                
+            } else if (usuarioCookie.ima == x) {
+                return res.render('card', {
+                    imagem: imagens[x-1],
+                    txts_old: antigo.livros,
+                    txts_new: novo.livros,
+                    message: mens,
+                    tit: livr,
+                    titInp: li,
+                    q1: cardsUser[0].q1,
+                    q2: cardsUser[0].q2
+                });
+            }
+        }
+
+    } else if (crud == 'exc') { 
+        await prisma.Cards.delete({where: {
                 id: parseInt(ide),
-            }, data: {
-                fav: 1
             }
         });
-
-    } else {
-        await prisma.Cards.update({where: {
-                id: parseInt(ide),
-            }, data: {
-                fav: 0
+        await prisma.Users.update({where: { 
+                email: usuarios[0].email 
+            }, data: { 
+                cards: usuarios[0].cards - 1
             }
         });
     }
-    
+
     userIcon(usuarioCookie, 'index', res);
 }
