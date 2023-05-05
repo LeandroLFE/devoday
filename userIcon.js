@@ -43,7 +43,7 @@ async function userIcon(vari, page, res) {
         let cardsLvl = (Math.floor(parseInt(usuarios[0].cards) / 10) * 10) + 9 // Recupera o máximo de cards no level
         let minCardsLvl = (Math.floor(parseInt(usuarios[0].cards) / 10) * 10) // Recupera o mínimo de cards no level
 
-        for (let x = 0; x <= imagens.length; x++) {
+        for (let x = 1; x <= imagens.length; x++) {
             if (vari.ima == 0) {
                 return res.render(page, {
                     level: Lvl,
@@ -71,7 +71,7 @@ async function userIcon(vari, page, res) {
         }
 
     } else if (page == 'card' || page == 'tutorial/tutoB' || page == 'tutorial/tutoC') {
-        for (let x = 0; x <= imagens.length; x++) {
+        for (let x = 1; x <= imagens.length; x++) {
             if (vari.ima == 0) {
                 return res.render(page, {
                     txts_old: antigo.livros,
@@ -93,7 +93,7 @@ async function userIcon(vari, page, res) {
         }
 
     } else {
-        for (let x = 0; x <= imagens.length; x++) {
+        for (let x = 1; x <= imagens.length; x++) {
             if (vari.ima == 0) {
                 return res.render(page)
             } else if (vari.ima == x) {

@@ -9,7 +9,7 @@ const userIcon = require('../userIcon');
 function createTutoCookie(res) {
     res.cookie('tuto-token', {tuto: "true"}, {
         maxAge: 60*60*1*1000
-    })
+    });
 }
 
 router.get('/', (req, res) => {
@@ -101,7 +101,7 @@ router.get('/sugerido', async (req, res) => {
         });
 
         if (cardsUser.length > 0) {
-            for (let x = 0; x <= imagens.length; x++) {
+            for (let x = 1; x <= imagens.length; x++) {
                 if (usuarioCookie.ima == 0) {
                     return res.render('card', {
                         txts_old: antigo.livros,
@@ -128,7 +128,7 @@ router.get('/sugerido', async (req, res) => {
             }
 
         } else {
-            for (let x = 0; x <= imagens.length; x++) {
+            for (let x = 1; x <= imagens.length; x++) {
                 if (usuarioCookie.ima == 0) {
                     return res.render('card', {
                         txts_old: antigo.livros,
@@ -171,7 +171,7 @@ router.get('/tutorial', (req, res) => {
     if (!accessToken) {
         return res.render('login')
     } else {
-        createTutoCookie(res)
+        createTutoCookie(res);
         var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'tutorial/tutoA', res);
     } 
@@ -262,6 +262,51 @@ router.get('/trocar', (req, res) => {
     }
 });
 
+router.get('/auth/tutorial', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        createTutoCookie(res);
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'tutorial/tutoA', res);
+    } 
+});
+
+router.get('/auth/tutorialB', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'tutorial/tutoB', res);
+    }
+});
+
+router.get('/auth/tutorialC', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'tutorial/tutoC', res);
+    }
+});
+
+router.get('/auth/tutorialD', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'tutorial/tutoD', res);
+    }
+});
+
 router.get('/auth/feedback', (req, res) => {
     const accessToken = req.cookies["access-token"]
 
@@ -291,7 +336,7 @@ router.get('/auth/sugerido', (req, res) => {
         let sugestaoTex = db.phrase.text;
         let imagens = ['cordeiro', 'coelho']
 
-        for (let x = 0; x <= imagens.length; x++) {
+        for (let x = 1; x <= imagens.length; x++) {
             if (usuarioCookie.ima == 0) {
                 return res.render('card', {
                     txts_old: antigo.livros,
@@ -411,6 +456,39 @@ router.get('/criar/tutorial', (req, res) => {
     }
 });
 
+router.get('/criar/tutorialB', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'tutorial/tutoB', res);
+    }
+});
+
+router.get('/criar/tutorialC', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'tutorial/tutoC', res);
+    }
+});
+
+router.get('/criar/tutorialD', (req, res) => {
+    const accessToken = req.cookies["access-token"];
+
+    if (!accessToken) {
+        return res.render('login')
+    } else {
+        var usuarioCookie = verify(accessToken, process.env.TOKEN);
+        userIcon(usuarioCookie, 'tutorial/tutoD', res);
+    }
+});
+
 router.get('/criar/sugerido', (req, res) => {
     const accessToken = req.cookies["access-token"];
 
@@ -430,7 +508,7 @@ router.get('/criar/sugerido', (req, res) => {
         let sugestaoTex = db.phrase.text;
         let imagens = ['cordeiro', 'coelho']
 
-        for (let x = 0; x <= imagens.length; x++) {
+        for (let x = 1; x <= imagens.length; x++) {
             if (usuarioCookie.ima == 0) {
                 return res.render('card', {
                     txts_old: antigo.livros,

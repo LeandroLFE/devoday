@@ -106,7 +106,7 @@ exports.escolha = async (req, res) => {
     let mensi;
 
 
-    for (let x = 0; x <= imagens.length; x++) {
+    for (let x = 1; x <= imagens.length; x++) {
         if (tutoToken) {
             if (usuarioCookie.ima == 0) {
                 return res.render('tutorial/tutoC', {
@@ -116,7 +116,8 @@ exports.escolha = async (req, res) => {
                     tit: titulo
                 })
             } else {
-                return res.render('card', {
+                return res.render('tutorial/tutoC', {
+                    imagem: imagens[x-1],
                     txts_old: antigo.livros,
                     txts_new: novo.livros,
                     message: mensagem,
@@ -137,7 +138,7 @@ exports.escolha = async (req, res) => {
                     }
                 }
 
-                for (let x = 0; x <= imagens.length; x++) {
+                for (let x = 1; x <= imagens.length; x++) {
                     if (usuarioCookie.ima == 0) {
                         return res.render('card', {
                             txts_old: antigo.livros,
@@ -162,7 +163,7 @@ exports.escolha = async (req, res) => {
                 }
 
             } else {
-                for (let x = 0; x <= imagens.length; x++) {
+                for (let x = 1; x <= imagens.length; x++) {
                     if (usuarioCookie.ima == 0) {
                         return res.render('card', {
                             txts_old: antigo.livros,
@@ -350,7 +351,7 @@ exports.modificar = async (req, res) => {
             }
         }
 
-        for (let x = 0; x <= imagens.length; x++) {
+        for (let x = 1; x <= imagens.length; x++) {
             if (usuarioCookie.ima == 0) {
                 return res.render('card', {
                     txts_old: antigo.livros,

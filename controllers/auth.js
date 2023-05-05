@@ -117,8 +117,19 @@ exports.verificar = async (req, res) => {
                 verify: 1 
             }
         })
-        createCookie(usuarios, res);
-        const accessToken = req.cookies["access-token"];
+        const createTokens = (user) => {
+            const acessToken = sign({ username: user, ima: usuarios[0].icon }, process.env.TOKEN);
+            return acessToken;
+        }
+        const accessToken = createTokens(usuarios[0].email)
+    
+        res.cookie('access-token', accessToken, {
+            maxAge: 60*60*24*7*1000
+        });
+        res.cookie('tuto-token', {tuto: "true"}, {
+            maxAge: 60*60*1*1000
+        });
+    
         var usuarioCookie = verify(accessToken, process.env.TOKEN);
         userIcon(usuarioCookie, 'tutorial/tutoA', res);
 
