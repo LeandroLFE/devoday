@@ -4,6 +4,6 @@ Devocional day é um projeto que surgiu a partir da dificuldade de novos cristã
 
 ## Créditos
 → Código: [Camila Azevedo](https://github.com/Camilay3)<br>
-→ Ícones: [flaticon](https://www.flaticon.com/uicons)<br>
-→ Imagem de cadastro: [storyseet](https://storyset.com/people)<br>
+→ Ícones: [Flaticon](https://www.flaticon.com/uicons)<br>
+→ Imagem de cadastro: [Storyseet](https://storyset.com/people)<br>
 → Artes: [Isadora Fontenele](https://github.com/indigow95) (Imagens de perfil) e [Samyra Vitória](https://github.com/VinsmokeSamyra06) (Lina, a viajante)
